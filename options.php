@@ -217,7 +217,7 @@ if (isset($options['Noteplaceholder'])) {
 						<tr valign="top">
 							<th scope="row"><?php _e('Button Text', 'woo-donations'); ?></th>
 							<td>
-								<input type="text" name="wdgk_btntext" value="<?php esc_attr_e($text); ?>">
+								<input type="text" name="wdgk_btntext" value="<?php esc_attr_e(wp_unslash($text)); ?>">
 								<span class="wdgk_note"><?php _e('Add Donation button text.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
@@ -251,7 +251,7 @@ if (isset($options['Noteplaceholder'])) {
 						<tr valign="top">
 							<th scope="row"><?php _e('Donation Form Title', 'woo-donations'); ?></th>
 							<td>
-								<input type="text" class="wdgk_input" name="wdgk_title" value="<?php esc_attr_e($form_title); ?>">
+								<input type="text" class="wdgk_input" name="wdgk_title" value="<?php esc_attr_e(wp_unslash($form_title)); ?>">
 								<span class="wdgk_note"><?php _e('Add Donation form title.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
@@ -259,7 +259,7 @@ if (isset($options['Noteplaceholder'])) {
 						<tr valign="top">
 							<th scope="row"><?php _e('Amount Placeholder Text', 'woo-donations'); ?></th>
 							<td>
-								<input type="text" class="wdgk_input" name="wdgk_amt_place" value="<?php esc_attr_e($amount_placeholder); ?>">
+								<input type="text" class="wdgk_input" name="wdgk_amt_place" value="<?php esc_attr_e(wp_unslash($amount_placeholder)); ?>">
 								<span class="wdgk_note"><?php _e('Add Donation amount placeholder text.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
@@ -268,7 +268,7 @@ if (isset($options['Noteplaceholder'])) {
 							<th scope="row"><?php _e('Note Placeholder Text', 'woo-donations'); ?></th>
 							<td>
 
-								<textarea name="wdgk_note_place" class="wdgk-note-placeholder wdgk_input" rows="5"><?php esc_attr_e($note_placeholder); ?></textarea>
+								<textarea name="wdgk_note_place" class="wdgk-note-placeholder wdgk_input" rows="5"><?php esc_attr_e(wp_unslash($note_placeholder)); ?></textarea>
 								<span class="wdgk_note"><?php _e('Add Donation note placeholder text.', 'woo-donations'); ?></span>
 							</td>
 						</tr>

@@ -6,7 +6,7 @@ Requires PHP: 5.2.4
 Requires at least: 3.0.1
 Tested up to: 6.3.2
 WC tested up to: 8.2.1
-Stable tag: 3.6
+Stable tag: 3.7
 
 This Plugin provide you options to accept donations in woocommerce with amount specified by the end user, so they can donate any amount they wish to donate.
 
@@ -124,6 +124,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+
+= 3.7=
+ Fixed major error.
 
 = 3.6=
  Fixed donation amount separator issue.

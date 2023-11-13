@@ -473,10 +473,23 @@ function wdgk_woo_admin_order_items_column($order_columns){
 
 /* hpos admin orders post type column on order listing screen */
 add_action( 'woocommerce_shop_order_list_table_custom_column', function ( $column, $order ) {
-	if ( 'order_products' !== $column ) {
-		return;
-	}
+	if ( 'order_products' !== $column )		return;
 
+	get_order_donation_flag($order);
+	
+}, 10, 2 );
+
+/* admin orders post type column on order listing screen */
+add_action('manage_shop_order_posts_custom_column', 'wdgk_order_items_column_cnt');
+function wdgk_order_items_column_cnt($colname){
+	global $the_order; // the global order object
+
+	if ($colname == 'order_products') {
+		get_order_donation_flag($the_order);
+	}
+}
+
+function get_order_donation_flag($order) {
 	// get items from the order global object
 	$order_items = $order->get_items();
 	$product = "";
@@ -497,37 +510,6 @@ add_action( 'woocommerce_shop_order_list_table_custom_column', function ( $colum
 			_e('<span class="dashicons dashicons-yes-alt wdgk_right_icon"></span>');
 		} 
 			
-	}
-}, 10, 2 );
-
-/* admin orders post type column on order listing screen */
-add_action('manage_shop_order_posts_custom_column', 'wdgk_order_items_column_cnt');
-function wdgk_order_items_column_cnt($colname){
-	global $the_order; // the global order object
-
-	if ($colname == 'order_products') {
-
-		// get items from the order global object
-		$order_items = $the_order->get_items();
-		$product = "";
-		$options = wdgk_get_wc_donation_setting();
-		if (isset($options['Product'])) {
-			$product = $options['Product'];
-		}
-		if (!is_wp_error($order_items)) {
-			$donation_flag = false;
-			foreach ($order_items as $order_item) {
-
-
-				if ($product == $order_item['product_id']) {
-					$donation_flag = true;
-				}
-			}
-			if ($donation_flag == true){
-				_e('<span class="dashicons dashicons-yes-alt wdgk_right_icon"></span>');
-			} 
-				
-		}
 	}
 }
 

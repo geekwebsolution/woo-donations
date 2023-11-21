@@ -68,6 +68,7 @@ function wdgk_plugin_active_woocommerce_donation(){
 		update_post_meta($id, '_visibility', 'hidden');
 		update_post_meta($id, '_regular_price', 0);
 		update_post_meta($id, '_price', 0);
+		update_post_meta($id, '_virtual', 'yes');
 		update_post_meta($id, '_sold_individually', 'yes');
 		$options['Product'] = $id;
 		$taxonomy = 'product_visibility';

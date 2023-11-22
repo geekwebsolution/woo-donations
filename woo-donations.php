@@ -5,7 +5,7 @@ Description: Woo Donation is a plugin that is used to collect donations on your 
 Author: Geek Code Lab
 Version: 3.8
 Author URI: https://geekcodelab.com/
-WC tested up to: 8.2.2
+WC tested up to: 8.3.0
 Text Domain : woo-donations
 */
 
@@ -20,7 +20,6 @@ if (!defined("WDGK_PLUGIN_URL"))
 	define("WDGK_PLUGIN_URL", plugins_url() . '/' . basename(dirname(__FILE__)));
 
 define("WDGK_BUILD", '3.8');
-
 
 require_once(WDGK_PLUGIN_DIR_PATH . 'functions.php');
 
@@ -79,6 +78,35 @@ function wdgk_plugin_active_woocommerce_donation(){
 		update_option('wdgk_donation_settings', $options);
 	}
 }
+
+if ( ! function_exists( 'wdgk_install_woocommerce_admin_notice' ) ) {
+	/**
+	 * Trigger an admin notice if WooCommerce is not installed.
+	 */
+	function wdgk_install_woocommerce_admin_notice() {
+		?>
+		<div class="error">
+			<p>
+				<?php
+				// translators: %s is the plugin name.
+				echo esc_html( sprintf( __( '%s is enabled but not effective. It requires WooCommerce in order to work.', 'woo-donations' ), 'Woo Donations' ) );
+				?>
+			</p>
+		</div>
+		<?php
+	}
+}
+
+
+function wdgk_woocommerce_constructor() {
+    // Check WooCommerce installation
+	if ( ! function_exists( 'WC' ) ) {
+		add_action( 'admin_notices', 'wdgk_install_woocommerce_admin_notice' );
+		return;
+	}
+
+}
+add_action( 'plugins_loaded', 'wdgk_woocommerce_constructor' );
 
 add_action('wp_enqueue_scripts', 'wdgk_include_front_script');
 function wdgk_include_front_script(){

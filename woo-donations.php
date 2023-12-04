@@ -193,7 +193,9 @@ function wdgk_add_donation_on_checkout_page(){
     wdgk_donation_form_front_html($checkout_url);
 }
 
-
+/**
+ * Checkout page donation form html
+ */
 function wdgk_donation_form_front_html($redurl){
 
 	global $woocommerce;
@@ -267,7 +269,11 @@ function wdgk_donation_form_front_html($redurl){
 	}
 }
 
-function wdgk_donation_form_shortcode_html($redurl){
+/**
+ * 1. Donation form html of [wdgk_donation] shortcode 
+ * 2. Cart page donation form html
+ */
+function wdgk_donation_form_shortcode_html(){
 	global $woocommerce;
 
 	$product 			= "";
@@ -320,13 +326,8 @@ function wdgk_donation_form_shortcode_html($redurl){
 	if (!empty($product) && $note == 'on') {
 		$note_html = '<textarea id="w3mission" rows="3" cols="20" placeholder="'.wp_unslash($note_placeholder).'" name="donation_note" class="donation_note">'.wp_unslash($donation_note).'</textarea>';
 	}
-
-	if (!empty($redurl) && isset($redurl)) {
-        $cart_url = $redurl;
-    } else {
-        $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
-    }
 	
+	$cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
 
 	if (!empty($product)) {
 		$ajax_url= admin_url('admin-ajax.php');

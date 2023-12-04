@@ -28,9 +28,12 @@ Options to choose a non-shipping, no-taxable product for donation purpose.
 
 After woocommerce donation plugin activation you will find the "Add Donation" field on the cart and checkout page.
 
- 
 
 Also works with WordPress Multisite installs (each blog from the network has itâ€™s own maintenance settings).
+
+== Using woocommerce blocks display donation form ==
+
+When using woocommerce blocks in cart or checkout page you can use shortcode to display donation form. Please <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a> for more details.
 
 
 
@@ -87,8 +90,8 @@ Also works with WordPress Multisite installs (each blog from the network has itâ
 
 
 == You can use shortcodes ==
-
 <code>[wdgk_donation]</code>
+
 <h4>Here is Template code</h4>
 <code> <?php echo do_shortcode('[wdgk_donation]'); ?></code>
 

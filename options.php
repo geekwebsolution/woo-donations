@@ -1,5 +1,4 @@
 <?php
-
 if (!defined('ABSPATH')) exit;
 
 $default_tab = null;
@@ -7,16 +6,7 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : $default_tab;
 
 $options = wdgk_get_wc_donation_setting();
 
-
 if (isset($_POST['wdgk_add_form'])) {
-
-
-    // echo "<pre>";
-    // print_r($_POST);
-    // echo "</pre>";
-
-    // die;
-
 	$product_name		= "";
 	$cart_product		= "";
 	$checkout_product	= "";
@@ -181,6 +171,10 @@ if (isset($options['Noteplaceholder'])) {
 									<span class="wdgk-slider wdgk-round"></span>
 								</label>
 								<span class="wdgk_note"><?php _e('Enable to display donation on cart page.', 'woo-donations'); ?></span>
+								<span class="wdgk_note">
+									<strong>Note: </strong><?php _e('when using woocommerce blocks in cart page use shortcode to display donation form.', 'woo-donations'); ?>
+									For more details <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a>
+								</span>
 							</td>
 						</tr>
 
@@ -192,6 +186,10 @@ if (isset($options['Noteplaceholder'])) {
 									<span class="wdgk-slider wdgk-round"></span>
 								</label>
 								<span class="wdgk_note"><?php _e('Enable to display donation on checkout page.', 'woo-donations'); ?></span>
+								<span class="wdgk_note">
+									<strong>Note: </strong><?php _e('when using woocommerce blocks in checkout page use shortcode to display donation form.', 'woo-donations'); ?>
+									For more details <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a>
+								</span>
 							</td>
 						</tr>
 

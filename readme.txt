@@ -5,8 +5,8 @@ Tags: WooCommerce Donation, WooCommerce Donation Campaign, WooCommerce Cart Page
 Requires PHP: 5.2.4
 Requires at least: 3.0.1
 Tested up to: 6.4.1
-WC tested up to: 8.3.0
-Stable tag: 3.8
+WC tested up to: 8.3.1
+Stable tag: 3.9
 
 This Plugin provide you options to accept donations in woocommerce with amount specified by the end user, so they can donate any amount they wish to donate.
 
@@ -31,8 +31,7 @@ After woocommerce donation plugin activation you will find the "Add Donation" fi
 
 Also works with WordPress Multisite installs (each blog from the network has it’s own maintenance settings).
 
-== Using woocommerce blocks display donation form ==
-
+**Using woocommerce blocks display donation form**
 When using woocommerce blocks in cart or checkout page you can use shortcode to display donation form. Please <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a> for more details.
 
 
@@ -127,6 +126,10 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+
+= 3.9=
+ Fixed bugs.
+ Added note for woocmmerce blocks.
 
 = 3.8=
  Added woocommerce HPOS support.

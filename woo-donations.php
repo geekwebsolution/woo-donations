@@ -71,7 +71,7 @@ function wdgk_plugin_active_woocommerce_donation(){
 		update_post_meta($id, '_sold_individually', 'yes');
 		$options['Product'] = $id;
 		$taxonomy = 'product_visibility';
-		wp_set_object_terms($id, 'exclude-from-catalog', $taxonomy);
+		wp_set_object_terms($id, array( 'exclude-from-catalog', 'exclude-from-search' ), $taxonomy);
 		wdgk_generate_featured_image(WDGK_PLUGIN_URL . '/assets/images/donation_thumbnail.jpg', $id);
 	}
 	if (count($options) > 0) {

@@ -100,8 +100,6 @@ if (isset($options['AmtPlaceholder'])) {
 if (isset($options['Noteplaceholder'])) {
 	$note_placeholder = $options['Noteplaceholder'];
 }
-
-
 ?>
 
 

@@ -100,8 +100,6 @@ if (isset($options['AmtPlaceholder'])) {
 if (isset($options['Noteplaceholder'])) {
 	$note_placeholder = $options['Noteplaceholder'];
 }
-
-
 ?>
 
 
@@ -151,7 +149,7 @@ if (isset($options['Noteplaceholder'])) {
                                     <?php 
                                     if(isset($product) && !empty($product)){
                                         ?>
-                                        <option selected="selected" value="<?php echo $product; ?>"><?php echo $product_title; ?></option>
+                                        <option selected="selected" value="<?php echo $product; ?>"><?php echo $product_title . "( #" . $product . " )"; ?></option>
                                         <?php
                                     }
                                     ?>

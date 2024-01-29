@@ -1,63 +1,44 @@
-<?php 
-
-if(!defined('ABSPATH')) exit;
-
-if(!defined("WDGK_PLUGIN_DIR_PATH"))
-	
-	define("WDGK_PLUGIN_DIR_PATH",plugin_dir_path(__FILE__));	
-	
-if(!defined("WDGK_PLUGIN_URL"))
-	
-	define("WDGK_PLUGIN_URL",plugins_url().'/'.basename(dirname(__FILE__)));	
-
+<?php
+use Automattic\WooCommerce\Utilities\OrderUtil;
 
 // Get form setting options
-
 function wdgk_get_wc_donation_setting(){
-
 	return get_option('wdgk_donation_settings');
-
 }
 
 // Success message
-
 function  success_option_msg_wdgk($msg){
-	
 	return ' <div class="notice notice-success wdgk-success-msg is-dismissible"><p>'. $msg . '</p></div>';		
 }
 
 // Error message
-
 function  failure_option_msg_wdgk($msg){
-	
 	return '<div class="notice notice-error wdgk-error-msg is-dismissible"><p>' . $msg . '</p></div>';		
 }
 
 function wdgk_add_donation_product_to_cart($id) {
-	
-		$found = false;
-		//check if product already in cart
-		if ( sizeof( WC()->cart->get_cart() ) > 0 ) {
-			
-			foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
-				$_product = $values['data'];
-				
-				if ( $_product->get_id() == $id ){
-					$found = true;
-				WC()->cart->remove_cart_item($cart_item_key);
-				WC()->cart->add_to_cart( $id );
-				}
-				
-			}
-			// if product not found, add it
-			if ( ! $found )
-				WC()->cart->add_to_cart( $id );
+	$found = false;
+	//check if product already in cart
+	if ( sizeof( WC()->cart->get_cart() ) > 0 ) {
 		
-		} else {
-			// if no products in cart, add it
+		foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
+			$_product = $values['data'];
+			
+			if ( $_product->get_id() == $id ){
+				$found = true;
+			WC()->cart->remove_cart_item($cart_item_key);
 			WC()->cart->add_to_cart( $id );
+			}
+			
 		}
-
+		// if product not found, add it
+		if ( ! $found )
+			WC()->cart->add_to_cart( $id );
+	
+	} else {
+		// if no products in cart, add it
+		WC()->cart->add_to_cart( $id );
+	}
 } 
 
 function wdgk_generate_featured_image( $image_url, $post_id  ){
@@ -82,8 +63,12 @@ function wdgk_generate_featured_image( $image_url, $post_id  ){
     $res2= set_post_thumbnail( $post_id, $attach_id );
 }
 
+/** Check woocommerce is using high speed order storage or not using */
+function wdgk_woocommerce_hpos_tables_used() {
+	if ( OrderUtil::custom_orders_table_usage_is_enabled() ) {
+		return true;
+	}
 
-
-
-
+	return false;
+}
 ?>

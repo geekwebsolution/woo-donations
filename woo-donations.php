@@ -157,9 +157,9 @@ function wdgk_woocommerce_constructor() {
 
 add_action('wp_enqueue_scripts', 'wdgk_include_front_script');
 function wdgk_include_front_script(){
-	wp_enqueue_style("wdgk_front_style", WDGK_PLUGIN_URL . "/assets/css/wdgk_front_style.css", '',WDGK_BUILD);
+	wp_enqueue_style("wdgk_front_style", WDGK_PLUGIN_URL . "/assets/css/wdgk-front-style.css", '',WDGK_BUILD);
 	
-	wp_enqueue_script('wdgk_donation_script', WDGK_PLUGIN_URL.'/assets/js/wdgk_front_script.js', array('jquery'),WDGK_BUILD);
+	wp_enqueue_script('wdgk_donation_script', WDGK_PLUGIN_URL.'/assets/js/wdgk-front-script.js', array('jquery'),WDGK_BUILD);
 	$decimal_separator = wc_get_price_decimal_separator();
     $thousand_separator = wc_get_price_thousand_separator();
     $wdgk_options = [ "decimal_sep"=>$decimal_separator, "thousand_sep"=>$thousand_separator ];
@@ -168,8 +168,8 @@ function wdgk_include_front_script(){
 function wdgk_admin_style(){
 
 	if (is_admin()) {
-		$css = WDGK_PLUGIN_URL . '/assets/css/wdgk_admin_style.css';
-		wp_enqueue_style('wdgk_admin_style', $css, '',WDGK_BUILD);
+		$css = WDGK_PLUGIN_URL . '/assets/css/wdgk-admin-style.css';
+		wp_enqueue_style('wdgk-admin-style', $css, '',WDGK_BUILD);
 		wp_enqueue_style('wp-color-picker');
 		wp_enqueue_script('wp-color-picker');
 
@@ -177,7 +177,7 @@ function wdgk_admin_style(){
         wp_enqueue_style("wdgk_front_select2", WDGK_PLUGIN_URL . "/assets/css/select2.min.css", '',WDGK_BUILD);
 	
 	    wp_enqueue_script('wdgk_donation_select2', WDGK_PLUGIN_URL.'/assets/js/select2.min.js', array('jquery'),WDGK_BUILD);
-	    wp_enqueue_script('wdgk-admin-custom-js', WDGK_PLUGIN_URL.'/assets/js/custom.js', array('jquery'),WDGK_BUILD);
+	    wp_enqueue_script('wdgk-admin-custom-js', WDGK_PLUGIN_URL.'/assets/js/wdgk-admin-script.js', array('jquery'),WDGK_BUILD);
         wp_localize_script( 'wdgk-admin-custom-js', 'wdgkObj', [ 'ajaxurl' => admin_url('admin-ajax.php') ] );
 
 	}
@@ -596,7 +596,7 @@ function wdgk_product_select_ajax_callback() {
 
         $result[] = array(
             'id' => $wdgk_product->ID,
-            'title' => $wdgk_product->post_title 
+            'title' => $wdgk_product->post_title .  "( #" . $wdgk_product->ID . " )"
         );
 	}
 

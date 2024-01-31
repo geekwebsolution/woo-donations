@@ -230,7 +230,7 @@ if (isset($options['Noteplaceholder'])) {
 				</table>
 
 				<input type="hidden" name="wdgk_wpnonce" value="<?php $nonce = wp_create_nonce('wdgk_nonce'); ?>">
-				<input class="button button-primary button-large wdgk_submit" type="submit" name="wdgk_add_form" id="wdgk_submit" value="Save Changes" />
+				<input class="button button-primary button-large wdgk_submit" type="submit" name="wdgk_add_form" id="wdgk_submit" value="<?php esc_attr_e('Save Changes','woo-donations'); ?>" />
 
 
 			</div>

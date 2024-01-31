@@ -4,7 +4,7 @@ Donate link: https://paypal.me/rvadhel
 Tags: WooCommerce Donation, WooCommerce Donation Campaign, WooCommerce Cart Page Donation, Woocommerce Checkout Page Donation, Woocommerce Donation on Pages,covid19
 Requires PHP: 5.2.4
 Requires at least: 3.0.1
-Tested up to: 6.4.2
+Tested up to: 6.4.3
 WC tested up to: 8.5.2
 Stable tag: 4.0
 
@@ -128,6 +128,7 @@ After Plugin Active go to WooCommerce-> Donation.
 == Changelog ==
 = 4.0 =
  Fixed bugs
+ Fixed translation bugs
  Added donation order flag
 
 = 3.9=

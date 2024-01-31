@@ -88,7 +88,7 @@ if ( ! function_exists( 'wdgk_install_woocommerce_admin_notice' ) ) {
 			<p>
 				<?php
 				// translators: %s is the plugin name.
-				echo esc_html( sprintf( '%s is enabled but not effective. It requires WooCommerce in order to work.', 'Woo Donations' ) );
+				echo esc_html__( sprintf( '%s is enabled but not effective. It requires WooCommerce in order to work.', 'Woo Donations' ), 'woo-donations' );
 				?>
 			</p>
 		</div>

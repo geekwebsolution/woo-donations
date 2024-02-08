@@ -6,7 +6,7 @@ Requires PHP: 5.2.4
 Requires at least: 3.0.1
 Tested up to: 6.4.3
 WC tested up to: 8.5.2
-Stable tag: 4.0
+Stable tag: 4.1
 
 This Plugin provide you options to accept donations in woocommerce with amount specified by the end user, so they can donate any amount they wish to donate.
 
@@ -48,6 +48,7 @@ When using woocommerce blocks in cart or checkout page you can use shortcode to 
 * Manually have option to set Description field donation form
 * Manually have option to set donation form on other pages with shortcode
 * Manually enable disable option to display donation form on cart and checkout
+* You can use Gutenberg block to display donation form
 * Dynamic Label Options.
 
 
@@ -126,6 +127,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.1 =
+ Added Gutenberg block to display donation form
+
 = 4.0 =
  Fixed bugs
  Fixed translation bugs

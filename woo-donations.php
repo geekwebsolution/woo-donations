@@ -3,7 +3,7 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.0
+Version: 4.1
 Author URI: https://geekcodelab.com/
 WC tested up to: 8.5.2
 Text Domain : woo-donations
@@ -19,7 +19,7 @@ if (!defined("WDGK_PLUGIN_URL"))
 
 	define("WDGK_PLUGIN_URL", plugins_url() . '/' . basename(dirname(__FILE__)));
 
-define("WDGK_BUILD", '4.0');
+define("WDGK_BUILD", '4.1');
 
 require_once(WDGK_PLUGIN_DIR_PATH . 'functions.php');
 
@@ -632,3 +632,31 @@ function wdgk_thankyou_change_order_status($order_id) {
         }
     }
 }
+
+// Enqueue the block editor script
+function wdgk_block_editor_script() {
+	$color = $textcolor = $additional_style = "";
+	$options = wdgk_get_wc_donation_setting();
+
+	if (isset($options['Color'])) {
+		$color = $options['Color'];
+		$additional_style .= '.wdgk_donation_content a.button.wdgk_add_donation { background-color: ' . $color . ' !important; } ';
+	}
+
+	if (isset($options['TextColor'])) {
+		$textcolor = $options['TextColor'];
+		$additional_style .= '.wdgk_donation_content a.button.wdgk_add_donation { color: ' . $textcolor . ' !important; }';
+	}
+
+	wp_enqueue_style( 'wdgk-block-style', plugins_url('assets/css/wdgk-front-style.css', __FILE__), array('wp-edit-blocks'), WDGK_BUILD );
+
+    wp_enqueue_script( 'wdgk-block-script', plugins_url( 'assets/js/wdgk-block.js', __FILE__ ), array( 'wp-blocks', 'wp-element' ), WDGK_BUILD );
+
+	wp_localize_script( 'wdgk-block-script', 'wdgkObject',
+		array(
+			'blockhtml' => stripslashes( do_shortcode('[wdgk_donation]') ),
+			'buttonstyle' => esc_html($additional_style)
+		)
+	);
+}
+add_action( 'enqueue_block_editor_assets', 'wdgk_block_editor_script' );

@@ -1,22 +1,19 @@
-(function (blocks, element) {
+jQuery(document).ready(function ($) {
+    /** Gutenberg block for Woo donation form */
+    var blocks = wp.blocks;
+    var element = wp.element;
     var el = element.createElement;
-    const htmlToElem = ( html ) => element.RawHTML( { children: html } );
 
-    blocks.registerBlockType('woo-donations-block/woo-donations', {
+    blocks.registerBlockType( 'woo-donations-block/woo-donations', {
+        apiVersion: 3,
         title: 'Woo Donations',
         icon: 'money-alt',
         category: 'common',
-
-        // Call the generateHTML function in both edit and save methods
-        edit: function() {
-            return [
-                el( 'style', null, wdgkObject.buttonstyle ),
-                htmlToElem( wdgkObject.blockhtml )
-            ];
-        },
-
-        save: function() {
-            return htmlToElem( wdgkObject.blockhtml );
-        },
-    });
-})(wp.blocks, wp.element);
+    
+        edit: function ( props ) {
+            return el(wp.serverSideRender, {
+                block: "woo-donations-block/woo-donations"    
+            });
+        }
+    } );
+});

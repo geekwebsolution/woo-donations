@@ -71,4 +71,23 @@ function wdgk_woocommerce_hpos_tables_used() {
 
 	return false;
 }
-?>
+
+/** Internal Style for Donation Form */
+function wdgk_form_internal_style() {
+	$color 				= "";
+	$textcolor 			= "";
+	$additional_style	= "";
+	$options = wdgk_get_wc_donation_setting();
+
+	if (isset($options['Color'])) {
+		$color = $options['Color'];
+		$additional_style .= '.wdgk_donation_content a.button.wdgk_add_donation { background-color: ' . $color . ' !important; } ';
+	}
+
+	if (isset($options['TextColor'])) {
+		$textcolor = $options['TextColor'];
+		$additional_style .= '.wdgk_donation_content a.button.wdgk_add_donation { color: ' . $textcolor . ' !important; }';
+	}
+
+	return $additional_style;
+}

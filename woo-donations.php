@@ -391,25 +391,14 @@ function wdgk_donation_form_shortcode_html(){
 
 /** print style in wp_head */
 add_action('wp_head', 'wdgk_set_button_text_color');
-function wdgk_set_button_text_color() { ?>
-	<style>
-		<?php $color = "";
-		$textcolor = "";
-		$options = wdgk_get_wc_donation_setting();
-
-		if (isset($options['Color'])) {
-			$color = $options['Color'];
-			_e('.wdgk_donation_content a.button.wdgk_add_donation { background-color: ' . $color . ' !important; } ');
-		}
-
-		if (isset($options['TextColor'])) {
-			$textcolor = $options['TextColor'];
-			_e('.wdgk_donation_content a.button.wdgk_add_donation { color: ' . $textcolor . ' !important; }');
-		}
-
-		?>
-	</style>
-	<?php
+function wdgk_set_button_text_color() {
+	$additional_style = wdgk_form_internal_style(); 
+	if(isset($additional_style) && !empty($additional_style)) { ?>
+        <style>
+            <?php _e($additional_style); ?>
+        </style>
+        <?php
+    }
 }
 
 add_filter('woocommerce_add_cart_item_data', 'wdgk_add_cart_item_data', 10, 3);
@@ -635,28 +624,32 @@ function wdgk_thankyou_change_order_status($order_id) {
 
 // Enqueue the block editor script
 function wdgk_block_editor_script() {
-	$color = $textcolor = $additional_style = "";
-	$options = wdgk_get_wc_donation_setting();
-
-	if (isset($options['Color'])) {
-		$color = $options['Color'];
-		$additional_style .= '.wdgk_donation_content a.button.wdgk_add_donation { background-color: ' . $color . ' !important; } ';
-	}
-
-	if (isset($options['TextColor'])) {
-		$textcolor = $options['TextColor'];
-		$additional_style .= '.wdgk_donation_content a.button.wdgk_add_donation { color: ' . $textcolor . ' !important; }';
-	}
-
 	wp_enqueue_style( 'wdgk-block-style', plugins_url('assets/css/wdgk-front-style.css', __FILE__), array('wp-edit-blocks'), WDGK_BUILD );
-
     wp_enqueue_script( 'wdgk-block-script', plugins_url( 'assets/js/wdgk-block.js', __FILE__ ), array( 'wp-blocks', 'wp-element' ), WDGK_BUILD );
-
-	wp_localize_script( 'wdgk-block-script', 'wdgkObject',
-		array(
-			'blockhtml' => stripslashes( do_shortcode('[wdgk_donation]') ),
-			'buttonstyle' => esc_html($additional_style)
-		)
-	);
 }
 add_action( 'enqueue_block_editor_assets', 'wdgk_block_editor_script' );
+
+function wdgk_gutenberg_render_callback( $block_attributes, $content ) {
+	$donation_form_html = "";
+	$additional_style = wdgk_form_internal_style();
+
+	if($additional_style != "") {
+		$donation_form_html .= '<style>'. esc_html($additional_style) .'</style>';
+	}
+
+	$donation_form_html .= stripslashes( do_shortcode('[wdgk_donation]') );
+
+    return $donation_form_html;
+}
+
+/** Gutenberg block for Woo donation form */
+function wdgk_wp_donation_block() {
+
+    register_block_type( 'woo-donations-block/woo-donations', array(
+        'api_version' => 3,
+        'editor_script' => 'wdgk-block-script',
+        'render_callback' => 'wdgk_gutenberg_render_callback'
+    ) );
+
+}
+add_action( 'init', 'wdgk_wp_donation_block' );

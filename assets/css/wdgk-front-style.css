@@ -9,6 +9,7 @@
     flex: 1;
     outline: none !important;
     margin: 0;
+    padding: 0 20px;
 }
 
 a.button.wdgk_add_donation {

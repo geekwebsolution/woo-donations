@@ -117,6 +117,7 @@ After Plugin Active go to WooCommerce-> Donation.
 7. Order confirm page 
 8. Label Options
 9. Woo Donation pro functionality
+10. Gotenberg block for donation form
 
 
 

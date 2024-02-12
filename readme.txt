@@ -110,14 +110,15 @@ After Plugin Active go to WooCommerce-> Donation.
 == Screenshots ==
 
 1. Setting page
-2. Donation product -> SKU & Catelog visibility
-3. Donatin product -> only allow one qaunitity 
-4. Cart page -> donation option
-5. Checkout page -> donation option
+2. Label Options
+3. Donation product -> SKU & Catelog visibility
+4. Donatin product -> only allow one qaunitity 
+5. Cart page -> donation option
+6. Checkout page -> donation option
 7. Order confirm page 
-8. Label Options
-9. Gotenberg block for donation form
-10. Woo Donation pro functionality
+8. Admin orders
+9. Gutenberg block for donation form
+10. Woo Donation pro features
 
 
 

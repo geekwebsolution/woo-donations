@@ -3,9 +3,9 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.1
+Version: 4.2
 Author URI: https://geekcodelab.com/
-WC tested up to: 8.5.2
+WC tested up to: 8.6.1
 Text Domain : woo-donations
 */
 
@@ -19,13 +19,13 @@ if (!defined("WDGK_PLUGIN_URL"))
 
 	define("WDGK_PLUGIN_URL", plugins_url() . '/' . basename(dirname(__FILE__)));
 
-define("WDGK_BUILD", '4.1');
+define("WDGK_BUILD", '4.2');
 
 require_once(WDGK_PLUGIN_DIR_PATH . 'functions.php');
 
 add_action('admin_menu', 'wdgk_admin_menu_donation_setting_page');
 
-add_action('admin_print_styles', 'wdgk_admin_style');
+add_action('admin_enqueue_scripts', 'wdgk_admin_scripts');
 
 /** Plugin Active Hook Start*/
 register_activation_hook(__FILE__, 'wdgk_plugin_active_woocommerce_donation');
@@ -44,8 +44,6 @@ function wdgk_plugin_active_woocommerce_donation(){
 	$setting 			= get_option('wdgk_donation_settings');
 
 	if(isset($setting) && !empty($setting)) 	$options 			= $setting;
-	
-	// unset($options['Noteplaceholder']);
 
 	if(!isset($setting['Text']))  			$options['Text'] 			= $btntext;
 	if(!isset($setting['TextColor']))  		$options['TextColor'] 		= $textcolor;
@@ -102,13 +100,11 @@ function wdgk_after_plugins_loaded() {
 		add_action( 'admin_notices', 'wdgk_install_woocommerce_admin_notice' );
 		return;
 	}
-
 }
 
 /** Update donation order unique flag for old users on admin init */
 add_action( 'admin_init', 'wdgk_woocommerce_constructor' );
 function wdgk_woocommerce_constructor() {
-
 	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
 
 	if(!$wdgk_set_order_flag_status) {
@@ -152,7 +148,6 @@ function wdgk_woocommerce_constructor() {
 		
 		update_option('wdgk_set_order_flag_status',1);
 	}
-	
 }
 
 add_action('wp_enqueue_scripts', 'wdgk_include_front_script');
@@ -165,14 +160,12 @@ function wdgk_include_front_script(){
     $wdgk_options = [ "decimal_sep"=>$decimal_separator, "thousand_sep"=>$thousand_separator ];
 	wp_localize_script('wdgk_donation_script', 'wdgk_obj', array('ajaxurl' => admin_url( 'admin-ajax.php' ),'options' => $wdgk_options) );
 }
-function wdgk_admin_style(){
-
-	if (is_admin()) {
+function wdgk_admin_scripts($hook) {
+	if ($hook == 'woocommerce_page_wdgk-donation-page') {
 		$css = WDGK_PLUGIN_URL . '/assets/css/wdgk-admin-style.css';
 		wp_enqueue_style('wdgk-admin-style', $css, '',WDGK_BUILD);
 		wp_enqueue_style('wp-color-picker');
 		wp_enqueue_script('wp-color-picker');
-
 
         wp_enqueue_style("wdgk_front_select2", WDGK_PLUGIN_URL . "/assets/css/select2.min.css", '',WDGK_BUILD);
 	

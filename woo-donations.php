@@ -566,22 +566,21 @@ function wdgk_product_select_ajax_callback() {
     $result = array();
     $search = $_POST['search'];
 
-    $wdgk_get_page = get_posts(array(
-        's'           => $search,
-        'post_type'     => 'product',
-        'post_status' => 'publish',
-        'posts_per_page' => -1 ));
+	$search_product_args = array( 'post_type' => 'product', 'post_status' => 'publish', 'posts_per_page' => -1 );
 
+	if(is_numeric($search)) {
+		$search_product_args['p'] = (int) $search;
+	}else{
+		$search_product_args['s'] = $search;
+	}
+    $wdgk_get_page = get_posts( $search_product_args );
 
-        // $count_pro = count($wdgk_get_page);
 	foreach ($wdgk_get_page as $wdgk_product) {		
-
         $result[] = array(
             'id' => $wdgk_product->ID,
-            'title' => $wdgk_product->post_title .  "( #" . $wdgk_product->ID . " )"
+            'title' => $wdgk_product->post_title .  " ( #" . $wdgk_product->ID . " )"
         );
 	}
-
     echo json_encode($result);
 
     wp_die();

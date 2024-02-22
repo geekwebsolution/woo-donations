@@ -149,7 +149,7 @@ if (isset($options['Noteplaceholder'])) {
                                     <?php 
                                     if(isset($product) && !empty($product)){
                                         ?>
-                                        <option selected="selected" value="<?php echo $product; ?>"><?php echo $product_title . "( #" . $product . " )"; ?></option>
+                                        <option selected="selected" value="<?php echo $product; ?>"><?php echo $product_title . " ( #" . $product . " )"; ?></option>
                                         <?php
                                     }
                                     ?>

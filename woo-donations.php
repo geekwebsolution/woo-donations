@@ -3,9 +3,9 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.2
+Version: 4.3
 Author URI: https://geekcodelab.com/
-WC tested up to: 8.6.1
+WC tested up to: 8.7.0
 Text Domain : woo-donations
 */
 
@@ -19,7 +19,7 @@ if (!defined("WDGK_PLUGIN_URL"))
 
 	define("WDGK_PLUGIN_URL", plugins_url() . '/' . basename(dirname(__FILE__)));
 
-define("WDGK_BUILD", '4.2');
+define("WDGK_BUILD", '4.3');
 
 require_once(WDGK_PLUGIN_DIR_PATH . 'functions.php');
 
@@ -103,7 +103,7 @@ function wdgk_after_plugins_loaded() {
 }
 
 /** Update donation order unique flag for old users on admin init */
-add_action( 'admin_init', 'wdgk_woocommerce_constructor' );
+// add_action( 'admin_init', 'wdgk_woocommerce_constructor' );
 function wdgk_woocommerce_constructor() {
 	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
 
@@ -175,13 +175,13 @@ function wdgk_admin_scripts($hook) {
 
 	}
 }
-function wdgk_admin_menu_donation_setting_page(){
+function wdgk_admin_menu_donation_setting_page() {
 	add_submenu_page('woocommerce', 'Donation', 'Donation', 'manage_woocommerce', 'wdgk-donation-page', 'wdgk_donation_page_setting');
 }
 function wdgk_donation_page_setting() {
 	include(WDGK_PLUGIN_DIR_PATH . 'options.php');
 }
-function wdgk_plugin_add_settings_link($links){
+function wdgk_plugin_add_settings_link($links) {
 	$support_link = '<a href="https://geekcodelab.com/contact/"  target="_blank" >' . __('Support','woo-donations') . '</a>';
 	array_unshift($links, $support_link);
 
@@ -551,11 +551,33 @@ function wdgk_get_order_donation_flag($order) {
 	if (isset($options['Product'])) {
 		$product = $options['Product'];
 	}
-	$order_flag_meta = $order->get_meta("wdgk_donation_order_flag",$product,true);
 
-	if(isset($order_flag_meta) && !empty($order_flag_meta)) {
-		_e('<span class="dashicons dashicons-yes-alt wdgk_right_icon"></span>');
+	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
+	if(!$wdgk_set_order_flag_status) {		
+		$order_items = $order->get_items();
+		
+		if (!is_wp_error($order_items)) {
+			$donation_flag = false;
+			foreach ($order_items as $order_item) {
+
+
+				if ($product == $order_item['product_id']) {
+					$donation_flag = true;
+				}
+			}
+			if ($donation_flag == true){
+				_e('<span class="dashicons dashicons-yes-alt wdgk_right_icon"></span>');
+			} 
+				
+		}
+	}else{
+		$order_flag_meta = $order->get_meta("wdgk_donation_order_flag");
+
+		if(isset($order_flag_meta) && !empty($order_flag_meta)) {
+			_e('<span class="dashicons dashicons-yes-alt wdgk_right_icon"></span>');
+		}
 	}
+	
 }
 
 add_action('wp_ajax_wdgk_product_select_ajax','wdgk_product_select_ajax_callback');

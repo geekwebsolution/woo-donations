@@ -1,12 +1,12 @@
-ï»¿=== Woo Donations===
+=== Woo Donations===
 Contributors: rajkakadiya, rvadhel
 Donate link: https://paypal.me/rvadhel
 Tags: WooCommerce Donation, WooCommerce Donation Campaign, WooCommerce Cart Page Donation, Woocommerce Checkout Page Donation, woo donation
 Requires PHP: 7.4
-Requires at least: 6.4
-Tested up to: 6.4.3
-WC tested up to: 8.6.1
-Stable tag: 4.2
+Requires at least: 6.3
+Tested up to: 6.4
+WC tested up to: 8.7.0
+Stable tag: 4.3
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
 
@@ -25,7 +25,6 @@ Also works with WordPress Multisite installs (each blog from the network has itâ
 
 **Using woocommerce blocks display donation form**
 When using woocommerce blocks in cart or checkout page you can use shortcode to display donation form. Please <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a> for more details.
-
 
 
 **Free Plugin Features** 
@@ -115,16 +114,19 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.3 =
+ Fixed donation order flag in woocommerce orders menu.
+
 = 4.2 =
  Fixed bugs.
 
 = 4.1 =
- Added Gutenberg block to display donation form
+ Added Gutenberg block to display donation form.
 
 = 4.0 =
  Fixed bugs
- Fixed translation bugs
- Added donation order flag
+ Fixed translation bugs.
+ Added donation order flag.
 
 = 3.9=
  Fixed bugs.

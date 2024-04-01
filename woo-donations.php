@@ -109,7 +109,7 @@ function wdgk_woocommerce_constructor() {
 
 	if(!$wdgk_set_order_flag_status) {
 		global $wpdb;
-		$settings			= get_option('wdgk_donation_settings');
+		$settings				= get_option('wdgk_donation_settings');
 		$donation_product_id 	= $settings['Product'];
 		$statuses = 'trash';
 		
@@ -667,3 +667,176 @@ function wdgk_wp_donation_block() {
 
 }
 add_action( 'init', 'wdgk_wp_donation_block' );
+
+/** Add cron schedule */
+add_filter( 'cron_schedules', function ( $schedules ) {
+	$schedules['per_five_minute'] = array(
+		'interval' => 300,
+		'display' => __( 'Five Minute' )
+	);
+	return $schedules;
+ } );
+
+add_action( 'init', 'abcdefg_update_order_flag_callback' );
+function abcdefg_update_order_flag_callback() {
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+	if (! wp_next_scheduled ( 'svd_cron' )) {
+		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+	}
+}
+
+add_action( 'svd_cron', 'do_this_every_five_minute' );
+function do_this_every_five_minute() {
+	
+}
+
+
+/** Schedule and fire Cron job on page load */
+// add_action( 'init', 'wdgk_update_order_flag_callback' );
+function wdgk_update_order_flag_callback() {
+	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
+
+	if(!$wdgk_set_order_flag_status) {
+		global $wpdb;
+		$settings				= get_option('wdgk_donation_settings');
+		$donation_product_id 	= $settings['Product'];
+		
+		if( wdgk_woocommerce_hpos_tables_used() ) {
+			$sql = "SELECT *,order_items.order_id as order_id
+            FROM {$wpdb->prefix}woocommerce_order_items as order_items
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
+            LEFT JOIN {$wpdb->prefix}wc_orders AS orders ON order_items.order_id = orders.id
+            LEFT JOIN {$wpdb->prefix}wc_orders_meta AS orders_meta ON order_items.order_id = orders_meta.order_id
+            WHERE orders.type = 'shop_order'
+            AND order_items.order_item_type = 'line_item'
+            AND orders_meta.meta_key != 'wdgk_donation_order_flag'
+			AND order_item_meta.meta_key = '_product_id'
+            AND order_item_meta.meta_value = $donation_product_id";
+		}else{
+			$sql = "SELECT *,order_items.order_id as order_id
+            FROM {$wpdb->prefix}woocommerce_order_items as order_items
+            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
+            LEFT JOIN {$wpdb->prefix}posts AS posts ON order_items.order_id = posts.ID
+            LEFT JOIN {$wpdb->prefix}postmeta AS postmeta ON order_items.order_id = postmeta.post_id
+            WHERE posts.post_type = 'shop_order'
+            AND order_items.order_item_type = 'line_item'
+            AND postmeta.meta_key != 'wdgk_donation_order_flag'
+            AND order_item_meta.meta_key = '_product_id'
+            AND order_item_meta.meta_value = $donation_product_id";
+		}
+
+		$donation_order_result = $wpdb->get_results( $sql, 'ARRAY_A' );
+
+		$wdgk_set_order_flag_process = get_option( 'wdgk_set_order_flag_process' );
+		if(!$wdgk_set_order_flag_process) {
+			$wdgk_set_order_flag_process['status'] = 'in-progress';
+			$wdgk_set_order_flag_process['start'] = 0;
+		}
+
+		$start = $wdgk_set_order_flag_process['start'];
+		$status = $wdgk_set_order_flag_process['status'];
+
+		
+	}
+}

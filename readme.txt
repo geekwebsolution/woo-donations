@@ -1,4 +1,4 @@
-﻿=== Woo Donations===
+=== Woo Donations===
 Contributors: rajkakadiya, rvadhel
 Donate link: https://paypal.me/rvadhel
 Tags: WooCommerce Donation, WooCommerce Donation Campaign, WooCommerce Cart Page Donation, Woocommerce Checkout Page Donation, woo donation

@@ -110,8 +110,7 @@ function wdgk_woocommerce_constructor() {
 	if(!$wdgk_set_order_flag_status) {
 		global $wpdb;
 		$settings				= get_option('wdgk_donation_settings');
-		$donation_product_id 	= $settings['Product'];
-		$statuses = 'trash';
+		$donation_product_id 	= $settings['Product'];$statuses = 'trash';
 		
 		if( wdgk_woocommerce_hpos_tables_used() ) {
 			$sql = "SELECT *,order_items.order_id as order_id
@@ -670,173 +669,109 @@ add_action( 'init', 'wdgk_wp_donation_block' );
 
 /** Add cron schedule */
 add_filter( 'cron_schedules', function ( $schedules ) {
-	$schedules['per_five_minute'] = array(
-		'interval' => 300,
+	$schedules['every_one_minute'] = array(
+		'interval' => 60,
 		'display' => __( 'Five Minute' )
 	);
 	return $schedules;
  } );
 
-add_action( 'init', 'abcdefg_update_order_flag_callback' );
-function abcdefg_update_order_flag_callback() {
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
-	}
-	if (! wp_next_scheduled ( 'svd_cron' )) {
-		wp_schedule_event( time(), 'per_five_minute', 'svd_cron' );
+// add_action( 'init', 'wdgk_update_order_flag_init' );
+function wdgk_update_order_flag_init() {
+	if (! wp_next_scheduled ( 'wdgk_update_order_flag_action' )) {
+		wp_schedule_event( time(), 'every_one_minute', 'wdgk_update_order_flag_action' );
 	}
 }
 
-add_action( 'svd_cron', 'do_this_every_five_minute' );
+add_action( 'wdgk_update_order_flag_action', 'do_this_every_five_minute' );
 function do_this_every_five_minute() {
-	
-}
-
-
-/** Schedule and fire Cron job on page load */
-// add_action( 'init', 'wdgk_update_order_flag_callback' );
-function wdgk_update_order_flag_callback() {
+	// place code which needs to run every five minute
 	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
 
 	if(!$wdgk_set_order_flag_status) {
 		global $wpdb;
 		$settings				= get_option('wdgk_donation_settings');
 		$donation_product_id 	= $settings['Product'];
+
+		$wdgk_set_order_flag_process = get_option( 'wdgk_set_order_flag_process' );
+		if(!$wdgk_set_order_flag_process) {
+			$wdgk_set_order_flag_process['status'] = 'In progress';
+			$wdgk_set_order_flag_process['start'] = 0;
+		}
+
+		$interval = 2;
+		$statuses = 'trash';
+		$start = $wdgk_set_order_flag_process['start'];
+		$status = $wdgk_set_order_flag_process['status'];
 		
 		if( wdgk_woocommerce_hpos_tables_used() ) {
 			$sql = "SELECT *,order_items.order_id as order_id
-            FROM {$wpdb->prefix}woocommerce_order_items as order_items
-            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
-            LEFT JOIN {$wpdb->prefix}wc_orders AS orders ON order_items.order_id = orders.id
-            LEFT JOIN {$wpdb->prefix}wc_orders_meta AS orders_meta ON order_items.order_id = orders_meta.order_id
-            WHERE orders.type = 'shop_order'
-            AND order_items.order_item_type = 'line_item'
-            AND orders_meta.meta_key != 'wdgk_donation_order_flag'
+			FROM {$wpdb->prefix}woocommerce_order_items as order_items
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
+			LEFT JOIN {$wpdb->prefix}wc_orders AS orders ON order_items.order_id = orders.id
+			WHERE orders.type = 'shop_order'
+			AND orders.status != '".$statuses."'
+			AND order_items.order_item_type = 'line_item'
 			AND order_item_meta.meta_key = '_product_id'
-            AND order_item_meta.meta_value = $donation_product_id";
+			AND order_item_meta.meta_value = $donation_product_id LIMIT" . " $start,$interval";
 		}else{
 			$sql = "SELECT *,order_items.order_id as order_id
-            FROM {$wpdb->prefix}woocommerce_order_items as order_items
-            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
-            LEFT JOIN {$wpdb->prefix}posts AS posts ON order_items.order_id = posts.ID
-            LEFT JOIN {$wpdb->prefix}postmeta AS postmeta ON order_items.order_id = postmeta.post_id
-            WHERE posts.post_type = 'shop_order'
-            AND order_items.order_item_type = 'line_item'
-            AND postmeta.meta_key != 'wdgk_donation_order_flag'
-            AND order_item_meta.meta_key = '_product_id'
-            AND order_item_meta.meta_value = $donation_product_id";
+			FROM {$wpdb->prefix}woocommerce_order_items as order_items
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
+			LEFT JOIN {$wpdb->posts} AS posts ON order_items.order_id = posts.ID
+			WHERE posts.post_type = 'shop_order'
+			AND posts.post_status != '".$statuses."'
+			AND order_items.order_item_type = 'line_item'
+			AND order_item_meta.meta_key = '_product_id'
+			AND order_item_meta.meta_value = $donation_product_id LIMIT" . " $start,$interval";
 		}
 
 		$donation_order_result = $wpdb->get_results( $sql, 'ARRAY_A' );
 
-		$wdgk_set_order_flag_process = get_option( 'wdgk_set_order_flag_process' );
-		if(!$wdgk_set_order_flag_process) {
-			$wdgk_set_order_flag_process['status'] = 'in-progress';
-			$wdgk_set_order_flag_process['start'] = 0;
+		
+		if(count($donation_order_result) != 0) {
+			foreach($donation_order_result as $key => $item){
+				$order = wc_get_order($item['order_id']);
+
+				$order->update_meta_data( 'wdgk_donation_order_flag', $donation_product_id );
+				$order->save();
+
+				update_option('wdgk_set_order_flag_process',array("status"=>"In progress","start"=>intval($start)+$interval));
+				// echo '<pre>'; print_r( $value ); echo '</pre>'; die;
+			}
+		}else{
+			// blank
+			$clear_schedule_hook = true;
+			update_option('wdgk_set_order_flag_process',array("status"=>"Complete","start"=>intval($start)));
 		}
 
+		if($clear_schedule_hook) {
+			wp_clear_scheduled_hook( 'wdgk_update_order_flag_action' );
+			update_option('wdgk_set_order_flag_status',1);
+		}
+	}
+}
+
+// admin notice for order sync progress
+function wdgk_sync_donation_orders_admin_notice() {
+	$currentScreen = get_current_screen();
+	if(isset($currentScreen->id) && $currentScreen->id == 'woocommerce_page_wdgk-donation-page') {
+
+		$wdgk_set_order_flag_process = get_option( 'wdgk_set_order_flag_process' );
+		if(!$wdgk_set_order_flag_process) {
+			$wdgk_set_order_flag_process['status'] = 'In progress';
+			$wdgk_set_order_flag_process['start'] = 0;
+		}
+		
 		$start = $wdgk_set_order_flag_process['start'];
 		$status = $wdgk_set_order_flag_process['status'];
 
+		$class = 'notice notice-info'; // notice-warning
+		$sync_order_msg = sprintf( '<strong>%1$s orders synced</strong> in woocommerce orders. Sync order status is %2$s.', intval($start), $status );
+		$message = sprintf( '✩ Woo Donation Orders sync is %1$s. Sync will add order flag to donation orders in woocommerce orders. - <strong>Woo Donations</strong>', $status );
 		
+		printf( '<div class="%1$s"><p>%2$s</p><br><p>%3$s</p></div>', esc_attr( $class ), __($sync_order_msg, 'woo-donations'), __($message, 'woo-donations') );
 	}
+
 }
+add_action( 'admin_notices', 'wdgk_sync_donation_orders_admin_notice' );

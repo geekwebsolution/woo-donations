@@ -625,7 +625,7 @@ add_action( 'init', 'wdgk_wp_donation_block' );
 /** Add cron schedule */
 add_filter( 'cron_schedules', function ( $schedules ) {
 	$schedules['wdgk_every_one_minute'] = array(
-		'interval' => 60,
+		'interval' => 180,
 		'display' => __( 'Every Minute' )
 	);
 	return $schedules;
@@ -662,7 +662,7 @@ function do_this_every_five_minute() {
 			$wdgk_set_order_flag_process['start'] = 0;
 		}
 
-		$interval = 30;
+		$interval = 100;
 		$statuses = 'trash';
 		$start = $wdgk_set_order_flag_process['start'];
 		$status = $wdgk_set_order_flag_process['status'];

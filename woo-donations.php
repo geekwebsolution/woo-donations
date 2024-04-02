@@ -676,7 +676,8 @@ add_filter( 'cron_schedules', function ( $schedules ) {
 	return $schedules;
  } );
 
-// add_action( 'init', 'wdgk_update_order_flag_init' );
+/** Set order synchronization on wp init */
+add_action( 'init', 'wdgk_update_order_flag_init' );
 function wdgk_update_order_flag_init() {
 	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
 	if(!$wdgk_set_order_flag_status) {
@@ -690,9 +691,9 @@ function wdgk_update_order_flag_init() {
 	}
 }
 
+/** Cron schedule which fires during sync orders - every one minute */
 add_action( 'wdgk_update_order_flag_action', 'do_this_every_five_minute' );
 function do_this_every_five_minute() {
-	// place code which needs to run every five minute
 	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
 
 	if(!$wdgk_set_order_flag_status) {
@@ -756,18 +757,18 @@ function do_this_every_five_minute() {
 	}
 }
 
-// admin notice for order sync progress
+/** Admin notice for order sync progress */
 function wdgk_sync_donation_orders_admin_notice() {
 	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
 	
-	// if(!$wdgk_set_order_flag_status) {
+	if(!$wdgk_set_order_flag_status) {
 		$currentScreen = get_current_screen();
 		if(isset($currentScreen->id) && $currentScreen->id == 'woocommerce_page_wdgk-donation-page') {
 
 			$class = 'notice notice-info';			
 			printf( '<div class="%1$s"><p>%2$s - <strong>%3$s</strong></p></div>', esc_attr( $class ), __('✩ Database synchronization for donation orders is currently in progress.', 'woo-donations'), __('Woo Donations','woo-donations') );
 		}
-	// }
+	}
 
 }
 add_action( 'admin_notices', 'wdgk_sync_donation_orders_admin_notice' );

@@ -3,7 +3,7 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.3
+Version: 4.3.1
 Author URI: https://geekcodelab.com/
 WC tested up to: 8.7.0
 Text Domain : woo-donations
@@ -19,13 +19,13 @@ if (!defined("WDGK_PLUGIN_URL"))
 
 	define("WDGK_PLUGIN_URL", plugins_url() . '/' . basename(dirname(__FILE__)));
 
-define("WDGK_BUILD", '4.3');
+define("WDGK_BUILD", '4.3.1');
 
 require_once(WDGK_PLUGIN_DIR_PATH . 'functions.php');
 
 add_action('admin_menu', 'wdgk_admin_menu_donation_setting_page');
 
-add_action('admin_enqueue_scripts', 'wdgk_admin_scripts');
+
 
 /** Plugin Active Hook Start*/
 register_activation_hook(__FILE__, 'wdgk_plugin_active_woocommerce_donation');
@@ -102,54 +102,7 @@ function wdgk_after_plugins_loaded() {
 	}
 }
 
-/** Update donation order unique flag for old users on admin init */
-// add_action( 'admin_init', 'wdgk_woocommerce_constructor' );
-function wdgk_woocommerce_constructor() {
-	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
-
-	if(!$wdgk_set_order_flag_status) {
-		global $wpdb;
-		$settings			= get_option('wdgk_donation_settings');
-		$donation_product_id 	= $settings['Product'];
-		$statuses = 'trash';
-		
-		if( wdgk_woocommerce_hpos_tables_used() ) {
-			$sql = "SELECT *,order_items.order_id as order_id
-            FROM {$wpdb->prefix}woocommerce_order_items as order_items
-            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
-            LEFT JOIN {$wpdb->prefix}wc_orders AS orders ON order_items.order_id = orders.id
-            WHERE orders.type = 'shop_order'
-            AND orders.status != '".$statuses."'
-            AND order_items.order_item_type = 'line_item'
-            AND order_item_meta.meta_key = '_product_id'
-            AND order_item_meta.meta_value = $donation_product_id";
-		}else{
-			$sql = "SELECT *,order_items.order_id as order_id
-            FROM {$wpdb->prefix}woocommerce_order_items as order_items
-            LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
-            LEFT JOIN {$wpdb->posts} AS posts ON order_items.order_id = posts.ID
-            WHERE posts.post_type = 'shop_order'
-            AND posts.post_status != '".$statuses."'
-            AND order_items.order_item_type = 'line_item'
-            AND order_item_meta.meta_key = '_product_id'
-            AND order_item_meta.meta_value = $donation_product_id";
-		}
-
-		$donation_order_result = $wpdb->get_results( $sql, 'ARRAY_A' );
-		
-		if(count($donation_order_result) != 0) {
-			foreach($donation_order_result as $key => $item) {
-				$order = wc_get_order($item['order_id']);
-
-				$order->update_meta_data( 'wdgk_donation_order_flag', $donation_product_id );
-				$order->save();
-			}
-		}
-		
-		update_option('wdgk_set_order_flag_status',1);
-	}
-}
-
+/** Enqueue scripts */
 add_action('wp_enqueue_scripts', 'wdgk_include_front_script');
 function wdgk_include_front_script(){
 	wp_enqueue_style("wdgk_front_style", WDGK_PLUGIN_URL . "/assets/css/wdgk-front-style.css", '',WDGK_BUILD);
@@ -160,6 +113,7 @@ function wdgk_include_front_script(){
     $wdgk_options = [ "decimal_sep"=>$decimal_separator, "thousand_sep"=>$thousand_separator ];
 	wp_localize_script('wdgk_donation_script', 'wdgk_obj', array('ajaxurl' => admin_url( 'admin-ajax.php' ),'options' => $wdgk_options) );
 }
+add_action('admin_enqueue_scripts', 'wdgk_admin_scripts');
 function wdgk_admin_scripts($hook) {
 	if ($hook == 'woocommerce_page_wdgk-donation-page') {
 		$css = WDGK_PLUGIN_URL . '/assets/css/wdgk-admin-style.css';
@@ -667,3 +621,109 @@ function wdgk_wp_donation_block() {
 
 }
 add_action( 'init', 'wdgk_wp_donation_block' );
+
+/** Add cron schedule */
+add_filter( 'cron_schedules', function ( $schedules ) {
+	$schedules['wdgk_every_one_minute'] = array(
+		'interval' => 180,
+		'display' => __( 'Every Minute' )
+	);
+	return $schedules;
+ } );
+
+/** Set order synchronization on wp init */
+add_action( 'init', 'wdgk_update_order_flag_init' );
+function wdgk_update_order_flag_init() {
+	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
+	if(!$wdgk_set_order_flag_status) {
+		if (! wp_next_scheduled ( 'wdgk_update_order_flag_action' )) {
+			wp_schedule_event( time(), 'wdgk_every_one_minute', 'wdgk_update_order_flag_action' );
+		}
+	}else{
+		if (wp_next_scheduled ( 'wdgk_update_order_flag_action' )) {
+			wp_clear_scheduled_hook( 'wdgk_update_order_flag_action' );
+		}
+	}
+}
+
+/** Cron schedule which fires during sync orders - every one minute */
+add_action( 'wdgk_update_order_flag_action', 'do_this_every_five_minute' );
+function do_this_every_five_minute() {
+	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
+
+	if(!$wdgk_set_order_flag_status) {
+		global $wpdb;
+		$settings				= get_option('wdgk_donation_settings');
+		$donation_product_id 	= $settings['Product'];
+
+		$wdgk_set_order_flag_process = get_option( 'wdgk_set_order_flag_process' );
+		if(!$wdgk_set_order_flag_process) {
+			$wdgk_set_order_flag_process['status'] = 'In progress';
+			$wdgk_set_order_flag_process['start'] = 0;
+		}
+
+		$interval = 100;
+		$statuses = 'trash';
+		$start = $wdgk_set_order_flag_process['start'];
+		$status = $wdgk_set_order_flag_process['status'];
+		
+		if( wdgk_woocommerce_hpos_tables_used() ) {
+			$sql = "SELECT *,order_items.order_id as order_id
+			FROM {$wpdb->prefix}woocommerce_order_items as order_items
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
+			LEFT JOIN {$wpdb->prefix}wc_orders AS orders ON order_items.order_id = orders.id
+			WHERE orders.type = 'shop_order'
+			AND orders.status != '".$statuses."'
+			AND order_items.order_item_type = 'line_item'
+			AND order_item_meta.meta_key = '_product_id'
+			AND order_item_meta.meta_value = $donation_product_id LIMIT" . " $start,$interval";
+		}else{
+			$sql = "SELECT *,order_items.order_id as order_id
+			FROM {$wpdb->prefix}woocommerce_order_items as order_items
+			LEFT JOIN {$wpdb->prefix}woocommerce_order_itemmeta as order_item_meta ON order_items.order_item_id = order_item_meta.order_item_id
+			LEFT JOIN {$wpdb->posts} AS posts ON order_items.order_id = posts.ID
+			WHERE posts.post_type = 'shop_order'
+			AND posts.post_status != '".$statuses."'
+			AND order_items.order_item_type = 'line_item'
+			AND order_item_meta.meta_key = '_product_id'
+			AND order_item_meta.meta_value = $donation_product_id LIMIT" . " $start,$interval";
+		}
+
+		$donation_order_result = $wpdb->get_results( $sql, 'ARRAY_A' );
+		
+		if(count($donation_order_result) != 0) {
+			foreach($donation_order_result as $key => $item){
+				$order = wc_get_order($item['order_id']);
+
+				$order->update_meta_data( 'wdgk_donation_order_flag', $donation_product_id );
+				$order->save();
+			}
+			update_option( 'wdgk_set_order_flag_process', array("status"=>"In progress","start"=>intval($start)+$interval));
+		}else{
+			// blank
+			$clear_schedule_hook = true;
+			update_option('wdgk_set_order_flag_process',array("status"=>"Complete","start"=>intval($start)));
+		}
+
+		if($clear_schedule_hook) {
+			wp_clear_scheduled_hook( 'wdgk_update_order_flag_action' );
+			update_option( 'wdgk_set_order_flag_status',1 );
+		}
+	}
+}
+
+/** Admin notice for order sync progress */
+function wdgk_sync_donation_orders_admin_notice() {
+	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
+	
+	if(!$wdgk_set_order_flag_status) {
+		$currentScreen = get_current_screen();
+		if(isset($currentScreen->id) && $currentScreen->id == 'woocommerce_page_wdgk-donation-page') {
+
+			$class = 'notice notice-info';			
+			printf( '<div class="%1$s"><p>%2$s - <strong>%3$s</strong></p></div>', esc_attr( $class ), __('✩ Database synchronization for donation orders is currently in progress.', 'woo-donations'), __('Woo Donations','woo-donations') );
+		}
+	}
+
+}
+add_action( 'admin_notices', 'wdgk_sync_donation_orders_admin_notice' );

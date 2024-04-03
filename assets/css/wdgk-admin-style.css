@@ -196,11 +196,9 @@ input#wdgk_submit {
 .wdgk-select-box .select2-container--default .select2-selection--single {
     height: 42px;
 }
-
 .wdgk-select-box .select2-container--default .select2-selection--single .select2-selection__arrow {
     height: 100%;
 }
-
 .woocommerce_page_wdgk-donation-page .notice.notice-info {
     margin: 10px 0 2px;
 }

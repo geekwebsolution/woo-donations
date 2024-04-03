@@ -705,7 +705,7 @@ function do_this_every_five_minute() {
 			update_option('wdgk_set_order_flag_process',array("status"=>"Complete","start"=>intval($start)));
 		}
 
-		if($clear_schedule_hook) {
+		if(isset($clear_schedule_hook)) {
 			wp_clear_scheduled_hook( 'wdgk_update_order_flag_action' );
 			update_option( 'wdgk_set_order_flag_status',1 );
 		}

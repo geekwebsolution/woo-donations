@@ -8,7 +8,6 @@ Author URI: https://geekcodelab.com/
 WC tested up to: 8.7.0
 Text Domain : woo-donations
 */
-
 if (!defined('ABSPATH')) exit;
 
 if (!defined("WDGK_PLUGIN_DIR_PATH"))

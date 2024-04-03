@@ -29,7 +29,6 @@ When using woocommerce blocks in cart or checkout page you can use shortcode to 
 
 **Free Plugin Features** 
 
-
 * Set up a specific product as donation from list of product
 * Set up location to display donation form with options cart and checkout page 
 * Set up donation button color as per your theme main color requirement

@@ -141,13 +141,13 @@ if (isset($options['Noteplaceholder'])) {
 							<td>
                                 <div class="wdgk-select-box">
                                 <?php 
-                                $post_7 = get_post( $product );
-                                $product_title = $post_7->post_title;                                
+                                $post_7 = get_post( $product );                                                                
                                 ?>
 
                                 <select name="wdgk_product" class="wdgk_select_product">
                                     <?php 
                                     if(isset($product) && !empty($product)){
+										$product_title = $post_7->post_title;
                                         ?>
                                         <option selected="selected" value="<?php echo $product; ?>"><?php echo $product_title . " ( #" . $product . " )"; ?></option>
                                         <?php

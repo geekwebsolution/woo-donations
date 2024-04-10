@@ -59,7 +59,7 @@ function activate_woo_donations() {
 	Woo_Donations_Activator::activate();
 }
 
-// register_activation_hook( __FILE__, 'activate_woo_donations' );
+register_activation_hook( __FILE__, 'activate_woo_donations' );
 
 /**
  * The core plugin class that is used to define internationalization,

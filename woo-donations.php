@@ -127,8 +127,8 @@ function wdgk_update_order_flag_init() {
 }
 
 /** Cron schedule which fires during sync orders - every one minute */
-add_action( 'wdgk_update_order_flag_action', 'do_this_every_five_minute' );
-function do_this_every_five_minute() {
+add_action( 'wdgk_update_order_flag_action', 'wdgk_do_this_every_five_minute' );
+function wdgk_do_this_every_five_minute() {
 	$wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
 
 	if(!$wdgk_set_order_flag_status) {
@@ -207,3 +207,12 @@ function wdgk_sync_donation_orders_admin_notice() {
 	}
 
 }
+
+/**
+ * Added HPOS support for woocommerce
+ */
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );

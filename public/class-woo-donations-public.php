@@ -42,7 +42,8 @@ class Woo_Donations_Public {
 	 * Register the JavaScript for the public-facing side of the site.
 	 */
 	public function enqueue_scripts() {
-        wp_enqueue_script( $this->plugin_name . '-front-script', plugin_dir_url( __DIR__ ) .'assets/js/wdgk-front-script.js', array( 'jquery' ), $this->version, false );
+        wp_enqueue_script( 'jquery' );
+        wp_enqueue_script( $this->plugin_name . '-front-script', plugin_dir_url( __DIR__ ) .'assets/js/wdgk-front-script.js', array( 'jquery' ), $this->version, array( 'in_footer' => true ) );
 
         $decimal_separator  = wc_get_price_decimal_separator();
         $thousand_separator = wc_get_price_thousand_separator();
@@ -62,7 +63,7 @@ class Woo_Donations_Public {
         $this->wdgk_donation_form_front_html($cart_url);
     }
 
-    public function wdgk_donation_form_front_html($redurl){
+    public function wdgk_donation_form_front_html($redurl) {
 
         global $woocommerce;
         $product = $text = $note = $note_html = $donation_price = $donation_note = "";
@@ -99,13 +100,13 @@ class Woo_Donations_Public {
         if (isset($options['Note'])) {
             $note = $options['Note'];
         }	
-        if(isset($options['Formtitle']) ){
+        if(isset($options['Formtitle']) ) {
             $form_title = $options['Formtitle'];
         }
-        if(isset($options['AmtPlaceholder'])){
+        if(isset($options['AmtPlaceholder'])) {
             $amount_placeholder = $options['AmtPlaceholder'];
         }
-        if(isset($options['Noteplaceholder'])){
+        if(isset($options['Noteplaceholder'])) {
             $note_placeholder = $options['Noteplaceholder'];
         }
         if (!empty($product) && $note == 'on') {
@@ -125,80 +126,34 @@ class Woo_Donations_Public {
                 $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
             }
             
-            printf('<div class="wdgk_donation_content"><h3>'.esc_attr__(wp_unslash($form_title),'woo-donations').'</h3><div class="wdgk_display_option"> <span>'.esc_attr($cur_syambols[$current_cur]).'</span><input type="text" name="donation-price" class="wdgk_donation" placeholder="'.esc_attr__(wp_unslash($amount_placeholder),'woo-donations').'" value="'.$donation_price.'" ></div>'.$note_html.'<a href="javascript:void(0)" class="button wdgk_add_donation" data-product-id="'.esc_attr($product).'" data-product-url="'.esc_attr($redurl).'">'.esc_attr__(wp_unslash($text),'woo-donations').'</a><input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id"><input type="hidden" name="wdgk_ajax_url" value="'.esc_attr($ajax_url).'" class="wdgk_ajax_url"><img src="'.WP_PLUGIN_DIR.'assets/images/ajax-loader.gif" class="wdgk_loader wdgk_loader_img"><div class="wdgk_error_front"></div></div>');
+            printf('<div class="wdgk_donation_content"><h3>'.esc_attr__(wp_unslash($form_title),'woo-donations').'</h3><div class="wdgk_display_option"> <span>'.esc_attr($cur_syambols[$current_cur]).'</span><input type="text" name="donation-price" class="wdgk_donation" placeholder="'.esc_attr__(wp_unslash($amount_placeholder),'woo-donations').'" value="'.$donation_price.'" ></div>'.$note_html.'<a href="javascript:void(0)" class="button wdgk_add_donation" data-product-id="'.esc_attr($product).'" data-product-url="'.esc_attr($redurl).'">'.esc_attr__(wp_unslash($text),'woo-donations').'</a><input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id"><input type="hidden" name="wdgk_ajax_url" value="'.esc_attr($ajax_url).'" class="wdgk_ajax_url"><img src="'.plugins_url().'/woo-donations/assets/images/ajax-loader.gif" class="wdgk_loader wdgk_loader_img"><div class="wdgk_error_front"></div></div>');
         }
     }
 
-    public function wdgk_donation_form_shortcode_html() {
-        global $woocommerce;
+    /**
+     * Return html of Donation Form
+     * @param string $atts
+     * @return string
+     */
+    public function wdgk_donation_form_shortcode_html( $atts = array() ) {
+        return Woo_Donations_Public::wdgk_donation_form($atts);
+    }
 
-        $product 			= "";
-        $text 				= "";
-        $note 				= "";
-        $note_html 			= "";
-        $donation_price 	= "";
-        $donation_note 		= "";
-        $form_title			= "Donation";
-        $amount_placeholder	= "Ex.100";
-        $note_placeholder	= "Note";
+    /**
+     * Return html of Donation Form
+     *
+     * @param $value array form attributes
+     * @return string html of donation form
+     */
+    public static function wdgk_donation_form(array $value) {
+        ob_start();
 
-        $options = wdgk_get_wc_donation_setting();
+        require 'templates/class-wdgk-form.php';
 
-        if (isset($options['Product'])) {
-            $product = $options['Product'];
-        }
-        if (isset($options['Text'])) {
-            $text = $options['Text'];
-        }
-        if (isset($options['Note'])) {
-            $note = $options['Note'];
-        }	
-        if(isset($options['Formtitle']) ){
-            $form_title = $options['Formtitle'];
-        }
-        if(isset($options['AmtPlaceholder'])){
-            $amount_placeholder = $options['AmtPlaceholder'];
-        }
-        if(isset($options['Noteplaceholder'])){
-            $note_placeholder = $options['Noteplaceholder'];
-        }
+        $r = ob_get_contents();
+        ob_end_clean();
 
-        if(wc()->cart){
-            $cart_count = is_object($woocommerce->cart) ? $woocommerce->cart->get_cart_contents_count() : '';
-            if ($cart_count != 0) {
-                $cartitems = $woocommerce->cart->get_cart();
-                if (!empty($cartitems) && isset($cartitems)) {
-                    foreach ($cartitems as $item => $values) {
-                        $product_id =  $values['product_id'];
-                        if ($product_id == $product) {
-                            $donation_price = isset($_COOKIE['wdgk_product_display_price']) ? $_COOKIE['wdgk_product_display_price'] : $values['donation_price'];
-                            if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!empty($product) && $note == 'on') {
-            $note_html = '<textarea id="w3mission" rows="3" cols="20" placeholder="'.esc_attr__(wp_unslash($note_placeholder)).'" name="donation_note" class="donation_note">'.wp_unslash($donation_note).'</textarea>';
-        }
-        
-        $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
-
-        if (!empty($product)) {
-            $ajax_url= admin_url('admin-ajax.php');
-            $current_cur = get_woocommerce_currency();
-            $cur_syambols = get_woocommerce_currency_symbols();
-
-            if(!empty($donation_price))	{
-                $decimal_separator = wc_get_price_decimal_separator();
-                $thousand_separator = wc_get_price_thousand_separator();
-                $price_decimals = wc_get_price_decimals();
-                $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
-            }
-
-            return '<div class="wdgk_donation_content"><h3>'.esc_attr__(wp_unslash($form_title),'woo-donations').'</h3><div class="wdgk_display_option"> <span>'.esc_attr($cur_syambols[$current_cur]).'</span><input type="text" name="donation-price" class="wdgk_donation" placeholder="'.esc_attr__(wp_unslash($amount_placeholder),'woo-donations').'" value="'.$donation_price.'" ></div>'.$note_html.'<a href="javascript:void(0)" class="button wdgk_add_donation" data-product-id="'.esc_attr($product).'" data-product-url="'.esc_attr($cart_url).'">'.esc_attr__(wp_unslash($text),'woo-donations').'</a><input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id"><input type="hidden" name="wdgk_ajax_url" value="'.esc_attr($ajax_url).'" class="wdgk_ajax_url"><img src="'.WP_PLUGIN_DIR.'assets/images/ajax-loader.gif" class="wdgk_loader wdgk_loader_img"><div class="wdgk_error_front"></div></div>';
-        }
+        return $r;
     }
 
     public function wdgk_set_button_text_color() {
@@ -211,24 +166,70 @@ class Woo_Donations_Public {
         }
     }
 
-    public function wdgk_add_cart_item_data($cart_item_data, $product_id, $variation_id){
-        $pid = "";
-        $options = wdgk_get_wc_donation_setting();
-        if (isset($options['Product'])) {
-            $pid = $options['Product'];
-        }
-        if (isset($_COOKIE['wdgk_product_price'])) {
-            if ($product_id == $pid) {
-                $donation_note = json_decode(stripslashes($_COOKIE['wdgk_donation_note']));
-                $cart_item_data['donation_price'] = $_COOKIE['wdgk_product_price'];
-                if(isset($donation_note) && !empty($donation_note))		$cart_item_data['donation_note'] = implode("<br />", $donation_note);
+    public function wdgk_add_cart_item_data($cart_item_data, $product_id, $variation_id) {
+
+        $donatable_prods = array();
+        foreach ($_COOKIE as $cookie_key => $cookie_value) {
+            if (strpos($cookie_key, 'wdgk_product_price:') === 0) {
+                $donatable_prods[$cookie_key] = $cookie_value;
             }
         }
+
+        if(!empty($donatable_prods)) {
+            $donatable_product_meta = "";
+            $product = wc_get_product($product_id);
+            if(isset($variation_id) && !empty($variation_id)) {
+                $id = wp_get_post_parent_id($variation_id);
+            }else{
+                $id = $product_id;
+            }
+            $donatable_product_meta = get_post_meta($id, '_donatable', true);
+
+            if(isset($donatable_product_meta) && $donatable_product_meta == 'yes') {
+                // Check cookies to update donation price on cart
+                if(isset($variation_id) && !empty($variation_id)) {
+                    $save_id = $variation_id;
+                    $cookie_name = sprintf('wdgk_variation_product:%s',$variation_id);
+                    $cookie_value = isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '';
+
+                    $new_cookie_name = sprintf('wdgk_variation_product:%s',$product_id);
+                    setcookie($new_cookie_name, $cookie_value,  time()+86400); // 1 day
+                }else{
+                    $save_id = $product_id;
+                }
+                $save_id = (isset($variation_id) && !empty($variation_id)) ? $variation_id : $product_id;
+
+                $product_price_key = sprintf('wdgk_product_price:%s', $save_id);
+                $product_note_key  = sprintf('wdgk_donation_note:%s', $save_id);
+
+                if(array_key_exists($product_price_key,$donatable_prods)) {
+                    $donation_note = json_decode(stripslashes($donatable_prods[$product_note_key]));
+
+                    $cart_item_data['donation_price'] = $donatable_prods[$product_price_key];
+                    if(isset($donation_note) && !empty($donation_note))		$cart_item_data['donation_note'] = implode("<br />", $donation_note);
+                }
+            }
+        }else{
+            $pid = "";
+
+            $options = wdgk_get_wc_donation_setting();
+            if (isset($options['Product'])) {
+                $pid = $options['Product'];
+            }
+
+            if (isset($_COOKIE['wdgk_product_price'])) {
+                if ($product_id == $pid) {
+                    $donation_note = json_decode(stripslashes($_COOKIE['wdgk_donation_note']));
+                    $cart_item_data['donation_price'] = $_COOKIE['wdgk_product_price'];
+                    if(isset($donation_note) && !empty($donation_note))		$cart_item_data['donation_note'] = implode("<br />", $donation_note);
+                }
+            }
+        }
+        
         return $cart_item_data;
     }
     
-    public function wdgk_before_calculate_totals($cart_obj){
-    
+    public function wdgk_before_calculate_totals($cart_obj) {
         $pid = "";
         $options = wdgk_get_wc_donation_setting();
         if (isset($options['Product'])) {
@@ -242,6 +243,7 @@ class Woo_Donations_Public {
             $id = $value['data'];
     
             if (isset($value['donation_price']) && $id->get_id() == $pid) {
+            // if (isset($value['donation_price'])) {
                 $price = $value['donation_price'];
                 $value['data']->set_price(($price));
             }
@@ -250,6 +252,7 @@ class Woo_Donations_Public {
 
     public function wdgk_filter_cart_item_price( $price_html, $cart_item, $cart_item_key ) {
         if( isset( $cart_item['donation_price'] ) ) {        
+            // echo '<pre>'; print_r( "1" ); echo '</pre>';
             return wc_price(  $cart_item['donation_price'] );    
         }
         return $price_html;
@@ -257,21 +260,35 @@ class Woo_Donations_Public {
     }
 
     public function wdgk_show_product_discount_order_summary( $total, $cart_item, $cart_item_key ) {
-     
         //Get product object
         if( isset(  $cart_item['donation_price']  ) ) {
-    
+            // echo '<pre>'; print_r( "2" ); echo '</pre>';
             $total= wc_price($cart_item['donation_price']  * $cart_item['quantity']);
         }
         // Return the html
         return $total;
     }
 
-    public function wdgk_donation_ajax_callback(){
+    public function wdgk_donation_ajax_callback() {
         $product_id = sanitize_text_field($_POST['product_id']);
         $price = sanitize_text_field($_POST['price']);
         $redirect_url = sanitize_text_field($_POST['redirect_url']);
         wdgk_add_donation_product_to_cart($product_id);
+
+        $product = wc_get_product($product_id);
+
+        // if($product->get_type() == 'variation') {
+        //     $parent_id = wp_get_post_parent_id($product_id);
+        //     if(isset($parent_id) && !empty($parent_id)) {
+        //         $cookie_name = "wdgk_variation_product:" . $parent_id;
+        //         $var_cookies_name = "wdgk_variation_product:" . $product_id;
+                
+        //         if(isset($_COOKIE[$var_cookies_name])) {
+        //             setcookie($cookie_name, $_COOKIE[$var_cookies_name], time() + (86400 * 30), "/"); // 86400 = 1 day
+        //         }
+        //     }
+        // }
+
         $response = array();
         $response['url'] = $redirect_url;
         $response = json_encode($response);
@@ -281,6 +298,7 @@ class Woo_Donations_Public {
 
     public function wdgk_plugin_republic_get_item_data($item_data, $cart_item_data){
         if ( isset($cart_item_data['donation_note'])  && isset($cart_item_data['donation_price']) && !empty($cart_item_data['donation_note']) && !empty($cart_item_data['donation_note'])) {
+            // echo '<pre>'; print_r( "3" ); echo '</pre>';
             $item_data[] = array(
                 'key' => __('Description', 'woo-donations'),
                 'value' => wp_unslash($cart_item_data['donation_note'])
@@ -291,6 +309,7 @@ class Woo_Donations_Public {
 
     public function wdgk_plugin_republic_checkout_create_order_line_item($item, $cart_item_key, $values, $order){
         if (isset($values['donation_note'])) {
+            // echo '<pre>'; print_r( "4" ); echo '</pre>';
             $item->add_meta_data(
                 __('Description', 'woo-donations'),
                 wp_unslash($values['donation_note']),
@@ -299,9 +318,9 @@ class Woo_Donations_Public {
         }
     }
 
-    public function wdgk_plugin_republic_order_item_name($product_name, $item){
+    public function wdgk_plugin_republic_order_item_name($product_name, $item) {
         if (isset($item['donation_note']) && isset($item['donation_price'])) {
-    
+            // echo '<pre>'; print_r( "5" ); echo '</pre>';
             $product_name .= sprintf(
                 '<ul><li>%s: %s</li></ul>',
                 __('Description', 'woo-donations'),
@@ -326,5 +345,45 @@ class Woo_Donations_Public {
                 $order->save();
             }
         }
+    }
+
+    public function wdgk_modify_template( string $template = '', string $template_name = '', array $args = array(), string $template_path = '', string $default_path = '' ) {
+        //Return if the template has been overwritten in yourtheme/woocommerce/XXX
+        if ($template[strlen($template) - strlen($template_name) - 2] === 'e') {
+            return $template;
+        }
+
+        $path = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wc-templates/';
+
+        switch ($template_name) {
+            case 'loop/no-products-found.php':
+                $template = $path . $template_name;
+                break;
+
+            case 'loop/price.php':
+                global $product;
+                if (!is_null($product) && wdgk_is_donatable($product->get_id())) {
+                    $template = $path . $template_name;
+                }
+                break;
+
+            case 'single-product/price.php':
+            case 'single-product/add-to-cart/variation-add-to-cart-button.php' :
+                if (wdgk_is_donatable(get_queried_object_id())) {
+                    $template = $path . $template_name;
+                }
+                break;
+
+            case 'single-product/add-to-cart/simple.php' :
+            case 'single-product/add-to-cart/variable.php' :
+                if (wdgk_is_donatable(get_queried_object_id())) {
+                    $template = $path . 'single-product/add-to-cart/product.php';
+                }
+                break;
+
+            default:
+                break;
+        }
+        return apply_filters('wdgk_get_template', $template, $template_name, $args, $template_path, $default_path);
     }
 }

@@ -106,7 +106,7 @@ class Woo_Donations_Loader {
 	 * @param    int                  $accepted_args    The number of arguments that should be passed to the $callback.
 	 * @return   array                                  The collection of actions and filters registered with WordPress.
 	 */
-	private function add( $hooks, $hook, $component, $callback, $priority = 10, $accepted_args = array() ) {
+	private function add( $hooks, $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
 
 		$hooks[] = array(
 			'hook'          => $hook,
@@ -125,7 +125,6 @@ class Woo_Donations_Loader {
 	 * @since    1.0.0
 	 */
 	public function run() {
-        // echo '<pre>'; print_r( $this->filters ); echo '</pre>';
 		foreach ( $this->filters as $hook ) {
 			add_filter( $hook['hook'], array( $hook['component'], $hook['callback'] ), $hook['priority'], $hook['accepted_args'] );
 		}

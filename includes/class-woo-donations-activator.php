@@ -45,7 +45,6 @@ class Woo_Donations_Activator {
             wp_set_object_terms($id, array( 'exclude-from-catalog', 'exclude-from-search' ), $taxonomy);
 
             $image_url  = WP_PLUGIN_DIR . '/woo-donations/assets/images/donation_thumbnail.jpg';
-            // $image_url  =  'C:/wamp64/www/digi-theme/wp-content/plugins/woo-donations/assets/images/donation_thumbnail.jpg';
             $upload_dir = wp_upload_dir();
 
             if(file_exists($image_url)) {

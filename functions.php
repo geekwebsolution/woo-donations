@@ -3,7 +3,7 @@ use Automattic\WooCommerce\Utilities\OrderUtil;
 
 // Get form setting options
 function wdgk_get_wc_donation_setting(){
-	return get_option('wdgk_donation_settings');
+	return get_option('wdgk_donation_settings', array());
 }
 
 // Success message
@@ -17,6 +17,8 @@ function  failure_option_msg_wdgk($msg){
 }
 
 function wdgk_add_donation_product_to_cart($id) {
+	// WC()->cart->add_to_cart( 20, 1, 37, array( "attribute_pa_color" => "red", "attribute_logo" => "No" ) );
+
 	$found = false;
 	//check if product already in cart
 	if ( sizeof( WC()->cart->get_cart() ) > 0 ) {
@@ -26,8 +28,8 @@ function wdgk_add_donation_product_to_cart($id) {
 			
 			if ( $_product->get_id() == $id ){
 				$found = true;
-			WC()->cart->remove_cart_item($cart_item_key);
-			WC()->cart->add_to_cart( $id );
+				WC()->cart->remove_cart_item($cart_item_key);
+				WC()->cart->add_to_cart( $id );
 			}
 			
 		}

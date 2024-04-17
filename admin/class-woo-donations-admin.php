@@ -127,13 +127,12 @@ class Woo_Donations_Admin {
         }
     
         $wdgk_set_order_flag_status = get_option( 'wdgk_set_order_flag_status' );
-        if(!$wdgk_set_order_flag_status) {		
+        if(!$wdgk_set_order_flag_status) {
             $order_items = $order->get_items();
             
             if (!is_wp_error($order_items)) {
                 $donation_flag = false;
                 foreach ($order_items as $order_item) {
-    
     
                     if ($product == $order_item['product_id']) {
                         $donation_flag = true;
@@ -168,7 +167,7 @@ class Woo_Donations_Admin {
         }
         $wdgk_get_page = get_posts( $search_product_args );
     
-        foreach ($wdgk_get_page as $wdgk_product) {		
+        foreach ($wdgk_get_page as $wdgk_product) {
             $result[] = array(
                 'id' => $wdgk_product->ID,
                 'title' => $wdgk_product->post_title .  " ( #" . $wdgk_product->ID . " )"
@@ -177,12 +176,6 @@ class Woo_Donations_Admin {
         echo json_encode($result);
     
         wp_die();
-    }
-
-    public function wdgk_before_woocommerce_init() {
-        if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-            \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-        }
     }
 
     public function wdgk_block_editor_script() {
@@ -209,5 +202,77 @@ class Woo_Donations_Admin {
         $donation_form_html .= stripslashes( do_shortcode('[wdgk_donation]') );
     
         return $donation_form_html;
+    }
+
+    public function wdgk_product_data_tabs( $tabs ) {
+        $wdgk_options = array(
+            'label' => __('Donation Form', 'wc-donation-platform'),
+            'target' => 'wdgk_donation_form_data',
+            'class' => 'show_if_donatable hidden wdgk_donation_options hide_if_external',
+            'priority' => 65,
+        );
+        $tabs[] = $wdgk_options;
+        return $tabs;
+    }
+
+    public function wdgk_product_data_panel() {
+        include WP_PLUGIN_DIR . '/woo-donations/admin/class-product-tab-options.php';
+    }
+
+    public function wdgk_process_product_meta($post_id) {
+        $product = wc_get_product($post_id);
+        $product_settings = [];
+
+        if(isset($_POST['wdgk_add_note']))
+            $product_settings['wdgk_add_note'] = sanitize_text_field($_POST['wdgk_add_note']);
+
+        if(isset($_POST['wdgk_btntext']))
+            $product_settings['wdgk_btntext'] = sanitize_text_field($_POST['wdgk_btntext']);
+
+        if(isset($_POST['wdgk_title']))
+            $product_settings['wdgk_title'] = sanitize_text_field($_POST['wdgk_title']);
+
+        if(isset($_POST['wdgk_amt_place']))
+            $product_settings['wdgk_amt_place'] = sanitize_text_field($_POST['wdgk_amt_place']);
+
+        if(isset($_POST['wdgk_note_place']))
+            $product_settings['wdgk_note_place'] = sanitize_text_field($_POST['wdgk_note_place']);
+
+        foreach ($product_settings as $key => $value) {
+            $product->update_meta_data('wdgk-settings[' . $key . ']', $value);
+        }
+        $product->save();    
+    }
+
+    public function wdgk_add_product_type_option($product_type_options) {
+        global $post;
+        $donation_product = "";
+        $options = wdgk_get_wc_donation_setting();
+        if (isset($options['Product'])) 		        $donation_product   = $options['Product'];
+
+        if(isset($post->ID) && $post->ID != $donation_product) {
+            $product_type_options["donatable"] = [
+                "id" => "_donatable",
+                "wrapper_class" => "show_if_simple show_if_variable",
+                "label" => __('Donation Product', 'woo-donations'),
+                "description" => __('This product will only be used for donations if activated', 'woo-donations'),
+                "default" => "on",
+                "custom_attributes" => array( "disabled" => "disabled" )
+            ];
+        }
+
+        return $product_type_options;
+    }
+
+    public function wdgk_save_post_product($post_ID, $product, $update) {
+        if (!isset($_POST['_wpnonce'])) {
+            return;
+        }
+
+        update_post_meta(
+            $product->ID
+            , "_donatable"
+            , isset($_POST["_donatable"]) ? "yes" : "no"
+        );
     }
 }

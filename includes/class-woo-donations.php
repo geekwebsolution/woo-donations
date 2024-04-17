@@ -95,10 +95,15 @@ class Woo_Donations {
         $this->loader->add_action( 'wp_ajax_wdgk_product_select_ajax', $plugin_admin, 'wdgk_product_select_ajax_callback' );
         $this->loader->add_action( 'wp_ajax_nopriv_wdgk_product_select_ajax', $plugin_admin, 'wdgk_product_select_ajax_callback' );
         
-        $this->loader->add_action( 'before_woocommerce_init', $plugin_admin, 'wdgk_before_woocommerce_init' );
         $this->loader->add_action( 'enqueue_block_editor_assets', $plugin_admin, 'wdgk_block_editor_script' );
-
         $this->loader->add_action( 'init', $plugin_admin, 'wdgk_wp_donation_block' );
+
+		/* Edit product meta fields */
+		$this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin, 'wdgk_product_data_tabs', 10, 3 );
+		$this->loader->add_action( 'woocommerce_product_data_panels', $plugin_admin, 'wdgk_product_data_panel' );
+		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'wdgk_process_product_meta' );
+		$this->loader->add_filter( 'product_type_options', $plugin_admin, 'wdgk_add_product_type_option', 11, 1 );
+		$this->loader->add_action( 'save_post_product', $plugin_admin, 'wdgk_save_post_product', 10, 3 );
 	}
 
 	/**
@@ -129,7 +134,7 @@ class Woo_Donations {
 
         $this->loader->add_action( 'wp_head', $plugin_public, 'wdgk_set_button_text_color' );
         $this->loader->add_filter( 'woocommerce_add_cart_item_data', $plugin_public, 'wdgk_add_cart_item_data', 10, 3 );
-        $this->loader->add_filter( 'woocommerce_before_calculate_totals', $plugin_public, 'wdgk_before_calculate_totals', PHP_INT_MAX, 1 );
+        $this->loader->add_filter( 'woocommerce_before_calculate_totals', $plugin_public, 'wdgk_before_calculate_totals', 1000, 1 );
 
         $this->loader->add_filter( 'woocommerce_cart_item_price', $plugin_public, 'wdgk_filter_cart_item_price', 10, 3 );
         $this->loader->add_filter( 'woocommerce_cart_item_subtotal', $plugin_public, 'wdgk_show_product_discount_order_summary', 10, 3 );
@@ -142,6 +147,8 @@ class Woo_Donations {
         $this->loader->add_filter( 'woocommerce_order_item_name', $plugin_public, 'wdgk_plugin_republic_order_item_name', 10, 2 );
 
         $this->loader->add_action( 'woocommerce_thankyou', $plugin_public, 'wdgk_thankyou_change_order_status' );
+		
+        $this->loader->add_filter( 'wc_get_template', $plugin_public, 'wdgk_modify_template', 11, 5 );
 	}
 
 	/**

@@ -22,14 +22,14 @@ if (isset($_POST['wdgk_add_form'])) {
 
 	if (isset($_POST['wdgk_product']))  	$product_name		=  sanitize_text_field($_POST['wdgk_product']);
 	if (isset($_POST['wdgk_cart'])) 		$cart_product		=  sanitize_text_field($_POST['wdgk_cart']);
-	if (isset($_POST['wdgk_checkout']))  $checkout_product	=  sanitize_text_field($_POST['wdgk_checkout']);
+	if (isset($_POST['wdgk_checkout']))     $checkout_product	=  sanitize_text_field($_POST['wdgk_checkout']);
 	if (isset($_POST['wdgk_note'])) 		$checkout_note		=  sanitize_text_field($_POST['wdgk_note']);
 	if (isset($_POST['wdgk_btncolor'])) 	$btncolor			=  sanitize_text_field($_POST['wdgk_btncolor']);
-	if (isset($_POST['wdgk_textcolor'])) $textcolor			=  sanitize_text_field($_POST['wdgk_textcolor']);
-	if (isset($_POST['wdgk_btntext'])) 	$btntext			=  sanitize_text_field($_POST['wdgk_btntext']);
+	if (isset($_POST['wdgk_textcolor']))    $textcolor			=  sanitize_text_field($_POST['wdgk_textcolor']);
+	if (isset($_POST['wdgk_btntext'])) 	    $btntext			=  sanitize_text_field($_POST['wdgk_btntext']);
 
 	if (isset($_POST['wdgk_title'])) 	$form_title			=  sanitize_text_field($_POST['wdgk_title']);
-	if (isset($_POST['wdgk_amt_place'])) $amount_placeholder	=  sanitize_text_field($_POST['wdgk_amt_place']);
+	if (isset($_POST['wdgk_amt_place'])) $amount_placeholder =  sanitize_text_field($_POST['wdgk_amt_place']);
 	if (isset($_POST['wdgk_note_place'])) $note_placeholder	=  sanitize_text_field($_POST['wdgk_note_place']);
 
 	$options['Product']		= $product_name;
@@ -192,7 +192,7 @@ if (isset($options['Noteplaceholder'])) {
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php _e('Add on Note'); ?></th>
+							<th scope="row"><?php _e('Add Note'); ?></th>
 							<td>
 								<label class="wdgk-switch wdgk-switch-wdgk_note_status">
 									<input type="checkbox" class="wdgk-note wdgk-checkout" name="wdgk_note" value="on" <?php if ($note == 'on') { _e("checked");} ?>>

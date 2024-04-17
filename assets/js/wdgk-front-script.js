@@ -17,10 +17,14 @@ jQuery(document).ready(function ($) {
     });
 
     jQuery('body').on("click", ".wdgk_add_donation", function () {
-
         var note = "";
         var price = "";
+        var variation_id = "";
+        var variation_values = [];
         var decimal_price = "";
+
+        var variation_id = jQuery(this).closest('.wdgk_donation_content').find('#variation_id').val();
+        
         var price_elem = jQuery(this).closest('.wdgk_donation_content').find("input[name='donation-price']");
         if (price_elem) {
             updated_price = wdgk_updatedInputprice(price_elem.val());
@@ -45,6 +49,7 @@ jQuery(document).ready(function ($) {
         var ajaxurl = jQuery('.wdgk_ajax_url').val();
         var product_id = jQuery(this).attr('data-product-id');
         var redirect_url = jQuery(this).attr('data-product-url');
+        var single_dp_id = jQuery(this).attr('data-single-dp');
 
 
         if (decimal_price == "") {
@@ -63,24 +68,47 @@ jQuery(document).ready(function ($) {
             jQuery(this).closest('.wdgk_donation_content').find(".wdgk_error_front").text("Please enter numeric value!!");
             return false;
         }
+        if(variation_id != undefined && variation_id == '') {
+            jQuery(this).closest('.wdgk_donation_content').find(".wdgk_error_front").text("Please fill required fields!!");
+            return false;
+        }
 
         jQuery(this).closest('.wdgk_donation_content').find('.wdgk_loader').removeClass("wdgk_loader_img");
-        // set new cookie for display price with comma
-        setCookie('wdgk_product_display_price', price, 1);
-        // price = price.replace(/,/g, '');
 
-        setCookie('wdgk_product_price', decimal_price, 2);
-        setCookie('wdgk_donation_note', note_text, 3);
+        // set new cookie for display price with comma
+        if(single_dp_id == 'true') {
+            if(variation_id != undefined) { 
+                product_id = variation_id;
+                jQuery('.wdgk_variation.wdgk-row').each(function() {
+                    var attr_name = jQuery(this).find("select").attr("data-attribute_name");
+                    var attr_value = jQuery(this).find("select:selected").val();
+                    variation_values[attr_name] = attr_value;
+                });
+                setCookie('wdgk_variation_product:'+product_id, JSON.stringify(variation_values), 1);
+            }
+            setCookie('wdgk_product_display_price:'+product_id, price, 1);
+            setCookie('wdgk_product_price:'+product_id, decimal_price, 1);
+            setCookie('wdgk_donation_note:'+product_id, note_text, 1);            
+        }else{
+            setCookie('wdgk_product_display_price', price, 1);
+            setCookie('wdgk_product_price', decimal_price, 1);
+            setCookie('wdgk_donation_note', note_text, 1);
+        }
+
+        // console.log(decimal_price);
+
+        var $data = {
+            action: 'wdgk_donation_form',
+            product_id: product_id,
+            price: decimal_price,
+            note: note,
+            redirect_url: redirect_url
+        }
+        if(variation_id != undefined) { $data.product_type = 'variation'; }
 
         jQuery.ajax({
             url: ajaxurl,
-            data: {
-                action: 'wdgk_donation_form',
-                product_id: product_id,
-                price: decimal_price,
-                note: note,
-                redirect_url: redirect_url
-            },
+            data: $data,
             type: 'POST',
             success: function (data) {
                 var redirect = jQuery.parseJSON(data);

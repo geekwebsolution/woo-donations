@@ -17,9 +17,8 @@ $options = wdgk_get_wc_donation_setting();
 $attr_product_id = (isset($value['product_id']) && !empty($value['product_id'])) ? $value['product_id'] : "";
 
 if(!empty($attr_product_id)) {
-    $donatable_product = get_post_meta($attr_product_id, '_donatable', true);
-
-    if(isset($donatable_product) && $donatable_product == 'yes') {
+    $is_donatable = wdgk_is_donatable($attr_product_id);
+    if($is_donatable) {
         $product_form = true;
     }
 }
@@ -53,6 +52,8 @@ if($product_form) {
 if(empty($product_id)) return;
 
 $product = wc_get_product($product_id);
+$cookie_var_key = 'wdgk_variation_product:' . $product_id;
+$cookie_variation_id = (isset($_COOKIE[$cookie_var_key]) && !empty($_COOKIE[$cookie_var_key])) ? $_COOKIE[$cookie_var_key] : '';
 
 $has_child = is_a($product, 'WC_Product_Variable') && $product->has_child();
 //enqueue woocommerce variation js
@@ -69,30 +70,32 @@ if ($has_child) {
     $get_variations = count($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
 }
 
-// if(wc()->cart){
-//     $cart_count = is_object($woocommerce->cart) ? $woocommerce->cart->get_cart_contents_count() : '';
-//     if ($cart_count != 0) {
-//         $cartitems = $woocommerce->cart->get_cart();
-//         if (!empty($cartitems) && isset($cartitems)) {
-//             foreach ($cartitems as $item => $values) {
-//                 $item_id =  $values['product_id'];
-//                 if ($item_id == $product_id) {
-//                     if($product_form) {
-//                         $product_display_price_key = sprintf('wdgk_product_display_price:%s',$product_id);
-//                         $product_note_key  = sprintf('wdgk_donation_note:%s',$product_id);
-//                         if(array_key_exists($product_display_price_key,$_COOKIE)) {
-//                             $donation_price = isset($_COOKIE[$product_display_price_key]) ? $_COOKIE[$product_display_price_key] : $values['donation_price'];
-//                             if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
-//                         }
-//                     }else{
-//                         $donation_price = isset($_COOKIE['wdgk_product_display_price']) ? $_COOKIE['wdgk_product_display_price'] : $values['donation_price'];
-//                         if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
+if(wc()->cart){
+    $cart_count = is_object($woocommerce->cart) ? $woocommerce->cart->get_cart_contents_count() : '';
+    if ($cart_count != 0) {
+        $cartitems = $woocommerce->cart->get_cart();
+        if (!empty($cartitems) && isset($cartitems)) {
+            foreach ($cartitems as $item => $values) {
+                $item_id =  $values['product_id'];
+                $donateble_product_id = (!empty($cookie_variation_id)) ? $cookie_variation_id : $product_id;
+                
+                if ($item_id == $product_id) {
+                    if($product_form) {
+                        $product_display_price_key = sprintf('wdgk_product_display_price:%s',$donateble_product_id);
+                        $product_note_key  = sprintf('wdgk_donation_note:%s',$donateble_product_id);
+                        if(array_key_exists($product_display_price_key,$_COOKIE)) {
+                            $donation_price = isset($_COOKIE[$product_display_price_key]) ? $_COOKIE[$product_display_price_key] : $values['donation_price'];
+                            if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
+                        }
+                    }else{
+                        $donation_price = isset($_COOKIE['wdgk_product_display_price']) ? $_COOKIE['wdgk_product_display_price'] : $values['donation_price'];
+                        if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
+                    }
+                }
+            }
+        }
+    }
+}
 
 if (!empty($product_id) && $note == 'on') {
     $note_html = '<textarea id="w3mission" rows="3" cols="20" placeholder="'.esc_attr_e(wp_unslash($note_placeholder)).'" name="donation_note" class="donation_note">'.wp_unslash($donation_note).'</textarea>';
@@ -104,12 +107,12 @@ $ajax_url= admin_url('admin-ajax.php');
 $current_cur = get_woocommerce_currency();
 $cur_syambols = get_woocommerce_currency_symbols();
 
-// if(!empty($donation_price))	{
-//     $decimal_separator = wc_get_price_decimal_separator();
-//     $thousand_separator = wc_get_price_thousand_separator();
-//     $price_decimals = wc_get_price_decimals();
-//     $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
-// }
+if(!empty($donation_price))	{
+    $decimal_separator = wc_get_price_decimal_separator();
+    $thousand_separator = wc_get_price_thousand_separator();
+    $price_decimals = wc_get_price_decimals();
+    $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
+}
 ?>
 <?php if ($has_child): ?>
     <form class="variations_form cart wdgk-donation-form" method="post" 
@@ -118,33 +121,47 @@ $cur_syambols = get_woocommerce_currency_symbols();
     data-product_variations="<?php echo $variations_attr; ?>">
 <?php endif; ?>
 <div class="wdgk_donation_content">
-    <h3><?php echo esc_attr__(wp_unslash($form_title),'woo-donations') ?></h3>
+    <?php 
+    if(isset($form_title) && !empty($form_title)) : ?>
+        <h3><?php echo esc_attr__(wp_unslash($form_title),'woo-donations') ?></h3>
+        <?php
+    endif; ?>
+
     <div class="wdgk_display_option"> 
         <span><?php echo esc_html($cur_syambols[$current_cur]); ?></span>
         <input type="text" name="donation-price" class="wdgk_donation" placeholder="<?php echo esc_attr__(wp_unslash($amount_placeholder),'woo-donations') ?>" value="<?php echo esc_attr($donation_price); ?>" >
     </div>
 
     <?php
-    if ($has_child) : ?>
+    if ($has_child) :
+        $selected = array(); ?>
         <input type="hidden" name="variation_id" id="variation_id" value="">
         <?php 
-        foreach ($attributes as $attribute => $options) :
-            $esc_attribute = esc_attr(sanitize_title($attribute)); ?>
+        $cookie_var_values_key = 'wdgk_variation_product:' . $cookie_variation_id;
+        $selected_attributes = (isset($_COOKIE[$cookie_var_values_key]) && !empty($_COOKIE[$cookie_var_values_key])) ? json_decode( wp_unslash( $_COOKIE[$cookie_var_values_key] ), true ) : array();
 
+        foreach ($attributes as $attribute => $options) :
+            $esc_attribute = esc_attr(sanitize_title($attribute));
+            ?>
             <div class="variations wdgk_variation wdgk-row">
                 <label class="wdgk-variation-heading" for="<?php echo $esc_attribute; ?>">
                     <?php echo wc_attribute_label($attribute, $product); ?>
                     <abbr class="required" title="<?php esc_html_e('required', 'wc-donation-platform'); ?>">*</abbr>
                 </label>
-                <?php wc_dropdown_variation_attribute_options(
-                    array(
+                <div>
+                    <?php
+                    $selected = isset( $selected_attributes[ 'attribute_' . sanitize_title( $attribute ) ] ) ? wc_clean( $selected_attributes[ 'attribute_' . sanitize_title( $attribute ) ] ) : $product->get_variation_default_attribute( $attribute );
+                    $variation_args = array(
                         'options' => $options,
                         'attribute' => $esc_attribute,
-                        'product' => $product,
-                    )
-                ); ?>
+                        'product' => $product
+                    );
+                    if(!empty($selected))      $variation_args['selected'] = $selected;
+                    wc_dropdown_variation_attribute_options(
+                        $variation_args
+                    ); ?>
+                </div>
             </div>
-            
             <?php 
         endforeach;
     endif; ?>
@@ -155,7 +172,11 @@ $cur_syambols = get_woocommerce_currency_symbols();
     </a>
     <input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id">
     <input type="hidden" name="wdgk_ajax_url" value="<?php echo esc_url($ajax_url) ?>" class="wdgk_ajax_url">
-    <img src="<?php echo esc_url(WP_PLUGIN_DIR . '/woo-donations/assets/images/ajax-loader.gif'); ?>" class="wdgk_loader wdgk_loader_img">
+    <img src="<?php echo esc_url( plugins_url( 'woo-donations/assets/images/ajax-loader.gif' ) ); ?>" class="wdgk_loader wdgk_loader_img">
     <div class="wdgk_error_front"></div>
 </div>
 <?php if ($has_child): ?></form><?php endif; ?>
+
+
+
+    

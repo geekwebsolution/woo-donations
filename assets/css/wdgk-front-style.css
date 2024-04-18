@@ -84,5 +84,19 @@ a.button.wdgk_add_donation {
 }
 
 .wdgk_donation_content h3{
-    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+/** Single Product Form CSS */
+.single-product div.product form.cart.wdgk-donation-form {
+    margin: 0;
+    padding: 0;
+}
+
+.wdgk-row {
+    margin: 0 0 1.5em;
+}
+
+.wdgk-donation-form .wdgk_display_option {
+    margin: 0 0 1.5em;
 }

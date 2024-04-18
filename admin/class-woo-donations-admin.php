@@ -241,7 +241,7 @@ class Woo_Donations_Admin {
         foreach ($product_settings as $key => $value) {
             $product->update_meta_data('wdgk-settings[' . $key . ']', $value);
         }
-        $product->save();    
+        $product->save();
     }
 
     public function wdgk_add_product_type_option($product_type_options) {
@@ -257,22 +257,29 @@ class Woo_Donations_Admin {
                 "label" => __('Donation Product', 'woo-donations'),
                 "description" => __('This product will only be used for donations if activated', 'woo-donations'),
                 "default" => "on",
-                "custom_attributes" => array( "disabled" => "disabled" )
+                "custom_attributes" => array( "het" => "hae" )
             ];
         }
 
         return $product_type_options;
     }
 
-    public function wdgk_save_post_product($post_ID, $product, $update) {
+    public function wdgk_save_post_product($post_id, $product, $update) {
         if (!isset($_POST['_wpnonce'])) {
             return;
         }
 
         update_post_meta(
-            $product->ID
+            $post_id
             , "_donatable"
             , isset($_POST["_donatable"]) ? "yes" : "no"
         );
+        // if(isset($_POST["_donatable"])) {
+        //     update_post_meta(
+        //         $post_id,
+        //         "_sold_individually",
+        //         "yes"
+        //     ); 
+        // }
     }
 }

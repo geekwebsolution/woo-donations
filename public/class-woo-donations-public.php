@@ -176,24 +176,23 @@ class Woo_Donations_Public {
         }
 
         if(!empty($donatable_prods)) {
-            $donatable_product_meta = "";
             $product = wc_get_product($product_id);
             if(isset($variation_id) && !empty($variation_id)) {
                 $id = wp_get_post_parent_id($variation_id);
             }else{
                 $id = $product_id;
             }
-            $donatable_product_meta = get_post_meta($id, '_donatable', true);
+            $is_donatable = wdgk_is_donatable($id);
 
-            if(isset($donatable_product_meta) && $donatable_product_meta == 'yes') {
+            if($is_donatable) {
                 // Check cookies to update donation price on cart
                 if(isset($variation_id) && !empty($variation_id)) {
                     $save_id = $variation_id;
                     $cookie_name = sprintf('wdgk_variation_product:%s',$variation_id);
-                    $cookie_value = isset($_COOKIE[$cookie_name]) ? $_COOKIE[$cookie_name] : '';
+                    $cookie_value = isset($_COOKIE[$cookie_name]) ? $variation_id : '';
 
                     $new_cookie_name = sprintf('wdgk_variation_product:%s',$product_id);
-                    setcookie($new_cookie_name, $cookie_value,  time()+86400); // 1 day
+                    setcookie($new_cookie_name, $cookie_value,  time()+86400, "/"); // 1 day
                 }else{
                     $save_id = $product_id;
                 }
@@ -242,8 +241,8 @@ class Woo_Donations_Public {
         foreach ($cart_obj->get_cart() as $key => $value) {
             $id = $value['data'];
     
-            if (isset($value['donation_price']) && $id->get_id() == $pid) {
-            // if (isset($value['donation_price'])) {
+            // if (isset($value['donation_price']) && $id->get_id() == $pid) {
+            if (isset($value['donation_price'])) {
                 $price = $value['donation_price'];
                 $value['data']->set_price(($price));
             }
@@ -251,8 +250,7 @@ class Woo_Donations_Public {
     }
 
     public function wdgk_filter_cart_item_price( $price_html, $cart_item, $cart_item_key ) {
-        if( isset( $cart_item['donation_price'] ) ) {        
-            // echo '<pre>'; print_r( "1" ); echo '</pre>';
+        if( isset( $cart_item['donation_price'] ) ) {
             return wc_price(  $cart_item['donation_price'] );    
         }
         return $price_html;
@@ -262,7 +260,6 @@ class Woo_Donations_Public {
     public function wdgk_show_product_discount_order_summary( $total, $cart_item, $cart_item_key ) {
         //Get product object
         if( isset(  $cart_item['donation_price']  ) ) {
-            // echo '<pre>'; print_r( "2" ); echo '</pre>';
             $total= wc_price($cart_item['donation_price']  * $cart_item['quantity']);
         }
         // Return the html
@@ -277,18 +274,6 @@ class Woo_Donations_Public {
 
         $product = wc_get_product($product_id);
 
-        // if($product->get_type() == 'variation') {
-        //     $parent_id = wp_get_post_parent_id($product_id);
-        //     if(isset($parent_id) && !empty($parent_id)) {
-        //         $cookie_name = "wdgk_variation_product:" . $parent_id;
-        //         $var_cookies_name = "wdgk_variation_product:" . $product_id;
-                
-        //         if(isset($_COOKIE[$var_cookies_name])) {
-        //             setcookie($cookie_name, $_COOKIE[$var_cookies_name], time() + (86400 * 30), "/"); // 86400 = 1 day
-        //         }
-        //     }
-        // }
-
         $response = array();
         $response['url'] = $redirect_url;
         $response = json_encode($response);
@@ -298,7 +283,6 @@ class Woo_Donations_Public {
 
     public function wdgk_plugin_republic_get_item_data($item_data, $cart_item_data){
         if ( isset($cart_item_data['donation_note'])  && isset($cart_item_data['donation_price']) && !empty($cart_item_data['donation_note']) && !empty($cart_item_data['donation_note'])) {
-            // echo '<pre>'; print_r( "3" ); echo '</pre>';
             $item_data[] = array(
                 'key' => __('Description', 'woo-donations'),
                 'value' => wp_unslash($cart_item_data['donation_note'])
@@ -309,7 +293,6 @@ class Woo_Donations_Public {
 
     public function wdgk_plugin_republic_checkout_create_order_line_item($item, $cart_item_key, $values, $order){
         if (isset($values['donation_note'])) {
-            // echo '<pre>'; print_r( "4" ); echo '</pre>';
             $item->add_meta_data(
                 __('Description', 'woo-donations'),
                 wp_unslash($values['donation_note']),
@@ -320,7 +303,7 @@ class Woo_Donations_Public {
 
     public function wdgk_plugin_republic_order_item_name($product_name, $item) {
         if (isset($item['donation_note']) && isset($item['donation_price'])) {
-            // echo '<pre>'; print_r( "5" ); echo '</pre>';
+
             $product_name .= sprintf(
                 '<ul><li>%s: %s</li></ul>',
                 __('Description', 'woo-donations'),
@@ -332,18 +315,32 @@ class Woo_Donations_Public {
 
     public function wdgk_thankyou_change_order_status( $order_id ) {
         $donation_product   = "";
+        $order_donation_items = [];
         $options = wdgk_get_wc_donation_setting();
-
-        if (isset($options['Product'])) 		        $donation_product   = $options['Product'];
-
         $order              =   wc_get_order( $order_id );
-        $items              =   $order ->get_items();
+        $items              =   $order->get_items();
+
         foreach ( $items as $item ) {
             $item_id = $item['product_id'];
-            if($donation_product == $item_id) {
-                $order->update_meta_data( 'wdgk_donation_order_flag', $item_id );   // set donation order flag 
-                $order->save();
+            
+            $is_donatable = wdgk_is_donatable($item_id);
+            if($is_donatable) {
+                $donation_product = $item_id;
+            }else{
+                if (isset($options['Product'])) {
+                    $donation_product   = $options['Product'];
+                }
             }
+
+            if($donation_product == $item_id) {                
+                $order_donation_items[] = $item_id;
+            }
+        }
+
+        if(!empty($order_donation_items)) {
+            $donation_item_str = implode(",",$order_donation_items);
+            $order->update_meta_data( 'wdgk_donation_order_flag', $donation_item_str );   // set donation order flag 
+            $order->save();
         }
     }
 
@@ -385,5 +382,26 @@ class Woo_Donations_Public {
                 break;
         }
         return apply_filters('wdgk_get_template', $template, $template_name, $args, $template_path, $default_path);
+    }
+
+    public function wdgk_is_sold_individually( $individually, $product ) {
+        // echo '<pre>'; print_r( $product ); echo '</pre>'; die;
+        $donation_product = "";
+        $options = wdgk_get_wc_donation_setting();
+        $product_id = $product->get_id();
+        
+        $is_donatable = wdgk_is_donatable($product_id);
+        if($is_donatable) {
+            $individually = true;
+        }else{
+            if (isset($options['Product'])) {
+                $donation_product   = $options['Product'];
+                if($donation_product == $product_id) {
+                    $individually = true;
+                }
+            }
+        }
+
+        return $individually;
     }
 }

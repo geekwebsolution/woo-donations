@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
         var note = "";
         var price = "";
         var variation_id = "";
-        var variation_values = [];
+        var variation_obj = {};
         var decimal_price = "";
 
         var variation_id = jQuery(this).closest('.wdgk_donation_content').find('#variation_id').val();
@@ -71,20 +71,22 @@ jQuery(document).ready(function ($) {
         if(variation_id != undefined && variation_id == '') {
             jQuery(this).closest('.wdgk_donation_content').find(".wdgk_error_front").text("Please fill required fields!!");
             return false;
+        }else{
+            jQuery(this).closest('.wdgk_donation_content').find(".wdgk_error_front").text("");
         }
 
         jQuery(this).closest('.wdgk_donation_content').find('.wdgk_loader').removeClass("wdgk_loader_img");
 
         // set new cookie for display price with comma
         if(single_dp_id == 'true') {
-            if(variation_id != undefined) { 
+            if(variation_id != undefined) {
                 product_id = variation_id;
                 jQuery('.wdgk_variation.wdgk-row').each(function() {
                     var attr_name = jQuery(this).find("select").attr("data-attribute_name");
-                    var attr_value = jQuery(this).find("select:selected").val();
-                    variation_values[attr_name] = attr_value;
+                    var attr_value = jQuery(this).find("select").find(":selected").val();
+                    variation_obj[attr_name] = attr_value;
                 });
-                setCookie('wdgk_variation_product:'+product_id, JSON.stringify(variation_values), 1);
+                setCookie('wdgk_variation_product:'+variation_id, JSON.stringify(variation_obj), 1);
             }
             setCookie('wdgk_product_display_price:'+product_id, price, 1);
             setCookie('wdgk_product_price:'+product_id, decimal_price, 1);
@@ -94,8 +96,6 @@ jQuery(document).ready(function ($) {
             setCookie('wdgk_product_price', decimal_price, 1);
             setCookie('wdgk_donation_note', note_text, 1);
         }
-
-        // console.log(decimal_price);
 
         var $data = {
             action: 'wdgk_donation_form',
@@ -122,8 +122,6 @@ jQuery(document).ready(function ($) {
             }
         });
     });
-
-
 
 });
 

@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) exit;
 
 global $post;
 ?>
-<div id="wdgk_donation_form_data" class="panel woocommerce_options_panel hidden">
+<div id="wdgk_donation_form_data" class="panel woocommerce_options_panel hidden" data-donatable-status="<?php echo esc_attr(get_post_meta($post->ID, 'wdgk-settings[wdgk_add_note]', true)); ?>">
     <div class="options_group">
         <p class="wdgk_shortcode form-field">
             <label for="wdgk_shortcode"><?php esc_html_e('Shortcode', 'woo-donations'); ?></label>
@@ -24,6 +24,7 @@ global $post;
             'value'         => get_post_meta($post->ID, 'wdgk-settings[wdgk_add_note]', true),
             'wrapper_class' => '',
             'label'         => __( 'Add Note', 'woo-donations' ),
+            'cbvalue'       => esc_attr('on'),
             'description'   => __( 'Enable to display donation note on form', 'woo-donations' )
         ) );
         ?>
@@ -83,7 +84,6 @@ global $post;
     <script>
         (function ($) {
             $(window).bind("load", function () {
-                console.log("On load");
                 show_hide_donable_panel();
 
                 if ($('#_regular_price').val() == '') {
@@ -97,7 +97,6 @@ global $post;
             });
 
             function show_hide_donable_panel() {
-                console.log("show/hide panel");
                 const is_donable = $('input#_donatable:checked').length;
                 if (is_donable) {
                     $('.show_if_donatable').show();

@@ -18,7 +18,13 @@ function failure_option_msg_wdgk($msg){
 
 // Checks if a product is marked as a donation product
 function wdgk_is_donatable($id) {
-	return apply_filters('wdgk_is_donatable', get_post_meta($id, '_donatable', true) == 'yes');
+	$product = "";
+	$options = wdgk_get_wc_donation_setting();
+	if (isset($options['Product'])) {
+		$product = $options['Product'];
+	}
+
+	return apply_filters('wdgk_is_donatable', get_post_meta($id, '_donatable', true) == 'yes' && $product != $id);
 }
 
 function wdgk_add_donation_product_to_cart($id) {

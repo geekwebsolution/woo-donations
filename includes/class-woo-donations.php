@@ -103,7 +103,7 @@ class Woo_Donations {
 		$this->loader->add_action( 'woocommerce_product_data_panels', $plugin_admin, 'wdgk_product_data_panel' );
 		$this->loader->add_action( 'woocommerce_process_product_meta', $plugin_admin, 'wdgk_process_product_meta' );
 		$this->loader->add_filter( 'product_type_options', $plugin_admin, 'wdgk_add_product_type_option', 11, 1 );
-		$this->loader->add_action( 'save_post_product', $plugin_admin, 'wdgk_save_post_product', 10, 3 );
+		$this->loader->add_action( 'save_post_product', $plugin_admin, 'wdgk_save_post_product', 50, 3 );
 	}
 
 	/**
@@ -149,6 +149,7 @@ class Woo_Donations {
         $this->loader->add_action( 'woocommerce_thankyou', $plugin_public, 'wdgk_thankyou_change_order_status' );
 		
         $this->loader->add_filter( 'wc_get_template', $plugin_public, 'wdgk_modify_template', 11, 5 );
+        $this->loader->add_filter( 'woocommerce_is_sold_individually', $plugin_public, 'wdgk_is_sold_individually', 10, 2 );
 	}
 
 	/**

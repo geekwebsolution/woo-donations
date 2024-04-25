@@ -64,7 +64,6 @@ class Woo_Donations_Public {
     }
 
     public function wdgk_donation_form_front_html($redurl) {
-
         global $woocommerce;
         $product = $text = $note = $note_html = $donation_price = $donation_note = "";
         $form_title			= "Donation";
@@ -112,7 +111,6 @@ class Woo_Donations_Public {
         if (!empty($product) && $note == 'on') {
             $note_html = '<textarea id="w3mission" rows="3" cols="20" placeholder="'.esc_attr(wp_unslash($note_placeholder),'woo-donations').'" name="donation_note" class="donation_note">'.wp_unslash($donation_note).'</textarea>';
         }
-        
     
         if (!empty($product)) {
     
@@ -170,12 +168,13 @@ class Woo_Donations_Public {
 
         $donatable_prods = array();
         foreach ($_COOKIE as $cookie_key => $cookie_value) {
-            if (strpos($cookie_key, 'wdgk_product_price:') === 0) {
+            if (strpos($cookie_key, 'wdgk_product_price:') === 0 || strpos($cookie_key, 'wdgk_donation_note:') === 0) {
                 $donatable_prods[$cookie_key] = $cookie_value;
             }
         }
 
         if(!empty($donatable_prods)) {
+
             $product = wc_get_product($product_id);
             if(isset($variation_id) && !empty($variation_id)) {
                 $id = wp_get_post_parent_id($variation_id);
@@ -208,7 +207,9 @@ class Woo_Donations_Public {
                     if(isset($donation_note) && !empty($donation_note))		$cart_item_data['donation_note'] = implode("<br />", $donation_note);
                 }
             }
-        }else{
+        }
+
+        if(!isset($cart_item_data['donation_price'])) {
             $pid = "";
 
             $options = wdgk_get_wc_donation_setting();
@@ -229,19 +230,12 @@ class Woo_Donations_Public {
     }
     
     public function wdgk_before_calculate_totals($cart_obj) {
-        $pid = "";
-        $options = wdgk_get_wc_donation_setting();
-        if (isset($options['Product'])) {
-            $pid = $options['Product'];
-        }
         if (is_admin() && !defined('DOING_AJAX')) {
             return;
         }
         // Iterate through each cart item
         foreach ($cart_obj->get_cart() as $key => $value) {
-            $id = $value['data'];
-    
-            // if (isset($value['donation_price']) && $id->get_id() == $pid) {
+            
             if (isset($value['donation_price'])) {
                 $price = $value['donation_price'];
                 $value['data']->set_price(($price));
@@ -282,7 +276,7 @@ class Woo_Donations_Public {
     }
 
     public function wdgk_plugin_republic_get_item_data($item_data, $cart_item_data){
-        if ( isset($cart_item_data['donation_note'])  && isset($cart_item_data['donation_price']) && !empty($cart_item_data['donation_note']) && !empty($cart_item_data['donation_note'])) {
+        if ( isset($cart_item_data['donation_price']) && isset($cart_item_data['donation_note']) && !empty($cart_item_data['donation_note'])) {
             $item_data[] = array(
                 'key' => __('Description', 'woo-donations'),
                 'value' => wp_unslash($cart_item_data['donation_note'])
@@ -302,6 +296,7 @@ class Woo_Donations_Public {
     }
 
     public function wdgk_plugin_republic_order_item_name($product_name, $item) {
+        // echo '<pre>'; print_r( $item ); echo '</pre>';
         if (isset($item['donation_note']) && isset($item['donation_price'])) {
 
             $product_name .= sprintf(
@@ -350,6 +345,10 @@ class Woo_Donations_Public {
             return $template;
         }
 
+        $product_id = '';
+        $options = wdgk_get_wc_donation_setting();
+        if(isset($options['Product']))      $product_id = $options['Product'];
+
         $path = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wc-templates/';
 
         switch ($template_name) {
@@ -359,21 +358,21 @@ class Woo_Donations_Public {
 
             case 'loop/price.php':
                 global $product;
-                if (!is_null($product) && wdgk_is_donatable($product->get_id())) {
+                if (!is_null($product) && (wdgk_is_donatable($product->get_id()) || $product_id == $product->get_id())) {
                     $template = $path . $template_name;
                 }
                 break;
 
             case 'single-product/price.php':
             case 'single-product/add-to-cart/variation-add-to-cart-button.php' :
-                if (wdgk_is_donatable(get_queried_object_id())) {
+                if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
                     $template = $path . $template_name;
                 }
                 break;
 
             case 'single-product/add-to-cart/simple.php' :
             case 'single-product/add-to-cart/variable.php' :
-                if (wdgk_is_donatable(get_queried_object_id())) {
+                if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
                     $template = $path . 'single-product/add-to-cart/product.php';
                 }
                 break;
@@ -384,24 +383,22 @@ class Woo_Donations_Public {
         return apply_filters('wdgk_get_template', $template, $template_name, $args, $template_path, $default_path);
     }
 
-    public function wdgk_is_sold_individually( $individually, $product ) {
-        // echo '<pre>'; print_r( $product ); echo '</pre>'; die;
+    public function wdgk_cart_item_quantity( $product_quantity, $cart_item_key, $cart_item ) {
         $donation_product = "";
+        $product_id = $cart_item['product_id'];
         $options = wdgk_get_wc_donation_setting();
-        $product_id = $product->get_id();
-        
+
         $is_donatable = wdgk_is_donatable($product_id);
         if($is_donatable) {
-            $individually = true;
+            return '';
         }else{
             if (isset($options['Product'])) {
                 $donation_product   = $options['Product'];
                 if($donation_product == $product_id) {
-                    $individually = true;
+                    return '';
                 }
             }
         }
-
-        return $individually;
+        return $product_quantity;
     }
 }

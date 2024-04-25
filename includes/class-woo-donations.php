@@ -149,7 +149,8 @@ class Woo_Donations {
         $this->loader->add_action( 'woocommerce_thankyou', $plugin_public, 'wdgk_thankyou_change_order_status' );
 		
         $this->loader->add_filter( 'wc_get_template', $plugin_public, 'wdgk_modify_template', 11, 5 );
-        $this->loader->add_filter( 'woocommerce_is_sold_individually', $plugin_public, 'wdgk_is_sold_individually', 10, 2 );
+        
+        $this->loader->add_filter( 'woocommerce_cart_item_quantity', $plugin_public, 'wdgk_cart_item_quantity', 10, 3 );
 	}
 
 	/**

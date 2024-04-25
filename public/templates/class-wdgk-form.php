@@ -98,7 +98,7 @@ if(wc()->cart){
 }
 
 if (!empty($product_id) && $note == 'on') {
-    $note_html = '<textarea id="w3mission" rows="3" cols="20" placeholder="'.esc_attr_e(wp_unslash($note_placeholder)).'" name="donation_note" class="donation_note">'.wp_unslash($donation_note).'</textarea>';
+    $note_html = sprintf( '<textarea id="w3mission" rows="3" cols="20" placeholder="%s" name="donation_note" class="donation_note">%s</textarea>', esc_attr(wp_unslash($note_placeholder)), esc_textarea(wp_unslash($donation_note)) );
 }
 
 $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();

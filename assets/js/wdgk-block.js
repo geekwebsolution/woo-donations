@@ -1,5 +1,7 @@
 jQuery(document).ready(function ($) {
-    /** Gutenberg block for Woo donation form */
+    /** 
+     * Gutenberg block for Woo donation form
+     */
     var blocks = wp.blocks;
     var element = wp.element;
     var el = element.createElement;
@@ -9,7 +11,6 @@ jQuery(document).ready(function ($) {
         title: 'Woo Donations',
         icon: 'money-alt',
         category: 'common',
-    
         edit: function ( props ) {
             return el(wp.serverSideRender, {
                 block: "woo-donations-block/woo-donations"    

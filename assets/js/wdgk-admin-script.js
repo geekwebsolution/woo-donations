@@ -1,5 +1,8 @@
 
 jQuery(document).ready(function ($) {
+    /**
+     * Search product for donation JS
+     */
     jQuery('.wdgk_select_product').select2({
         ajax: {
             type: 'POST',
@@ -12,7 +15,6 @@ jQuery(document).ready(function ($) {
                 }
             },
             processResults: (data, params) => {
-                console.log(data);
                 const results = data.map(item => {
                     return {
                         id: item.id,
@@ -26,4 +28,35 @@ jQuery(document).ready(function ($) {
         },
         minimumInputLength: 3
     });
+
+    jQuery(".wdgk_shortcode_copy").click(function (event) {
+        event.preventDefault();
+        var text = jQuery(this).text();
+        wdgkCopyToClipboard(text, true, "Copied");
+    });
 });
+
+function wdgkCopyToClipboard(value, showNotification, notificationText) {
+    var $temp = jQuery("<input>");
+    jQuery("body").append($temp);
+    $temp.val(value).select();
+    document.execCommand("copy");
+    $temp.remove();
+
+    if (typeof showNotification === 'undefined') {
+        showNotification = true;
+    }
+    if (typeof notificationText === 'undefined') {
+        notificationText = "Copied to clipboard";
+    }
+
+
+    if (showNotification) {
+
+        jQuery(".wdgk_shortcode_copy").attr('data-balloon', notificationText);
+
+        setTimeout(function () {
+            jQuery(".wdgk_shortcode_copy").attr('data-balloon', 'click to copy');
+        }, 1000);
+    }
+}

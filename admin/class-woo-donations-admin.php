@@ -8,17 +8,6 @@
  * @package    Woo_Donations
  * @subpackage Woo_Donations/admin
  */
-
-/**
- * The admin-specific functionality of the plugin.
- *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the admin-specific stylesheet and JavaScript.
- *
- * @package    Woo_Donations
- * @subpackage Woo_Donations/admin
- * @author     Geek Code Lab <support@geekcodelab.com>
- */
 class Woo_Donations_Admin {
 
 	/**
@@ -50,7 +39,6 @@ class Woo_Donations_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -63,8 +51,7 @@ class Woo_Donations_Admin {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 */
-        
-		// wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/woo-donations-admin.css', array(), $this->version, 'all' );
+
         if ($hook == 'woocommerce_page_wdgk-donation-page') {
             wp_enqueue_style( $this->plugin_name . '-select2-style', plugin_dir_url( __DIR__ ) . 'assets/css/select2.min.css', array(), $this->version, 'all' );
             wp_enqueue_style( $this->plugin_name . '-admin-style', plugin_dir_url( __DIR__ ) . 'assets/css/wdgk-admin-style.css', array(), $this->version, 'all' );
@@ -97,7 +84,7 @@ class Woo_Donations_Admin {
     }
 
     public function woo_donation_setting() {
-        include( WP_PLUGIN_DIR . '/woo-donations/admin/class-woo-donation-settings.php' );
+        include( plugin_dir_path( __DIR__ ) . 'admin/class-woo-donation-settings.php' );
     }
 
     public function wdgk_woo_admin_order_items_column( $order_columns ){
@@ -179,34 +166,34 @@ class Woo_Donations_Admin {
     }
 
     public function wdgk_block_editor_script() {
-        wp_enqueue_style( $this->plugin_name . '-block-style', WP_PLUGIN_DIR . 'assets/css/wdgk-front-style.css', array('wp-edit-blocks'), $this->version );
-        wp_enqueue_script( $this->plugin_name . '-block-script', WP_PLUGIN_DIR . 'assets/js/wdgk-block.js', array( 'wp-blocks', 'wp-element' ), $this->version );
+        wp_enqueue_style( $this->plugin_name . '-block-style',  plugin_dir_url( __DIR__ ) . '/assets/css/wdgk-front-style.css', array('wp-edit-blocks'), $this->version );
+        wp_enqueue_script( $this->plugin_name . '-block-script', plugin_dir_url( __DIR__ ) . '/assets/js/wdgk-block.js', array( 'wp-blocks', 'wp-element' ), $this->version );
     }
 
     public function wdgk_wp_donation_block() {
         register_block_type( 'woo-donations-block/woo-donations', array(
-            'api_version' => 3,
             'editor_script' => 'wdgk-block-script',
             'render_callback' => array( $this, 'wdgk_gutenberg_render_callback' )
         ) );
     }
 
     public function wdgk_gutenberg_render_callback( $block_attributes, $content ) {
+        ob_start();
+        
         $donation_form_html = "";
         $additional_style = wdgk_form_internal_style();
     
         if($additional_style != "") {
             $donation_form_html .= '<style>'. esc_html($additional_style) .'</style>';
-        }
-    
-        $donation_form_html .= stripslashes( do_shortcode('[wdgk_donation]') );
-    
-        return $donation_form_html;
+        } ?>
+            <?php echo stripslashes( do_shortcode('[wdgk_donation]') ); ?>
+        <?php
+        return ob_get_clean();
     }
 
     public function wdgk_product_data_tabs( $tabs ) {
         $wdgk_options = array(
-            'label' => __('Donation Form', 'wc-donation-platform'),
+            'label' => __('Donation Form', 'woo-donations'),
             'target' => 'wdgk_donation_form_data',
             'class' => 'show_if_donatable hidden wdgk_donation_options hide_if_external',
             'priority' => 65,
@@ -216,7 +203,7 @@ class Woo_Donations_Admin {
     }
 
     public function wdgk_product_data_panel() {
-        include WP_PLUGIN_DIR . '/woo-donations/admin/class-product-tab-options.php';
+        include plugin_dir_path( __DIR__ ) . 'admin/class-product-tab-options.php';
     }
 
     public function wdgk_process_product_meta($post_id) {
@@ -274,12 +261,5 @@ class Woo_Donations_Admin {
             , "_donatable"
             , isset($_POST["_donatable"]) ? "yes" : "no"
         );
-        // if(isset($_POST["_donatable"])) {
-        //     update_post_meta(
-        //         $post_id,
-        //         "_sold_individually",
-        //         "yes"
-        //     ); 
-        // }
     }
 }

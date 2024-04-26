@@ -42,12 +42,6 @@ class Woo_Donations {
 	/**
 	 * Load the required dependencies for this plugin.
 	 *
-	 * Include the following files that make up the plugin:
-	 *
-	 * - Woo_Donations_Loader. Orchestrates the hooks of the plugin.
-	 * - Woo_Donations_Admin. Defines all hooks for the admin area.
-	 * - Woo_Donations_Public. Defines all hooks for the public side of the site.
-	 *
 	 * Create an instance of the loader which will be used to register the hooks with WordPress.
 	 */
 	private function load_dependencies() {
@@ -180,5 +174,4 @@ class Woo_Donations {
 	public function get_version() {
 		return $this->version;
 	}
-
 }

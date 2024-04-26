@@ -44,7 +44,7 @@ class Woo_Donations_Activator {
             $taxonomy = 'product_visibility';
             wp_set_object_terms($id, array( 'exclude-from-catalog', 'exclude-from-search' ), $taxonomy);
 
-            $image_url  = WP_PLUGIN_DIR . '/woo-donations/assets/images/donation_thumbnail.jpg';
+            $image_url  = plugin_dir_url( __DIR__ ) . 'assets/images/donation_thumbnail.jpg';
             $upload_dir = wp_upload_dir();
 
             if(file_exists($image_url)) {

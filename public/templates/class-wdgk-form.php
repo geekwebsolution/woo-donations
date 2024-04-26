@@ -1,7 +1,7 @@
 <?php
 global $woocommerce;
 
-$product_id 			= "";
+$product_id 		= "";
 $text 				= "Add Donation";
 $note 				= "";
 $note_html 			= "";
@@ -79,15 +79,8 @@ if(wc()->cart){
                 $item_id =  $values['product_id'];
                 $donateble_product_id = (!empty($cookie_variation_id)) ? $cookie_variation_id : $product_id;
                 
-                if ($item_id == $product_id) {
-                    if($product_form) {
-                        $product_display_price_key = sprintf('wdgk_product_display_price:%s',$donateble_product_id);
-                        $product_note_key  = sprintf('wdgk_donation_note:%s',$donateble_product_id);
-                        if(array_key_exists($product_display_price_key,$_COOKIE)) {
-                            $donation_price = isset($_COOKIE[$product_display_price_key]) ? $_COOKIE[$product_display_price_key] : $values['donation_price'];
-                            if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
-                        }
-                    }else{
+                if(!$product_form) {
+                    if ($item_id == $product_id) {
                         $donation_price = isset($_COOKIE['wdgk_product_display_price']) ? $_COOKIE['wdgk_product_display_price'] : $values['donation_price'];
                         if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
                     }
@@ -117,8 +110,8 @@ if(!empty($donation_price))	{
 <?php if ($has_child): ?>
     <form class="variations_form cart wdgk-donation-form" method="post" 
     action="<?php echo esc_url($cart_url); ?>"
-    autocomplete="off" enctype='multipart/form-data' data-product_id="<?php echo $product_id; ?>"
-    data-product_variations="<?php echo $variations_attr; ?>">
+    autocomplete="off" enctype='multipart/form-data' data-product_id="<?php echo intval($product_id); ?>"
+    data-product_variations="<?php echo esc_attr($variations_attr); ?>">
 <?php endif; ?>
 <div class="wdgk_donation_content">
     <?php 
@@ -129,17 +122,14 @@ if(!empty($donation_price))	{
 
     <div class="wdgk_display_option"> 
         <span><?php echo esc_html($cur_syambols[$current_cur]); ?></span>
-        <input type="text" name="donation-price" class="wdgk_donation" placeholder="<?php echo esc_attr__(wp_unslash($amount_placeholder),'woo-donations') ?>" value="<?php echo esc_attr($donation_price); ?>" >
+        <input type="text" name="donation-price" class="wdgk_donation" placeholder="<?php echo esc_attr(wp_unslash($amount_placeholder)) ?>" value="<?php echo esc_attr($donation_price); ?>" >
     </div>
 
     <?php
     if ($has_child) :
-        $selected = array(); ?>
+        $selected = $selected_attributes = array(); ?>
         <input type="hidden" name="variation_id" id="variation_id" value="">
-        <?php 
-        $cookie_var_values_key = 'wdgk_variation_product:' . $cookie_variation_id;
-        $selected_attributes = (isset($_COOKIE[$cookie_var_values_key]) && !empty($_COOKIE[$cookie_var_values_key])) ? json_decode( wp_unslash( $_COOKIE[$cookie_var_values_key] ), true ) : array();
-
+        <?php
         foreach ($attributes as $attribute => $options) :
             $esc_attribute = esc_attr(sanitize_title($attribute));
             ?>
@@ -150,13 +140,11 @@ if(!empty($donation_price))	{
                 </label>
                 <div>
                     <?php
-                    $selected = isset( $selected_attributes[ 'attribute_' . sanitize_title( $attribute ) ] ) ? wc_clean( $selected_attributes[ 'attribute_' . sanitize_title( $attribute ) ] ) : $product->get_variation_default_attribute( $attribute );
                     $variation_args = array(
                         'options' => $options,
                         'attribute' => $esc_attribute,
                         'product' => $product
                     );
-                    if(!empty($selected))      $variation_args['selected'] = $selected;
                     wc_dropdown_variation_attribute_options(
                         $variation_args
                     ); ?>

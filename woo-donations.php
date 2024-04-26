@@ -5,7 +5,7 @@ Description: Woo Donation is a plugin that is used to collect donations on your 
 Author: Geek Code Lab
 Version: 4.3.2
 Author URI: https://geekcodelab.com/
-WC tested up to: 8.7.0
+WC tested up to: 8.8.2
 Text Domain : woo-donations
 */
 
@@ -17,15 +17,6 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'WDGK_BUILD', '4.3.2' );
 
 if (!defined('ABSPATH')) exit;
-
-if (!defined("WDGK_PLUGIN_DIR_PATH"))
-
-	define("WDGK_PLUGIN_DIR_PATH", plugin_dir_path(__FILE__));
-
-if (!defined("WDGK_PLUGIN_URL"))
-
-	define("WDGK_PLUGIN_URL", plugins_url() . '/' . basename(dirname(__FILE__)));
-
 
 /** Add notice if woocommerce not activated */
 if ( ! function_exists( 'wdgk_install_woocommerce_admin_notice' ) ) {
@@ -83,7 +74,7 @@ function wdgk_plugin_add_settings_link($links) {
 }
 
 $plugin = plugin_basename(__FILE__);
-add_filter("plugin_action_links_$plugin", 'wdgk_plugin_add_settings_link');
+add_filter("plugin_action_links_{$plugin}", 'wdgk_plugin_add_settings_link');
 
 /**
  * Begins execution of the plugin.
@@ -205,7 +196,6 @@ function wdgk_sync_donation_orders_admin_notice() {
 			printf( '<div class="%1$s"><p>%2$s - <strong>%3$s</strong></p></div>', esc_attr( $class ), __('✩ Database synchronization for donation orders is currently in progress.', 'woo-donations'), __('Woo Donations','woo-donations') );
 		}
 	}
-
 }
 
 /**

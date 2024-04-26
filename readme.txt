@@ -5,7 +5,7 @@ Tags: WooCommerce Donation, WooCommerce Donation Campaign, WooCommerce Cart Page
 Requires PHP: 7.4
 Requires at least: 6.3
 Tested up to: 6.5
-WC tested up to: 8.7.0
+WC tested up to: 8.8.2
 Stable tag: 4.3.2
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
@@ -28,7 +28,7 @@ When using woocommerce blocks in cart or checkout page you can use shortcode to 
 
 
 **Free Plugin Features** 
-
+* Set up multiple donation forms
 * Set up a specific product as donation from list of product
 * Set up location to display donation form with options cart and checkout page 
 * Set up donation button color as per your theme main color requirement
@@ -59,7 +59,7 @@ When using woocommerce blocks in cart or checkout page you can use shortcode to 
 	<li>Allow Email template for send mail to donor.</li>		
 	<li>Option to change any title, label, placeholder, button text etc.</li>			
 	<li>Timely <a href="https://geekcodelab.com/contact/" target="_blank">support</a> 24/7.</li>	
-	<li>Regular updates.</li>		
+	<li>Regular updates.</li>
 	<li>Well documented.</li>	
 </ul>
 == GET PRO PLUGIN ==
@@ -82,8 +82,12 @@ When using woocommerce blocks in cart or checkout page you can use shortcode to 
 == You can use shortcodes ==
 <code>[wdgk_donation]</code>
 
+<code>[wdgk_donation product_id="123"]</code>
+This Shortcode displays donation form of specific product. Before using you need to enable Donation Product checkbox in edit product page.
+
 <h4>Here is Template code</h4>
 <code> <?php echo do_shortcode('[wdgk_donation]'); ?></code>
+<code> <?php echo do_shortcode('[wdgk_donation product_id="123"]'); ?></code>
 
 **Free Version Preview**
 [youtube https://youtu.be/S4U2twhQgpg]
@@ -108,7 +112,10 @@ After Plugin Active go to WooCommerce-> Donation.
 7. Order confirm page 
 8. Admin orders
 9. Gutenberg block for donation form
-10. Woo Donation pro features
+10. Donation Product Page
+11. Donation Product Edit Page
+12. Shortcode Page
+13. Woo Donation pro features
 
 
 
@@ -203,20 +210,16 @@ Added Label option for donation form
 Added Label option for donation form
 
 = 1.8=
-
 Added Support and pro link, changed browser cookie name.
 
 = 1.7=
-
 Fixed Design bug and add pro plugin details.
 
 = 1.6=
-
  Fixed bug.
 
 = 1.5=
  Fixed bug.
- 
  
 = 1.4=
  Fixed bug.

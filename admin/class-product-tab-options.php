@@ -92,7 +92,6 @@ global $post;
             });
 
             $('input#_donatable').on('change', function () {
-                console.log("On change");
                 show_hide_donable_panel();
             });
 

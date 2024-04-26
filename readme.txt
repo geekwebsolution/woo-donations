@@ -115,7 +115,8 @@ After Plugin Active go to WooCommerce-> Donation.
 10. Donation Product Page
 11. Donation Product Edit Page
 12. Shortcode Page
-13. Woo Donation pro features
+13. Variable Product Page
+14. Woo Donation pro features
 
 
 

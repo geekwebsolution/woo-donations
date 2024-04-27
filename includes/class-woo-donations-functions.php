@@ -1,4 +1,7 @@
 <?php
+/**
+ * Register all functions for the plugin
+ */
 use Automattic\WooCommerce\Utilities\OrderUtil;
 
 /**

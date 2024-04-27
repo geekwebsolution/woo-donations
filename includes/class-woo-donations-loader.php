@@ -1,12 +1,6 @@
 <?php
 /**
  * Register all actions and filters for the plugin
- *
- * @link       https://geekcodelab.com/
- * @since      1.0.0
- *
- * @package    Woo_Donations
- * @subpackage Woo_Donations/includes
  */
 class Woo_Donations_Loader {
 

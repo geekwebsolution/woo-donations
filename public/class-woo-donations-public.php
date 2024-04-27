@@ -1,12 +1,6 @@
 <?php
 /**
  * The public-facing functionality of the plugin.
- *
- * @link       https://geekcodelab.com/
- * @since      1.0.0
- *
- * @package    Woo_Donations
- * @subpackage Woo_Donations/public
  */
 class Woo_Donations_Public {
 	/**

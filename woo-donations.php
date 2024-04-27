@@ -18,6 +18,12 @@ define( 'WDGK_BUILD', '4.3.2' );
 
 if (!defined('ABSPATH')) exit;
 
+if(!defined('WDGK_PLUGIN_URL'))
+	define( 'WDGK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+
+if(!defined('WDGK_PLUGIN_PATH'))
+	define( 'WDGK_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+
 /** Add notice if woocommerce not activated */
 if ( ! function_exists( 'wdgk_install_woocommerce_admin_notice' ) ) {
 	/**

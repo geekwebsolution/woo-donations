@@ -81,6 +81,12 @@ global $post;
         ));
         ?>
     </div>
+
+    <div class="options_group">
+        <p class="wdgk-ask-review">
+            <a href="https://wordpress.org/support/plugin/woo-donations/reviews/" target="_blank"><?php echo esc_html('If you like Woo Donations and want to support the further growth and development of the plugin, please consider a 5-star rating on wordpress.org.','woo-donations'); ?></a>
+        </p>
+    </div>
     <script>
         (function ($) {
             $(window).bind("load", function () {

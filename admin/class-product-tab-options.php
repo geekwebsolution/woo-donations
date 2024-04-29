@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) exit;
 
 global $post;
 ?>
-<div id="wdgk_donation_form_data" class="panel woocommerce_options_panel hidden" data-donatable-status="<?php echo esc_attr(get_post_meta($post->ID, 'wdgk-settings[wdgk_add_note]', true)); ?>">
+<div id="wdgk_donation_form_data" class="panel woocommerce_options_panel hidden">
     <div class="options_group">
         <p class="wdgk_shortcode form-field">
             <label for="wdgk_shortcode"><?php esc_html_e('Shortcode', 'woo-donations'); ?></label>

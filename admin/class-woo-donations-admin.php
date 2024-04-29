@@ -65,7 +65,6 @@ class Woo_Donations_Admin {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts( $hook ) {
-
 		/**
 		 * This function is provided for demonstration purposes only.
 		 */
@@ -132,7 +131,7 @@ class Woo_Donations_Admin {
             }
         }else{
             $order_flag_meta = $order->get_meta("wdgk_donation_order_flag");
-    
+
             if(isset($order_flag_meta) && !empty($order_flag_meta)) {
                 _e('<span class="dashicons dashicons-yes-alt wdgk_right_icon"></span>');
             }
@@ -179,15 +178,17 @@ class Woo_Donations_Admin {
 
     public function wdgk_gutenberg_render_callback( $block_attributes, $content ) {
         ob_start();
-        
+	
         $donation_form_html = "";
         $additional_style = wdgk_form_internal_style();
-    
+
         if($additional_style != "") {
-            $donation_form_html .= '<style>'. esc_html($additional_style) .'</style>';
-        } ?>
-            <?php echo stripslashes( do_shortcode('[wdgk_donation]') ); ?>
-        <?php
+            $donation_form_html .= '<style>'.$additional_style.'</style>';
+        }
+
+        $donation_form_html .= stripslashes( do_shortcode('[wdgk_donation]') );
+        _e( $donation_form_html );
+
         return ob_get_clean();
     }
 

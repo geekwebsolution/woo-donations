@@ -52,7 +52,7 @@ This Shortcode displays specific product donation form. Before using this shortc
 * Dynamic Label Options.
 
 **Free Version Preview**
-[youtube https://youtu.be/S4U2twhQgpg]
+[youtube https://youtu.be/2WYxrPi8zcg]
 
 **Pro Plugin Features** 
 

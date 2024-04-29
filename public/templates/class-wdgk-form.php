@@ -60,17 +60,17 @@ $has_child = is_a($product, 'WC_Product_Variable') && $product->has_child();
 if ($has_child) {
     wp_enqueue_script('wc-add-to-cart-variation');
 
-    $get_variations = count($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
-    $available_variations = $get_variations ? $product->get_available_variations() : false;
-    $attributes = $product->get_variation_attributes();
-    $attribute_keys = array_keys($attributes);
-    $variations_json = wp_json_encode($available_variations);
-    $variations_attr = function_exists('wc_esc_json') ? wc_esc_json($variations_json) : _wp_specialchars($variations_json, ENT_QUOTES, 'UTF-8', true);
-    $selected_attributes = $product->get_default_attributes();
-    $get_variations = count($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
+    $get_variations         = count($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
+    $available_variations   = $get_variations ? $product->get_available_variations() : false;
+    $attributes             = $product->get_variation_attributes();
+    $attribute_keys         = array_keys($attributes);
+    $variations_json        = wp_json_encode($available_variations);
+    $variations_attr        = function_exists('wc_esc_json') ? wc_esc_json($variations_json) : _wp_specialchars($variations_json, ENT_QUOTES, 'UTF-8', true);
+    $selected_attributes    = $product->get_default_attributes();
+    $get_variations         = count($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
 }
 
-if(wc()->cart){
+if(wc()->cart) {
     $cart_count = is_object($woocommerce->cart) ? $woocommerce->cart->get_cart_contents_count() : '';
     if ($cart_count != 0) {
         $cartitems = $woocommerce->cart->get_cart();
@@ -136,7 +136,7 @@ if(!empty($donation_price))	{
             <div class="variations wdgk_variation wdgk-row">
                 <label class="wdgk-variation-heading" for="<?php echo $esc_attribute; ?>">
                     <?php echo wc_attribute_label($attribute, $product); ?>
-                    <abbr class="required" title="<?php esc_html_e('required', 'wc-donation-platform'); ?>">*</abbr>
+                    <abbr class="required" title="<?php esc_html_e('required', 'woo-donations'); ?>">*</abbr>
                 </label>
                 <div>
                     <?php

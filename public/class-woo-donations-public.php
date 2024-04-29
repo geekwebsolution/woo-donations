@@ -342,7 +342,7 @@ class Woo_Donations_Public {
                 }
             }
 
-            if($donation_product == $item_id) {                
+            if($donation_product == $item_id) {
                 $order_donation_items[] = $item_id;
             }
         }

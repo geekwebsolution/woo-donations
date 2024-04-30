@@ -2,19 +2,20 @@
 global $woocommerce;
 
 $product_id 		= "";
-$text 				= "Add Donation";
+$text 				= __("Add Donation","woo-donations");
 $note 				= "";
 $note_html 			= "";
 $donation_price 	= "";
 $donation_p_id 	    = "";
 $donation_note 		= "";
 $product_form 		= false;
-$form_title			= "Donation";
+$form_title			= __("Donation","woo-donations");
 $amount_placeholder	= "Ex.100";
 $note_placeholder	= "Note";
 
 $options = wdgk_get_wc_donation_setting();
 $attr_product_id = (isset($value['product_id']) && !empty($value['product_id'])) ? $value['product_id'] : "";
+$attr_form_title = (isset($value['form_title']) && $value['form_title'] == 'false') ? $value['form_title'] : "";
 
 if(!empty($attr_product_id)) {
     $is_donatable = wdgk_is_donatable($attr_product_id);
@@ -52,8 +53,6 @@ if($product_form) {
 if(empty($product_id)) return;
 
 $product = wc_get_product($product_id);
-$cookie_var_key = 'wdgk_variation_product:' . $product_id;
-$cookie_variation_id = (isset($_COOKIE[$cookie_var_key]) && !empty($_COOKIE[$cookie_var_key])) ? $_COOKIE[$cookie_var_key] : '';
 
 $has_child = is_a($product, 'WC_Product_Variable') && $product->has_child();
 //enqueue woocommerce variation js
@@ -77,7 +76,6 @@ if(wc()->cart) {
         if (!empty($cartitems) && isset($cartitems)) {
             foreach ($cartitems as $item => $values) {
                 $item_id =  $values['product_id'];
-                $donateble_product_id = (!empty($cookie_variation_id)) ? $cookie_variation_id : $product_id;
                 
                 if(!$product_form) {
                     if ($item_id == $product_id) {
@@ -115,7 +113,7 @@ if(!empty($donation_price))	{
 <?php endif; ?>
 <div class="wdgk_donation_content">
     <?php 
-    if(isset($form_title) && !empty($form_title)) : ?>
+    if($attr_form_title != 'false') : ?>
         <h3><?php echo esc_attr__(wp_unslash($form_title),'woo-donations') ?></h3>
         <?php
     endif; ?>

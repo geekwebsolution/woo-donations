@@ -30,5 +30,5 @@ if ($product->is_in_stock()) {
     /**
      * Display Donation Form
      */
-    echo do_shortcode('[wdgk_donation product_id="' . $post->ID . '"]');
+    echo do_shortcode('[wdgk_donation product_id="' . $post->ID . '" form_title="false"]');
 }

@@ -37,7 +37,7 @@ This Shortcode displays specific product donation form. Before using this shortc
 <code> <?php echo do_shortcode('[wdgk_donation product_id="123"]'); ?></code>
 
 **Free Plugin Features** 
-* Set up multiple donation forms
+* Add multiple donation forms with different donation product
 * Set up a specific product as donation from list of product
 * Set up location to display donation form with options cart and checkout page 
 * Set up donation button color as per your theme main color requirement

@@ -78,7 +78,6 @@ if(wc()->cart) {
                 $item_id =  $values['product_id'];
                 if($product_form) {
                     $product_display_price_key = sprintf('wdgk_product_display_price:%s',$product_id);
-                    $product_note_key  = sprintf('wdgk_donation_note:%s',$product_id);
                     if(array_key_exists($product_display_price_key,$_COOKIE)) {
                         if(isset($_COOKIE[$product_display_price_key])) {
                             $donation_price = $_COOKIE[$product_display_price_key];
@@ -123,10 +122,10 @@ if(!empty($donation_price))	{
 <?php endif; ?>
 <div class="wdgk_donation_content">
     <?php 
-    if($attr_form_title != 'false') : ?>
-        <h3><?php echo esc_attr__(wp_unslash($form_title),'woo-donations') ?></h3>
+    if($attr_form_title != 'false' && !empty($form_title)) { ?>
+        <h3><?php echo esc_attr__(wp_unslash($form_title)) ?></h3>
         <?php
-    endif; ?>
+    } ?>
 
     <div class="wdgk_display_option"> 
         <span><?php echo esc_html($cur_syambols[$current_cur]); ?></span>

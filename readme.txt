@@ -38,17 +38,17 @@ This Shortcode displays specific product donation form. Before using this shortc
 
 **Free Plugin Features** 
 * Add multiple donation forms with different donation product
+* You can use Gutenberg block to display donation form
+* Manually have option to set donation form on other pages with shortcode
+* Manually have option to display donation form with Gutenberg widget 
 * Set up a specific product as donation from list of product
 * Set up location to display donation form with options cart and checkout page 
+* Manually enable disable option to display donation form on cart and checkout
+* Manually have option to set donation form on cart and checkout page
 * Set up donation button color as per your theme main color requirement
 * Options to set up donation button text as per your requirement
 * Options to set up donation button text color as per your requirement
-* Manually have option to set donation form on cart and checkout page
 * Manually have option to set Description field donation form
-* Manually have option to set donation form on other pages with shortcode
-* Manually have option to display donation form with Gutenberg widget 
-* Manually enable disable option to display donation form on cart and checkout
-* You can use Gutenberg block to display donation form
 * Dynamic Label Options.
 
 **Free Version Preview**

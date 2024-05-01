@@ -74,10 +74,19 @@ if(wc()->cart) {
     if ($cart_count != 0) {
         $cartitems = $woocommerce->cart->get_cart();
         if (!empty($cartitems) && isset($cartitems)) {
-            foreach ($cartitems as $item => $values) {
+            foreach ($cartitems as $item => $values) {                
                 $item_id =  $values['product_id'];
-                
-                if(!$product_form) {
+                if($product_form) {
+                    $product_display_price_key = sprintf('wdgk_product_display_price:%s',$product_id);
+                    if(array_key_exists($product_display_price_key,$_COOKIE)) {
+                        if(isset($_COOKIE[$product_display_price_key])) {
+                            $donation_price = $_COOKIE[$product_display_price_key];
+                        }else{
+                            if(isset($values['donation_price']))    $donation_price = $values['donation_price'];
+                        }
+                        if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
+                    }
+                }else{
                     if ($item_id == $product_id) {
                         $donation_price = isset($_COOKIE['wdgk_product_display_price']) ? $_COOKIE['wdgk_product_display_price'] : $values['donation_price'];
                         if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
@@ -113,10 +122,10 @@ if(!empty($donation_price))	{
 <?php endif; ?>
 <div class="wdgk_donation_content">
     <?php 
-    if($attr_form_title != 'false') : ?>
-        <h3><?php echo esc_attr__(wp_unslash($form_title),'woo-donations') ?></h3>
+    if($attr_form_title != 'false' && !empty($form_title)) { ?>
+        <h3><?php echo esc_attr__(wp_unslash($form_title)) ?></h3>
         <?php
-    endif; ?>
+    } ?>
 
     <div class="wdgk_display_option"> 
         <span><?php echo esc_html($cur_syambols[$current_cur]); ?></span>

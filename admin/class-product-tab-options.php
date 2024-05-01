@@ -90,7 +90,7 @@ global $post;
     <script>
         (function ($) {
             $(window).bind("load", function () {
-                show_hide_donable_panel();
+                wdgk_show_hide_donable_panel();
 
                 if ($('#_regular_price').val() == '') {
                     $('#_regular_price').val(1);
@@ -98,10 +98,19 @@ global $post;
             });
 
             $('input#_donatable').on('change', function () {
-                show_hide_donable_panel();
+                wdgk_show_hide_donable_panel();
             });
 
-            function show_hide_donable_panel() {
+            $('#product-type').change(function(){
+                const selected_type = $(this).val();
+                if(selected_type == 'simple' || selected_type == 'variable') {
+                    setTimeout(() => {
+                        wdgk_show_hide_donable_panel();
+                    }, 200);
+                }
+            });
+
+            function wdgk_show_hide_donable_panel() {
                 const is_donable = $('input#_donatable:checked').length;
                 if (is_donable) {
                     $('.show_if_donatable').show();

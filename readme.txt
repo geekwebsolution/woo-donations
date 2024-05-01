@@ -26,9 +26,8 @@ Also works with WordPress Multisite installs (each blog from the network has itâ
 **Using woocommerce blocks display donation form**
 When using woocommerce blocks in cart or checkout page you can use shortcode to display donation form. Please <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a> for more details.
 
-== You can use shortcodes ==
+<h4>You can use shortcodes</h4>
 <code>[wdgk_donation]</code>
-
 <code>[wdgk_donation product_id="123"]</code>
 This Shortcode displays specific product donation form. Before using this shortcode mandatory to enable Donation Product checkbox on product edit page.
 
@@ -36,7 +35,7 @@ This Shortcode displays specific product donation form. Before using this shortc
 <code> <?php echo do_shortcode('[wdgk_donation]'); ?></code>
 <code> <?php echo do_shortcode('[wdgk_donation product_id="123"]'); ?></code>
 
-**Free Plugin Features** 
+<h4>Free Plugin Features</h4>
 * Add multiple donation forms with different donation product
 * You can use Gutenberg block to display donation form
 * Manually have option to set donation form on other pages with shortcode
@@ -51,11 +50,10 @@ This Shortcode displays specific product donation form. Before using this shortc
 * Manually have option to set Description field donation form
 * Dynamic Label Options.
 
-**Free Version Preview**
+<h4>Free Version Preview</h4>
 [youtube https://youtu.be/2WYxrPi8zcg]
 
-**Pro Plugin Features** 
-
+<h4>Pro Plugin Features</h4> 
 <ul>
 	<li>Display predefined and custom price donation amount options.</li>
 	<li>Display donation request popup.</li>

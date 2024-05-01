@@ -101,6 +101,15 @@ global $post;
                 show_hide_donable_panel();
             });
 
+            $('#product-type').change(function(){
+                const selected_type = $(this).val();
+                if(selected_type == 'simple' || selected_type == 'variable') {
+                    setTimeout(() => {
+                        show_hide_donable_panel();
+                    }, 200);
+                }
+            });
+
             function show_hide_donable_panel() {
                 const is_donable = $('input#_donatable:checked').length;
                 if (is_donable) {

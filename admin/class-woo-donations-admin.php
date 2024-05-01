@@ -196,7 +196,7 @@ class Woo_Donations_Admin {
         $wdgk_options = array(
             'label' => __('Donation Form', 'woo-donations'),
             'target' => 'wdgk_donation_form_data',
-            'class' => 'show_if_donatable hidden wdgk_donation_options hide_if_external',
+            'class' => 'show_if_donatable hidden wdgk_donation_options hide_if_external hide_if_grouped',
             'priority' => 65,
         );
         $tabs[] = $wdgk_options;

@@ -313,10 +313,8 @@ if (isset($options['Noteplaceholder'])) {
 				<li><?php echo esc_html__('Admin can set sticky donation button on the website’s.', 'woo-donations'); ?></li>
 				<li><?php echo esc_html__('Donation button shortcode for set in entire site.', 'woo-donations'); ?></li>
 				<li><?php echo esc_html__('Allow Email template for send mail to donor', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Option to change any title, label, placeholder, button text etc.', 'woo-donations'); ?>
-				</li>
-				<li><?php echo esc_html__('Timely <a href="https://geekcodelab.com/contact/" target="_blank">support</a> 24/7.', 'woo-donations'); ?>
-				</li>
+				<li><?php echo esc_html__('Option to change any title, label, placeholder, button text etc.', 'woo-donations'); ?></li>
+				<li><?php echo esc_html__('Timely', 'woo-donations'); ?> <a href="https://geekcodelab.com/contact/" target="_blank">support</a> 24/7.</li>
 				<li><?php echo esc_html__('Regular updates.', 'woo-donations'); ?></li>
 				<li><?php echo esc_html__('Well documented.', 'woo-donations'); ?></li>
 

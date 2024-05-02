@@ -6,7 +6,7 @@ Requires PHP: 7.4
 Requires at least: 6.3
 Tested up to: 6.5
 WC tested up to: 8.8.2
-Stable tag: 4.3.2
+Stable tag: 4.3.3
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
 
@@ -115,6 +115,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.3.3 =
+ Fixed Multiple Donation Form bugs
+ 
 = 4.3.2 =
  Added multiple donation form option
 

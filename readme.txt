@@ -26,6 +26,9 @@ Also works with WordPress Multisite installs (each blog from the network has itâ
 **Using woocommerce blocks display donation form**
 When using woocommerce blocks in cart or checkout page you can use shortcode to display donation form. Please <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a> for more details.
 
+**Multiple donation forms**
+Multiple donation forms are available, allowing you to integrate donation form with multiple WooCommerce products. For additional information, Please <a href="https://youtu.be/jezrA7d3K0w" target="_blank">watch the video</a> for additional information.
+
 <h4>You can use shortcodes</h4>
 <code>[wdgk_donation]</code>
 <code>[wdgk_donation product_id="123"]</code>
@@ -86,7 +89,8 @@ This Shortcode displays specific product donation form. Before using this shortc
 	<li><strong>Popup Setting </strong> (Pro only) <a href="https://youtu.be/3gxWzzjEVf8" target="_blank">See Video</a></li>
 	<li><strong>Sticky Button </strong> (Pro only) <a href="https://youtu.be/wa-KQHc6M-M" target="_blank">See Video</a></li>
 	<li><strong>Email Setting </strong> (Pro only) <a href="https://youtu.be/KsCYIraRDLU" target="_blank">See Video</a></li>
-	<li><strong>Shortcode &  widgets </strong> (Pro only) <a href="https://youtu.be/ssKT4CepMl8" target="_blank">See Video</a></li>
+	<li><strong>Shortcode & widgets </strong> (Pro only) <a href="https://youtu.be/ssKT4CepMl8" target="_blank">See Video</a></li>
+	<li><strong>Multiple donation forms </strong> <a href="https://youtu.be/jezrA7d3K0w" target="_blank">See Video</a></li>
 </ol>
 
 <h4>Like the plugin?</h4>

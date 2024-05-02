@@ -77,14 +77,16 @@ if(wc()->cart) {
             foreach ($cartitems as $item => $values) {                
                 $item_id =  $values['product_id'];
                 if($product_form) {
-                    $product_display_price_key = sprintf('wdgk_product_display_price:%s',$product_id);
-                    if(array_key_exists($product_display_price_key,$_COOKIE)) {
-                        if(isset($_COOKIE[$product_display_price_key])) {
-                            $donation_price = $_COOKIE[$product_display_price_key];
-                        }else{
-                            if(isset($values['donation_price']))    $donation_price = $values['donation_price'];
+                    if($product_id == $item_id) {
+                        $product_display_price_key = sprintf('wdgk_product_display_price:%s',$product_id);
+                        if(array_key_exists($product_display_price_key,$_COOKIE)) {
+                            if(isset($_COOKIE[$product_display_price_key])) {
+                                $donation_price = $_COOKIE[$product_display_price_key];
+                            }else{
+                                if(isset($values['donation_price']))    $donation_price = $values['donation_price'];
+                            }
+                            if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
                         }
-                        if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
                     }
                 }else{
                     if ($item_id == $product_id) {

@@ -74,6 +74,9 @@ function wdgk_plugin_add_settings_link($links) {
 	$pro_link = '<a href="https://geekcodelab.com/wordpress-plugins/woo-donation-pro/"  target="_blank" style="color:#46b450;font-weight: 600;">' . __('Premium Upgrade','woo-donations') . '</a>';
 	array_unshift($links, $pro_link);
 
+	$pro_link = '<a href="https://geekcodelab.com/wordpress-plugins/woo-donations/"  target="_blank">' . __('View Doc','woo-donations') . '</a>';
+	array_unshift($links, $pro_link);
+
 	$settings_link = '<a href="admin.php?page=wdgk-donation-page">' . __('Settings','woo-donations') . '</a>';
 	array_unshift($links, $settings_link);
 	return $links;

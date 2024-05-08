@@ -110,10 +110,14 @@ class Woo_Donations_Public {
             $ajax_url		= admin_url('admin-ajax.php');
             $current_cur 	= get_woocommerce_currency();
             $cur_syambols 	= get_woocommerce_currency_symbols();
+
             if(!empty($donation_price))	{
                 $decimal_separator = wc_get_price_decimal_separator();
                 $thousand_separator = wc_get_price_thousand_separator();
                 $price_decimals = wc_get_price_decimals();
+                if(!is_numeric($donation_price)) {                
+                    $donation_price = str_replace( $decimal_separator, '.', $donation_price );
+                }
                 $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
             }
             

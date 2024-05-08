@@ -119,6 +119,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.3.4 =
+ Fixed bugs.
+
 = 4.3.3 =
  Fixed Multiple Donation Form bugs
  

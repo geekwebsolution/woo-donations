@@ -120,20 +120,19 @@ if(!empty($donation_price))	{
 }
 ?>
 <?php if ($has_child): ?>
-    <form class="variations_form cart wdgk-donation-form" method="post" 
-    action="<?php echo esc_url($cart_url); ?>"
+    <form class="variations_form cart wdgk-donation-form" method="post" action="<?php echo esc_url($cart_url); ?>"
     autocomplete="off" enctype='multipart/form-data' data-product_id="<?php echo intval($product_id); ?>"
-    data-product_variations="<?php echo esc_attr($variations_attr); ?>">
+    data-product_variations="<?php esc_attr_e($variations_attr); ?>">
 <?php endif; ?>
 <div class="wdgk_donation_content">
     <?php 
     if($attr_form_title != 'false' && !empty($form_title)) { ?>
-        <h3><?php echo esc_attr__(wp_unslash($form_title)) ?></h3>
+        <h3><?php esc_attr_e(wp_unslash($form_title)) ?></h3>
         <?php
     } ?>
 
     <div class="wdgk_display_option"> 
-        <span><?php echo esc_html($cur_syambols[$current_cur]); ?></span>
+        <span><?php esc_html_e($cur_syambols[$current_cur]); ?></span>
         <input type="text" name="donation-price" class="wdgk_donation" placeholder="<?php echo esc_attr(wp_unslash($amount_placeholder)) ?>" value="<?php echo esc_attr($donation_price); ?>" >
     </div>
 
@@ -168,7 +167,7 @@ if(!empty($donation_price))	{
 
     <?php _e($note_html); ?>
     <a href="javascript:void(0)" class="button wdgk_add_donation" data-single-dp="<?php esc_attr_e($product_form == true ? 'true' : 'false') ?>" data-product-id="<?php echo esc_attr($product_id); ?>" data-product-url="<?php echo esc_url($cart_url); ?>">
-        <?php echo esc_attr__(wp_unslash($text),'woo-donations'); ?>
+        <?php esc_attr_e(wp_unslash($text),'woo-donations'); ?>
     </a>
     <input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id">
     <input type="hidden" name="wdgk_ajax_url" value="<?php echo esc_url($ajax_url) ?>" class="wdgk_ajax_url">

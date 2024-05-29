@@ -49,15 +49,17 @@ if (isset($_POST['wdgk_add_form'])) {
 
 		if (!empty($product_name)) {
 			update_option('wdgk_donation_settings', $options);
-			$successmsg = wdgk_success_option_msg_wdgk('Settings Saved!');
+			$message = __( 'Settings Saved!', 'woo-donations' );
+			$successmsg = wdgk_success_option_msg_wdgk($message);
 		} else {
-			$errormsg = wdgk_failure_option_msg_wdgk('Please Select Donation Product from List.');
+			$message = __( 'Please Select Donation Product from List.', 'woo-donations' );
+			$errormsg = wdgk_failure_option_msg_wdgk($message);
 		}
 	} else {
-		$errormsg = wdgk_failure_option_msg_wdgk('An error has occurred.');
+		$message = __( 'An error has occurred.', 'woo-donations' );
+		$errormsg = wdgk_failure_option_msg_wdgk($message);
 	}
 }
-
 
 $product			=  "";
 $cart				=  "";
@@ -118,10 +120,10 @@ if (isset($options['Noteplaceholder'])) {
 	?>
 
 	<nav class="nav-tab-wrapper">
-		<a href="?page=wdgk-donation-page" class="nav-tab <?php if ($tab === null) : ?>nav-tab-active<?php endif; ?>"><?php echo esc_html__('General Setting', 'woo-donations'); ?></a>
-		<a href="?page=wdgk-donation-page&tab=donation-label" class="nav-tab <?php if ($tab === "donation-label") : ?>nav-tab-active<?php endif; ?>"><?php echo esc_html__('Label', 'woo-donations'); ?></a>
-		<a href="?page=wdgk-donation-page&tab=donation-shortcodes" class="nav-tab <?php if ($tab === "donation-shortcodes") : ?>nav-tab-active<?php endif; ?>"><?php echo esc_html__('Shortcode', 'woo-donations'); ?></a>
-		<a href="?page=wdgk-donation-page&tab=donation-pro-version" class="nav-tab <?php if ($tab === 'donation-pro-version') : ?>nav-tab-active<?php endif; ?>"><?php echo esc_html__('Get Pro Version', 'woo-donations'); ?>
+		<a href="?page=wdgk-donation-page" class="nav-tab <?php if ($tab === null) : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e('General Setting', 'woo-donations'); ?></a>
+		<a href="?page=wdgk-donation-page&tab=donation-label" class="nav-tab <?php if ($tab === "donation-label") : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e('Label', 'woo-donations'); ?></a>
+		<a href="?page=wdgk-donation-page&tab=donation-shortcodes" class="nav-tab <?php if ($tab === "donation-shortcodes") : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e('Shortcode', 'woo-donations'); ?></a>
+		<a href="?page=wdgk-donation-page&tab=donation-pro-version" class="nav-tab <?php if ($tab === 'donation-pro-version') : ?>nav-tab-active<?php endif; ?>"><?php esc_html_e('Get Pro Version', 'woo-donations'); ?>
 			<svg width="18" height="18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="crown" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" class="svg-inline--fa fa-crown fa-w-20 fa-2x">
 				<path fill="#F5BC3E" d="M528 448H112c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h416c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm64-320c-26.5 0-48 21.5-48 48 0 7.1 1.6 13.7 4.4 19.8L476 239.2c-15.4 9.2-35.3 4-44.2-11.6L350.3 85C361 76.2 368 63 368 48c0-26.5-21.5-48-48-48s-48 21.5-48 48c0 15 7 28.2 17.7 37l-81.5 142.6c-8.9 15.6-28.9 20.8-44.2 11.6l-72.3-43.4c2.7-6 4.4-12.7 4.4-19.8 0-26.5-21.5-48-48-48S0 149.5 0 176s21.5 48 48 48c2.6 0 5.2-.4 7.7-.8L128 416h384l72.3-192.8c2.5.4 5.1.8 7.7.8 26.5 0 48-21.5 48-48s-21.5-48-48-48z" class=""></path>
 			</svg>
@@ -132,13 +134,13 @@ if (isset($options['Noteplaceholder'])) {
 
 		<div class="wdgk_donation_setting wdgk_pro_details  <?php if ($tab != null) { esc_attr_e('wdgk-hidden'); } ?>">
 
-			<h2><?php echo esc_html__('Donation Settings', 'woo-donations'); ?></h2>
+			<h2><?php esc_html_e('Donation Settings', 'woo-donations'); ?></h2>
 
 			<div class='wdgk_inner'>
 				<table class="form-table">
 					<tbody>
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Select Donation Product', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Select Donation Product', 'woo-donations'); ?></th>
 							<td>
                                 <div class="wdgk-select-box">
                                 <?php 
@@ -150,7 +152,7 @@ if (isset($options['Noteplaceholder'])) {
                                     if(isset($product) && !empty($product)){
 										$product_title = $post_7->post_title;
                                         ?>
-                                        <option selected="selected" value="<?php echo $product; ?>"><?php echo $product_title . " ( #" . $product . " )"; ?></option>
+                                        <option selected="selected" value="<?php esc_attr_e($product); ?>"><?php printf( '%1$s ( #%2$s )', esc_html($product_title), esc_attr($product) ); ?></option>
                                         <?php
                                     }
                                     ?>
@@ -158,72 +160,72 @@ if (isset($options['Noteplaceholder'])) {
                                 </select>
                                 </div>
 							
-								<span class="wdgk_note"><?php echo esc_html__('Select woocommerce products for donation.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Select woocommerce products for donation.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Add on Cart Page', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Add on Cart Page', 'woo-donations'); ?></th>
 							<td>
 								<label class="wdgk-switch wdgk-switch-wdgk_cart_status">
-									<input type="checkbox" class="wdgk-cart" name="wdgk_cart" value="on" <?php if ($cart == 'on') { _e("checked");	} ?>>
+									<input type="checkbox" class="wdgk-cart" name="wdgk_cart" value="on" <?php checked( $cart, 'on' ); ?>>
 									<span class="wdgk-slider wdgk-round"></span>
 								</label>
 								<span class="wdgk_note"><?php _e('Enable to display donation on cart page.', 'woo-donations'); ?></span>
 								<span class="wdgk_note">
 									<strong>Note: </strong><?php _e('when using woocommerce blocks in cart page use shortcode to display donation form.', 'woo-donations'); ?>
-									For more details <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a>
+									<?php esc_html_e('For more details','woo-donations'); ?> <a href="https://youtu.be/o_A25YbYFyU" target="_blank"><?php esc_html_e('watch the video','woo-donations'); ?></a>
 								</span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Add on Checkout Page', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Add on Checkout Page', 'woo-donations'); ?></th>
 							<td>
 								<label class="wdgk-switch wdgk-switch-wdgk_checkout_status">
-									<input type="checkbox" class="wdgk-checkout" name="wdgk_checkout" value="on" <?php if ($checkout == 'on') { esc_attr_e("checked");} ?>>
+									<input type="checkbox" class="wdgk-checkout" name="wdgk_checkout" value="on" <?php checked( $checkout, 'on' ); ?>>
 									<span class="wdgk-slider wdgk-round"></span>
 								</label>
-								<span class="wdgk_note"><?php echo esc_html__('Enable to display donation on checkout page.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Enable to display donation on checkout page.', 'woo-donations'); ?></span>
 								<span class="wdgk_note">
-									<strong>Note: </strong><?php echo esc_html__('when using woocommerce blocks in checkout page use shortcode to display donation form.', 'woo-donations'); ?>
-									For more details <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a>
+									<strong>Note: </strong><?php esc_html_e('when using woocommerce blocks in checkout page use shortcode to display donation form.', 'woo-donations'); ?>
+									<?php esc_html_e('For more details','woo-donations'); ?> <a href="https://youtu.be/o_A25YbYFyU" target="_blank"><?php esc_html_e('watch the video','woo-donations'); ?></a>
 								</span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Add Note'); ?></th>
+							<th scope="row"><?php esc_html_e('Add Note'); ?></th>
 							<td>
 								<label class="wdgk-switch wdgk-switch-wdgk_note_status">
-									<input type="checkbox" class="wdgk-note wdgk-checkout" name="wdgk_note" value="on" <?php if ($note == 'on') { _e("checked");} ?>>
+									<input type="checkbox" class="wdgk-note wdgk-checkout" name="wdgk_note" value="on" <?php checked( $note, 'on' ); ?>>
 									<span class="wdgk-slider wdgk-round"></span>
 								</label>
-								<span class="wdgk_note"><?php echo esc_html__('Enable to display note on donation.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Enable to display note on donation.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Button Color', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Button Color', 'woo-donations'); ?></th>
 							<td>
 								<input type="text" name="wdgk_btncolor" class="wdgk_colorpicker" value="<?php esc_attr_e($color); ?>">
-								<span class="wdgk_note"><?php echo esc_html__('Select donation button color.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Select donation button color.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Button Text', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Button Text', 'woo-donations'); ?></th>
 							<td>
 								<input type="text" name="wdgk_btntext" value="<?php esc_attr_e(wp_unslash($text)); ?>">
-								<span class="wdgk_note"><?php echo esc_html__('Add Donation button text.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Add Donation button text.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Button Text Color', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Button Text Color', 'woo-donations'); ?></th>
 							<td>
 								<input type="text" name="wdgk_textcolor" class="wdgk_colorpicker" value="<?php esc_attr_e($textcolor); ?>">
-								<span class="wdgk_note"><?php echo esc_html__('Select donation button text color.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Select donation button text color.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
@@ -238,7 +240,7 @@ if (isset($options['Noteplaceholder'])) {
 		</div>
 		<div class="wdgk_donation_setting wdgk_pro_details  <?php if ($tab != "donation-label") { esc_attr_e('wdgk-hidden'); } ?>">
 
-			<h2><?php echo esc_html__('Label Settings', 'woo-donations'); ?></h2>
+			<h2><?php esc_html_e('Label Settings', 'woo-donations'); ?></h2>
 
 			<div class='wdgk_inner'>
 
@@ -246,27 +248,27 @@ if (isset($options['Noteplaceholder'])) {
 					<tbody>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Donation Form Title', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Donation Form Title', 'woo-donations'); ?></th>
 							<td>
 								<input type="text" class="wdgk_input" name="wdgk_title" value="<?php esc_attr_e(wp_unslash($form_title)); ?>">
-								<span class="wdgk_note"><?php echo esc_html__('Add Donation form title.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Add Donation form title.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Amount Placeholder Text', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Amount Placeholder Text', 'woo-donations'); ?></th>
 							<td>
 								<input type="text" class="wdgk_input" name="wdgk_amt_place" value="<?php esc_attr_e(wp_unslash($amount_placeholder)); ?>">
-								<span class="wdgk_note"><?php echo esc_html__('Add Donation amount placeholder text.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Add Donation amount placeholder text.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Note Placeholder Text', 'woo-donations'); ?></th>
+							<th scope="row"><?php esc_html_e('Note Placeholder Text', 'woo-donations'); ?></th>
 							<td>
 
 								<textarea name="wdgk_note_place" class="wdgk-note-placeholder wdgk_input" rows="5"><?php esc_attr_e(wp_unslash($note_placeholder)); ?></textarea>
-								<span class="wdgk_note"><?php echo esc_html__('Add Donation note placeholder text.', 'woo-donations'); ?></span>
+								<span class="wdgk_note"><?php esc_html_e('Add Donation note placeholder text.', 'woo-donations'); ?></span>
 							</td>
 						</tr>
 
@@ -284,42 +286,42 @@ if (isset($options['Noteplaceholder'])) {
 		</div>
 		<div class="wdgk_donation_setting wdgk_pro_details wdgk-shortcode-tab <?php if ($tab != "donation-shortcodes") { _e('wdgk-hidden'); } ?>">
 			<div class="wdgk_text_box">
-				<h2><?php echo esc_html__('Shortcode','woo-donations'); ?></h2>
+				<h2><?php esc_html_e('Shortcode','woo-donations'); ?></h2>
 				<hr>
 				<div class="wdgk-shortcode-wp">
-					<b class="wdgk_shortcode_copy" data-balloon="click to copy">[wdgk_donation]</b>
-					<p><?php echo esc_html__('This Shortcode to print donation form in your pages or post.','woo-donations'); ?></p>
+					<b class="wdgk_shortcode_copy" data-balloon="Click to copy">[wdgk_donation]</b>
+					<p><?php esc_html_e('This Shortcode to print donation form in your pages or post.','woo-donations'); ?></p>
 				</div>
 				<div class="wdgk-shortcode-wp">
-					<b class="wdgk_shortcode_copy" data-balloon="click to copy">[wdgk_donation product_id="123"]</b>
-					<p><?php echo esc_html__('This Shortcode displays donation form of specific product. Before using you need to enable Donation Product checkbox in edit product page.','woo-donations'); ?> </p>
+					<b class="wdgk_shortcode_copy" data-balloon="Click to copy">[wdgk_donation product_id="123"]</b>
+					<p><?php esc_html_e('This Shortcode displays donation form of specific product. Before using you need to enable Donation Product checkbox in edit product page.','woo-donations'); ?> </p>
 				</div>
 			</div>				
 		</div>
 		<div class="wdgk_pro_details <?php if ($tab != "donation-pro-version") { esc_attr_e('wdgk-hidden'); } ?>">
-			<h2><?php echo esc_html__('Woocommerce Donation Pro Version', 'woo-donations'); ?></h2>
+			<h2><?php esc_html_e('Woocommerce Donation Pro Version', 'woo-donations'); ?></h2>
 			<ul>
-				<li><?php echo esc_html__('Display predefined donation amount options.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Define minimum and maximum limits for donation payments..', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Configurable screen position for donation form in cart page.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Configurable screen position for donation form in checkout page.', 'woo-donations'); ?>
+				<li><?php esc_html_e('Display predefined donation amount options.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Define minimum and maximum limits for donation payments..', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Configurable screen position for donation form in cart page.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Configurable screen position for donation form in checkout page.', 'woo-donations'); ?>
 				</li>
-				<li><?php echo esc_html__('Create Fundraising Campaigns', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Add the donation widget on the website’s sidebar or footer.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Display donation request popup.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Show donation order listing.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Download CSV file in donation order table.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Auto create woo donation page.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Admin can set sticky donation button on the website’s.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Donation button shortcode for set in entire site.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Allow Email template for send mail to donor', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Option to change any title, label, placeholder, button text etc.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Timely', 'woo-donations'); ?> <a href="https://geekcodelab.com/contact/" target="_blank">support</a> 24/7.</li>
-				<li><?php echo esc_html__('Regular updates.', 'woo-donations'); ?></li>
-				<li><?php echo esc_html__('Well documented.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Create Fundraising Campaigns', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Add the donation widget on the website’s sidebar or footer.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Display donation request popup.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Show donation order listing.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Download CSV file in donation order table.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Auto create woo donation page.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Admin can set sticky donation button on the website’s.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Donation button shortcode for set in entire site.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Allow Email template for send mail to donor', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Option to change any title, label, placeholder, button text etc.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Timely', 'woo-donations'); ?> <a href="https://geekcodelab.com/contact/" target="_blank">support</a> 24/7.</li>
+				<li><?php esc_html_e('Regular updates.', 'woo-donations'); ?></li>
+				<li><?php esc_html_e('Well documented.', 'woo-donations'); ?></li>
 
 			</ul>
-			<a href="https://geekcodelab.com/wordpress-plugins/woo-donation-pro/" title="Upgrade to Premium" class="wdgk_premium_btn" target="_blank"><?php echo esc_html__('Upgrade to Premium', 'woo-donations'); ?></a>
+			<a href="https://geekcodelab.com/wordpress-plugins/woo-donation-pro/" title="Upgrade to Premium" class="wdgk_premium_btn" target="_blank"><?php esc_html_e('Upgrade to Premium', 'woo-donations'); ?></a>
 		</div>
 	</form>
 </div>

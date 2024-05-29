@@ -6,7 +6,7 @@ Requires PHP: 7.4
 Requires at least: 6.3
 Tested up to: 6.5
 WC tested up to: 8.8.2
-Stable tag: 4.3.4
+Stable tag: 4.3.5
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
 
@@ -119,6 +119,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.3.5 =
+ Fixed bugs and text translation.
+
 = 4.3.4 =
  Fixed bugs.
 
@@ -145,88 +148,88 @@ After Plugin Active go to WooCommerce-> Donation.
  Fixed translation bugs.
  Added donation order flag.
 
-= 3.9=
+= 3.9 =
  Fixed bugs.
  Added note for woocmmerce blocks.
 
-= 3.8=
+= 3.8 =
  Added woocommerce HPOS support.
  Tested up to 6.4 wordpress version.
  
-= 3.7=
+= 3.7 =
  Fixed major error.
 
-= 3.6=
+= 3.6 =
  Fixed donation amount separator issue.
 
-= 3.5=
+= 3.5 =
  Fixed Bugs.
 
-= 3.4=
+= 3.4 =
  Fixed Bugs.
  Tested up to wp veriosn 6.2.2
 
-= 3.3=
+= 3.3 =
  Fixed Bugs.
 
-= 3.2=
+= 3.2 =
  Fixed Donation price with Decimal Seperator.
 
-= 3.1=
+= 3.1 =
  Fixed bug.
 
-= 3.0=
+= 3.0 =
  Improve serach product feature in admin side.
  
-= 2.9=
+= 2.9 =
  Added: Replaced dropdown to search product option in selection product for donation.
  
-= 2.8=
+= 2.8 =
  Fixed issue.
  
-= 2.7=
+= 2.7 =
  Fixed issue of donation price format
  
-= 2.7=
+= 2.7 =
  Tested up to wp version 6.0.1
 
-= 2.6=
+= 2.6 =
 Tested Up to wp version 5.9
 
-= 2.5=
+= 2.5 =
 Fixed donation form validation issue.
 
-= 2.4=
+= 2.4 =
 Update Pro plugin features list
 
-= 2.3=
+= 2.3 =
 Fixed bug
 
-= 2.2=
+= 2.2 =
 Fixed bug
 
-= 2.1=
+= 2.1 =
 Fixed bug
 
-= 2.0=
+= 2.0 =
 Added Label option for donation form
 
-= 1.9=
+= 1.9 =
 Added Label option for donation form
 
-= 1.8=
+= 1.8 =
 Added Support and pro link, changed browser cookie name.
 
-= 1.7=
+= 1.7 =
 Fixed Design bug and add pro plugin details.
 
-= 1.6=
+= 1.6 =
  Fixed bug.
 
-= 1.5=
+= 1.5 =
  Fixed bug.
  
-= 1.4=
+= 1.4 =
  Fixed bug.
  
 = 1.3 =

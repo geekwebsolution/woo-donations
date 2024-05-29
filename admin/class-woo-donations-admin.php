@@ -68,8 +68,6 @@ class Woo_Donations_Admin {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 */
-
-		// wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/woo-donations-admin.js', array( 'jquery' ), $this->version, false );
         if ($hook == 'woocommerce_page_wdgk-donation-page') {
             wp_enqueue_script('wp-color-picker');
             wp_enqueue_script( $this->plugin_name . '-select2-script', plugin_dir_url( __DIR__ ) . 'assets/js/select2.min.js', array( 'jquery' ), $this->version, false );

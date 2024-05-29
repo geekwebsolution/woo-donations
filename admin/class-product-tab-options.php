@@ -11,7 +11,7 @@ global $post;
         <p class="wdgk_shortcode form-field">
             <label for="wdgk_shortcode"><?php esc_html_e('Shortcode', 'woo-donations'); ?></label>
             <span class="wrap">
-				<input type="text" id="wdgk_shortcode" readonly="readonly" onclick="this.select()" value="[wdgk_donation product_id=&quot;<?php echo $post->ID; ?>&quot;]">
+				<input type="text" id="wdgk_shortcode" readonly="readonly" onclick="this.select()" value="[wdgk_donation product_id=&quot;<?php esc_attr_e($post->ID); ?>&quot;]">
 				<?php
                 echo wc_help_tip(__('Add this shortcode where you want to display the donation form.', 'woo-donations')); ?>
 			</span>
@@ -39,7 +39,7 @@ global $post;
                 'value' => get_post_meta($post->ID, 'wdgk-settings[wdgk_btntext]', true),
                 'label' => __('Button Text', 'woo-donations'),
                 'wrapper_class' => 'form-field',
-                'placeholder'   => 'Eg:- Add Donation',
+                'placeholder'   => __( 'Eg: Add Donation', 'woo-donations' ),
                 'desc_tip' => true,
                 'description' => __('Add Donation button text. Default: Add Donation','woo-donations')
             )
@@ -52,7 +52,7 @@ global $post;
                 'value' => get_post_meta($post->ID, 'wdgk-settings[wdgk_title]', true),
                 'label' => __('Donation Form Title', 'woo-donations'),
                 'wrapper_class' => 'form-field',
-                'placeholder'   => 'Eg:- Donation',
+                'placeholder'   => __( 'Eg: Donation', 'woo-donations' ),
                 'desc_tip' => true,
                 'description' => __('Add Donation form title.','woo-donations')
             )
@@ -65,7 +65,7 @@ global $post;
                 'value' => get_post_meta($post->ID, 'wdgk-settings[wdgk_amt_place]', true),
                 'label' => __('Amount Placeholder Text', 'woo-donations'),
                 'wrapper_class' => 'form-field',
-                'placeholder'   => 'Eg:- Ex. 100',
+                'placeholder'   => __( 'Eg: Ex. 100', 'woo-donations' ),
                 'desc_tip' => true,
                 'description' => __('Add Donation amount placeholder text.','woo-donations')
             )
@@ -75,7 +75,7 @@ global $post;
             'id'          => 'wdgk_note_place',
             'value' => get_post_meta($post->ID, 'wdgk-settings[wdgk_note_place]', true),
             'label'       => __( 'Note Placeholder Text', 'woo-donations' ),
-            'placeholder'   => 'Eg:- Note',
+            'placeholder'   => __( 'Eg: Note', 'woo-donations' ),
             'desc_tip'    => true,
             'description' => __( 'Add Donation note placeholder text.', 'woo-donations' ),
         ));
@@ -84,7 +84,7 @@ global $post;
 
     <div class="options_group">
         <p class="wdgk-ask-review">
-            <a href="https://wordpress.org/support/plugin/woo-donations/reviews/" target="_blank"><?php echo esc_html('If you like Woo Donations and want to support the further growth and development of the plugin, please consider a 5-star rating on wordpress.org.','woo-donations'); ?></a>
+            <a href="https://wordpress.org/support/plugin/woo-donations/reviews/" target="_blank"><?php esc_html_e('If you like Woo Donations and want to support the further growth and development of the plugin, please consider a 5-star rating on wordpress.org.','woo-donations'); ?></a>
         </p>
     </div>
     <script>

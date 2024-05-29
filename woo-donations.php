@@ -3,9 +3,9 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.3.4
+Version: 4.3.5
 Author URI: https://geekcodelab.com/
-WC tested up to: 8.8.2
+WC tested up to: 8.9.0
 Text Domain : woo-donations
 */
 
@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WDGK_BUILD', '4.3.4' );
+define( 'WDGK_BUILD', '4.3.5' );
 
 if (!defined('ABSPATH')) exit;
 
@@ -106,7 +106,7 @@ run_woo_donations();
 add_filter( 'cron_schedules', function ( $schedules ) {
 	$schedules['wdgk_every_one_minute'] = array(
 		'interval' => 180,
-		'display' => __( 'Every Minute' )
+		'display' => __( 'Every Three Minute', 'woo-donations' )
 	);
 	return $schedules;
  } );
@@ -202,7 +202,7 @@ function wdgk_sync_donation_orders_admin_notice() {
 		if(isset($currentScreen->id) && $currentScreen->id == 'woocommerce_page_wdgk-donation-page') {
 
 			$class = 'notice notice-info';			
-			printf( '<div class="%1$s"><p>%2$s - <strong>%3$s</strong></p></div>', esc_attr( $class ), __('✩ Database synchronization for donation orders is currently in progress.', 'woo-donations'), __('Woo Donations','woo-donations') );
+			printf( '<div class="%1$s"><p>✩ %2$s - <strong>%3$s</strong></p></div>', esc_attr( $class ), __('Database synchronization for donation orders is currently in progress.', 'woo-donations'), __('Woo Donations','woo-donations') );
 		}
 	}
 }

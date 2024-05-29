@@ -289,11 +289,11 @@ if (isset($options['Noteplaceholder'])) {
 				<h2><?php esc_html_e('Shortcode','woo-donations'); ?></h2>
 				<hr>
 				<div class="wdgk-shortcode-wp">
-					<b class="wdgk_shortcode_copy" data-balloon="click to copy">[wdgk_donation]</b>
+					<b class="wdgk_shortcode_copy" data-balloon="Click to copy">[wdgk_donation]</b>
 					<p><?php esc_html_e('This Shortcode to print donation form in your pages or post.','woo-donations'); ?></p>
 				</div>
 				<div class="wdgk-shortcode-wp">
-					<b class="wdgk_shortcode_copy" data-balloon="click to copy">[wdgk_donation product_id="123"]</b>
+					<b class="wdgk_shortcode_copy" data-balloon="Click to copy">[wdgk_donation product_id="123"]</b>
 					<p><?php esc_html_e('This Shortcode displays donation form of specific product. Before using you need to enable Donation Product checkbox in edit product page.','woo-donations'); ?> </p>
 				</div>
 			</div>				

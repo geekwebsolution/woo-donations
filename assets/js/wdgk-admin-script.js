@@ -56,7 +56,7 @@ function wdgkCopyToClipboard(value, showNotification, notificationText) {
         jQuery(".wdgk_shortcode_copy").attr('data-balloon', notificationText);
 
         setTimeout(function () {
-            jQuery(".wdgk_shortcode_copy").attr('data-balloon', 'click to copy');
+            jQuery(".wdgk_shortcode_copy").attr('data-balloon', 'Click to copy');
         }, 1000);
     }
 }

@@ -167,29 +167,6 @@ class Woo_Donations_Admin {
         wp_enqueue_script( $this->plugin_name . '-block-script', plugin_dir_url( __DIR__ ) . '/assets/js/wdgk-block.js', array( 'wp-blocks', 'wp-element' ), $this->version );
     }
 
-    public function wdgk_wp_donation_block() {
-        register_block_type( 'woo-donations-block/woo-donations', array(
-            'editor_script' => 'wdgk-block-script',
-            'render_callback' => array( $this, 'wdgk_gutenberg_render_callback' )
-        ) );
-    }
-
-    public function wdgk_gutenberg_render_callback( $block_attributes, $content ) {
-        ob_start();
-	
-        $donation_form_html = "";
-        $additional_style = wdgk_form_internal_style();
-
-        if($additional_style != "") {
-            $donation_form_html .= '<style>'.$additional_style.'</style>';
-        }
-
-        $donation_form_html .= stripslashes( do_shortcode('[wdgk_donation]') );
-        _e( $donation_form_html );
-
-        return ob_get_clean();
-    }
-
     public function wdgk_product_data_tabs( $tabs ) {
         $wdgk_options = array(
             'label' => __('Donation Form', 'woo-donations'),

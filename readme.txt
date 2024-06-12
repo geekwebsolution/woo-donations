@@ -5,8 +5,8 @@ Tags: WooCommerce Donation, WooCommerce Donation Campaign, WooCommerce Cart Page
 Requires PHP: 7.4
 Requires at least: 6.3
 Tested up to: 6.5
-WC tested up to: 8.8.2
-Stable tag: 4.3.5
+WC tested up to: 8.9.3
+Stable tag: 4.3.6
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
 
@@ -42,7 +42,7 @@ This Shortcode displays specific product donation form. Before using this shortc
 * Add multiple donation forms with different donation product
 * You can use Gutenberg block to display donation form
 * Manually have option to set donation form on other pages with shortcode
-* Manually have option to display donation form with Gutenberg widget 
+* Manually have option to display donation form with Gutenberg block or Elementor widget 
 * Set up a specific product as donation from list of product
 * Set up location to display donation form with options cart and checkout page 
 * Manually enable disable option to display donation form on cart and checkout
@@ -52,6 +52,9 @@ This Shortcode displays specific product donation form. Before using this shortc
 * Options to set up donation button text color as per your requirement
 * Manually have option to set Description field donation form
 * Dynamic Label Options.
+* Gutenberg support.
+* Elementor support.
+* Translate Support Loco Translate Plugin.
 
 <h4>Free Version Preview</h4>
 [youtube https://youtu.be/2WYxrPi8zcg]
@@ -60,7 +63,7 @@ This Shortcode displays specific product donation form. Before using this shortc
 <ul>
 	<li>Display predefined and custom price donation amount options.</li>
 	<li>Display donation request popup.</li>
-	<li>Add the donation widget on the website’s sidebar or footer.</li>
+	<li>Add the donation gutenberg block or elementor widget on the website’s frontend, sidebar or footer.</li>
 	<li>Show donation order listing.</li>
 	<li>Download CSV file in donation order table.</li>
 	<li>Configurable screen position for donation form in cart page.</li>
@@ -119,6 +122,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.3.6 =
+ Added Woo Donations Gutenberg block & Elementor widget
+
 = 4.3.5 =
  Fixed bugs and text translation.
 

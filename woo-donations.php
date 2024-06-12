@@ -18,6 +18,9 @@ define( 'WDGK_BUILD', '4.3.5' );
 
 if (!defined('ABSPATH')) exit;
 
+if(!defined("WDGK_PLUGIN_DIR_PATH"))
+	define("WDGK_PLUGIN_DIR_PATH",plugin_dir_path(__FILE__));	
+
 if(!defined('WDGK_PLUGIN_URL'))
 	define( 'WDGK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -190,6 +193,41 @@ function wdgk_do_this_every_five_minute() {
 			update_option( 'wdgk_set_order_flag_status',1 );
 		}
 	}
+}
+
+/** Register gutenberg block for Woo donations form */
+add_action( 'init', 'wdgk_wp_donation_block' );
+function wdgk_wp_donation_block() {
+	if ( in_array( 'elementor/elementor.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		require_once WDGK_PLUGIN_DIR_PATH . 'public/elementor-widget/elementor-addon.php';
+	}
+
+	/* Woo Donation Form Block */
+    register_block_type( 
+		__DIR__ . '/public/gutenberg-block/block-donation',
+		array(
+			'editor_script' => 'wdgk-block-script',
+			'render_callback' => 'wdgk_gutenberg_render_callback'
+    	)
+ 	);
+}
+
+function wdgk_gutenberg_render_callback( $attributes ) {
+	ob_start();
+
+	$product_id = (isset($attributes['product_id']) && !empty($attributes['product_id'])) ? $attributes['product_id'] : '';
+
+	$donation_form_html = "";
+	$additional_style = wdgk_form_internal_style();
+
+	if($additional_style != "") {
+		$donation_form_html .= '<style>'.$additional_style.'</style>';
+	}
+
+	$donation_form_html .= do_shortcode('[wdgk_donation product_id="'.$product_id.'"]');
+	_e( $donation_form_html );
+
+	return ob_get_clean();
 }
 
 /** Admin notice for order sync progress */

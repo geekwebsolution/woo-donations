@@ -90,7 +90,6 @@ class Woo_Donations {
         $this->loader->add_action( 'wp_ajax_nopriv_wdgk_product_select_ajax', $plugin_admin, 'wdgk_product_select_ajax_callback' );
         
         $this->loader->add_action( 'enqueue_block_editor_assets', $plugin_admin, 'wdgk_block_editor_script' );
-        $this->loader->add_action( 'init', $plugin_admin, 'wdgk_wp_donation_block' );
 
 		/* Edit product meta fields */
 		$this->loader->add_filter( 'woocommerce_product_data_tabs', $plugin_admin, 'wdgk_product_data_tabs', 10, 3 );

@@ -118,7 +118,8 @@ After Plugin Active go to WooCommerce-> Donation.
 9. Order Confirm Page
 10. Admin Orders
 11. Gutenberg Block for Donation Form
-12. Woo Donation Pro Features
+12. Elementor Widget for Donation Form
+13. Woo Donation Pro Features
 
 
 == Changelog ==

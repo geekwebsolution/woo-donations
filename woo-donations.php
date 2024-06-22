@@ -3,9 +3,10 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.3.5
+Version: 4.3.7
 Author URI: https://geekcodelab.com/
 WC tested up to: 8.9.0
+Requires Plugins: woocommerce
 Text Domain : woo-donations
 */
 
@@ -14,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WDGK_BUILD', '4.3.5' );
+define( 'WDGK_BUILD', '4.3.7' );
 
 if (!defined('ABSPATH')) exit;
 
@@ -26,33 +27,6 @@ if(!defined('WDGK_PLUGIN_URL'))
 
 if(!defined('WDGK_PLUGIN_PATH'))
 	define( 'WDGK_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-
-/** Add notice if woocommerce not activated */
-if ( ! function_exists( 'wdgk_install_woocommerce_admin_notice' ) ) {
-	/**
-	 * Trigger an admin notice if WooCommerce is not installed.
-	 */
-	function wdgk_install_woocommerce_admin_notice() {
-		?>
-		<div class="error">
-			<p>
-				<?php
-				// translators: %s is the plugin name.
-				echo esc_html__( sprintf( '%s is enabled but not effective. It requires WooCommerce in order to work.', 'Woo Donations' ), 'woo-donations' );
-				?>
-			</p>
-		</div>
-		<?php
-	}
-}
-add_action( 'plugins_loaded', 'wdgk_after_plugins_loaded' );
-function wdgk_after_plugins_loaded() {
-    // Check WooCommerce installation
-	if ( ! function_exists( 'WC' ) ) {
-		add_action( 'admin_notices', 'wdgk_install_woocommerce_admin_notice' );
-		return;
-	}
-}
 
 function activate_woo_donations() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-woo-donations-activator.php';
@@ -203,13 +177,7 @@ function wdgk_wp_donation_block() {
 	}
 
 	/* Woo Donation Form Block */
-    register_block_type( 
-		__DIR__ . '/public/gutenberg-block/block-donation',
-		array(
-			'editor_script' => 'wdgk-block-script',
-			'render_callback' => 'wdgk_gutenberg_render_callback'
-    	)
- 	);
+    register_block_type( __DIR__ . '/build' );
 }
 
 function wdgk_gutenberg_render_callback( $attributes ) {

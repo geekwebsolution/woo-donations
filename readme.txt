@@ -25,7 +25,7 @@ After woocommerce donation plugin activation you will find the "Add Donation" fi
 Also works with WordPress Multisite installs (each blog from the network has it’s own maintenance settings).
 
 **Using woocommerce blocks display donation form**
-When using woocommerce blocks in cart or checkout page you can use Woo Donations Block to display donation form. Please <a href="https://youtu.be/o_A25YbYFyU" target="_blank">watch the video</a> for more details.
+When using woocommerce blocks in cart or checkout page you can use shortcode to display donation form. Please <a href="https://youtu.be/t9JjLhYcu54" target="_blank">watch the video</a> for more details.
 
 **Multiple donation forms**
 Multiple donation forms are available, allowing you to integrate donation form with multiple WooCommerce products. For additional information, Please <a href="https://youtu.be/jezrA7d3K0w" target="_blank">watch the video</a> for additional information.

@@ -173,8 +173,8 @@ if (isset($options['Noteplaceholder'])) {
 								</label>
 								<span class="wdgk_note"><?php _e('Enable to display donation on cart page.', 'woo-donations'); ?></span>
 								<span class="wdgk_note">
-									<strong>Note: </strong><?php _e('when using woocommerce blocks in cart page use shortcode to display donation form.', 'woo-donations'); ?>
-									<?php esc_html_e('For more details','woo-donations'); ?> <a href="https://youtu.be/o_A25YbYFyU" target="_blank"><?php esc_html_e('watch the video','woo-donations'); ?></a>
+									<strong>Note: </strong><?php _e('when using woocommerce blocks in cart page use woo donations block to display donation form.', 'woo-donations'); ?>
+									<?php esc_html_e('For more details','woo-donations'); ?> <a href="https://youtu.be/t9JjLhYcu54" target="_blank"><?php esc_html_e('watch the video','woo-donations'); ?></a>
 								</span>
 							</td>
 						</tr>
@@ -188,8 +188,8 @@ if (isset($options['Noteplaceholder'])) {
 								</label>
 								<span class="wdgk_note"><?php esc_html_e('Enable to display donation on checkout page.', 'woo-donations'); ?></span>
 								<span class="wdgk_note">
-									<strong>Note: </strong><?php esc_html_e('when using woocommerce blocks in checkout page use shortcode to display donation form.', 'woo-donations'); ?>
-									<?php esc_html_e('For more details','woo-donations'); ?> <a href="https://youtu.be/o_A25YbYFyU" target="_blank"><?php esc_html_e('watch the video','woo-donations'); ?></a>
+									<strong>Note: </strong><?php esc_html_e('when using woocommerce blocks in checkout page use woo donations to display donation form.', 'woo-donations'); ?>
+									<?php esc_html_e('For more details','woo-donations'); ?> <a href="https://youtu.be/t9JjLhYcu54" target="_blank"><?php esc_html_e('watch the video','woo-donations'); ?></a>
 								</span>
 							</td>
 						</tr>

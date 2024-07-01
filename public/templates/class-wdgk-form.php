@@ -171,7 +171,7 @@ if(!empty($donation_price))	{
     </a>
     <input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id">
     <input type="hidden" name="wdgk_ajax_url" value="<?php echo esc_url($ajax_url) ?>" class="wdgk_ajax_url">
-    <img src="<?php echo esc_url( WDGK_PLUGIN_URL . 'assets/images/ajax-loader.gif' ); ?>" class="wdgk_loader wdgk_loader_img">
+    <img src="<?php echo esc_url( WDGK_PLUGIN_URL . 'assets/images/ajax-loader.gif' ); ?>" alt="wdgk loader image" class="wdgk_loader wdgk_loader_img">
     <div class="wdgk_error_front"></div>
 </div>
 <?php if ($has_child): ?></form><?php endif; ?>

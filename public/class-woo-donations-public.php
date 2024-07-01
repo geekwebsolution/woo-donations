@@ -361,7 +361,7 @@ class Woo_Donations_Public {
     /**
      * Woocommerce template override
      */
-    public function wdgk_modify_template( string $template = '', string $template_name = '', array $args = array(), string $template_path = '', string $default_path = '' ) {
+    public function wdgk_intercept_wc_template( $template, $template_name, $template_path ) {
         //Return if the template has been overwritten in yourtheme/woocommerce/XXX
         if ($template[strlen($template) - strlen($template_name) - 2] === 'e') {
             return $template;
@@ -374,37 +374,42 @@ class Woo_Donations_Public {
         $path = plugin_dir_path( dirname( __FILE__ ) ) . 'includes/wc-templates/';
 
         if(is_product()) {
-            switch ($template_name) {
-                case 'loop/no-products-found.php':
-                    $template = $path . $template_name;
-                    break;
-
-                case 'loop/price.php':
-                    global $product;
-                    if (!is_null($product) && (wdgk_is_donatable($product->get_id()) || $product_id == $product->get_id())) {
+            global $product;
+            $product = wc_get_product( get_the_ID() );
+            if( $product->is_type('simple') || $product->is_type('variable') ){    
+                switch ($template_name) {
+                    case 'loop/no-products-found.php':
                         $template = $path . $template_name;
-                    }
-                    break;
+                        break;
 
-                case 'single-product/price.php':
-                case 'single-product/add-to-cart/variation-add-to-cart-button.php' :
-                    if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
-                        $template = $path . $template_name;
-                    }
-                    break;
+                    case 'loop/price.php':
+                        if (!is_null($product) && (wdgk_is_donatable($product->get_id()) || $product_id == $product->get_id())) {
+                            $template = $path . $template_name;
+                        }
+                        break;
 
-                case 'single-product/add-to-cart/simple.php' :
-                case 'single-product/add-to-cart/variable.php' :
-                    if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
-                        $template = $path . 'single-product/add-to-cart/product.php';
-                    }
-                    break;
+                    case 'single-product/price.php':
+                    case 'single-product/add-to-cart/variation-add-to-cart-button.php' :
+                        if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
+                            $template = $path . $template_name;
+                        }
+                        break;
 
-                default:
-                    break;
+                    case 'single-product/add-to-cart/simple.php' :
+                    case 'single-product/add-to-cart/variable.php' :
+                        if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
+                            $template = $path . 'single-product/add-to-cart/product.php';
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
-        return apply_filters('wdgk_get_template', $template, $template_name, $args, $template_path, $default_path);
+
+
+        return apply_filters( 'wdgk_locate_template', $template, $template_name, $template_path );
     }
 
     /**

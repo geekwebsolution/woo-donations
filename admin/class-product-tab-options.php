@@ -97,6 +97,10 @@ global $post;
                 }
             });
 
+            $(window).on("load", function() {
+                $("#product-type").trigger("change");
+            });
+
             $('input#_donatable').on('change', function () {
                 wdgk_show_hide_donable_panel();
             });

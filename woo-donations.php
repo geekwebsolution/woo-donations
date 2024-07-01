@@ -3,9 +3,9 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.3.7
+Version: 4.3.8
 Author URI: https://geekcodelab.com/
-WC tested up to: 8.9.0
+WC tested up to: 9.0.2
 Requires Plugins: woocommerce
 Text Domain : woo-donations
 */
@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WDGK_BUILD', '4.3.7' );
+define( 'WDGK_BUILD', '4.3.8' );
 
 if (!defined('ABSPATH')) exit;
 

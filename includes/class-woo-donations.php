@@ -143,6 +143,10 @@ class Woo_Donations {
 		$this->loader->add_filter( 'woocommerce_locate_template', $plugin_public, 'wdgk_intercept_wc_template', 20, 3);
         
         $this->loader->add_filter( 'woocommerce_cart_item_quantity', $plugin_public, 'wdgk_cart_item_quantity', 10, 3 );
+
+        $this->loader->add_filter( 'woocommerce_loop_add_to_cart_link', $plugin_public, 'wcdp_loop_add_to_cart_link', 10, 3 );
+        $this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'product_add_to_cart_text', 10, 2 );
+
 	}
 
 	/**

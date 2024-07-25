@@ -5,9 +5,9 @@ Tags: WooCommerce Donation, WooCommerce Donation Campaign, WooCommerce Cart Page
 Requires PHP: 7.4
 Requires at least: 6.3
 Tested up to: 6.5
-WC tested up to: 9.0.2
+WC tested up to: 9.1.2
 Requires Plugins: woocommerce
-Stable tag: 4.3.8
+Stable tag: 4.3.9
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
 
@@ -124,6 +124,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.3.9 =
+ Fixed donation form in a loop bug 
+
 = 4.3.8 =
  Fixed Woocommerce templates override.
 

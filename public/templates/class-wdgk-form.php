@@ -9,6 +9,7 @@ $donation_price 	= "";
 $donation_p_id 	    = "";
 $donation_note 		= "";
 $product_form 		= false;
+$wpml_active 		= false;
 $form_title			= __("Donation","woo-donations");
 $amount_placeholder	= "Ex.100";
 $note_placeholder	= "Note";
@@ -25,7 +26,16 @@ if(!empty($attr_product_id)) {
 }
 
 if($product_form) {
-    $product_id = $attr_product_id;
+    if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
+        $wpml_active = true;
+		// Get the default language
+		$default_language = apply_filters('wpml_default_language', null);
+		// Get the original product ID
+		$product_id = apply_filters('wpml_object_id', $attr_product_id, 'product', true, $default_language);
+	}else{
+        $product_id = $attr_product_id;
+    }
+    
     $wdgk_btntext = get_post_meta($product_id, 'wdgk-settings[wdgk_btntext]', true);
     if(isset($wdgk_btntext) && !empty($wdgk_btntext))   $text = $wdgk_btntext;
 
@@ -58,15 +68,16 @@ $has_child = is_a($product, 'WC_Product_Variable') && $product->has_child();
 //enqueue woocommerce variation js
 if ($has_child) {
     wp_enqueue_script('wc-add-to-cart-variation');
+    $current_product = ($wpml_active) ? wc_get_product($attr_product_id) : $product;
 
-    $get_variations         = count($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
-    $available_variations   = $get_variations ? $product->get_available_variations() : false;
-    $attributes             = $product->get_variation_attributes();
+    $get_variations         = count($current_product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $current_product);
+    $available_variations   = $get_variations ? $current_product->get_available_variations() : false;
+    $attributes             = $current_product->get_variation_attributes();
     $attribute_keys         = array_keys($attributes);
     $variations_json        = wp_json_encode($available_variations);
     $variations_attr        = function_exists('wc_esc_json') ? wc_esc_json($variations_json) : _wp_specialchars($variations_json, ENT_QUOTES, 'UTF-8', true);
-    $selected_attributes    = $product->get_default_attributes();
-    $get_variations         = count($product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $product);
+    $selected_attributes    = $current_product->get_default_attributes();
+    $get_variations         = count($current_product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $current_product);
 }
 
 if(wc()->cart) {
@@ -118,9 +129,10 @@ if(!empty($donation_price))	{
     }
     $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
 }
+$fn_product_id = ($wpml_active) ? $attr_product_id : $product_id;
 ?>
 <?php if ($has_child): ?>
-    <form class="variations_form cart wdgk-donation-form" method="post" action="<?php echo esc_url($cart_url); ?>"
+    <form id="wdgk_variation_submit" class="variations_form cart wdgk-donation-form" method="post" action="<?php echo esc_url($cart_url); ?>"
     autocomplete="off" enctype='multipart/form-data' data-product_id="<?php echo intval($product_id); ?>"
     data-product_variations="<?php esc_attr_e($variations_attr); ?>">
 <?php endif; ?>
@@ -166,7 +178,7 @@ if(!empty($donation_price))	{
     endif; ?>
 
     <?php _e($note_html); ?>
-    <a href="javascript:void(0)" class="button wdgk_add_donation" data-single-dp="<?php esc_attr_e($product_form == true ? 'true' : 'false') ?>" data-product-id="<?php echo esc_attr($product_id); ?>" data-product-url="<?php echo esc_url($cart_url); ?>">
+    <a href="javascript:void(0)" class="button wdgk_add_donation" data-single-dp="<?php esc_attr_e($product_form == true ? 'true' : 'false') ?>" data-product-id="<?php echo esc_attr($fn_product_id); ?>" data-product-url="<?php echo esc_url($cart_url); ?>">
         <?php esc_attr_e(wp_unslash($text),'woo-donations'); ?>
     </a>
     <input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id">

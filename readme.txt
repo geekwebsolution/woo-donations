@@ -7,7 +7,7 @@ Requires at least: 6.3
 Tested up to: 6.5
 WC tested up to: 9.1.2
 Requires Plugins: woocommerce
-Stable tag: 4.3.9
+Stable tag: 4.4.0
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
 
@@ -53,6 +53,7 @@ This Shortcode displays specific product donation form. Before using this shortc
 * Options to set up donation button text color as per your requirement
 * Manually have option to set Description field donation form
 * Dynamic Label Options.
+* Compatible with WPML Multi-language.
 * Gutenberg support.
 * Elementor support.
 * Translate Support Loco Translate Plugin.
@@ -124,6 +125,9 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+= 4.4.0 =
+ Added compatibility with WPML Multi-language
+
 = 4.3.9 =
  Fixed donation form in a loop bug 
 

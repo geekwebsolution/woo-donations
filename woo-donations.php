@@ -3,7 +3,7 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.3.8
+Version: 4.4.0
 Author URI: https://geekcodelab.com/
 WC tested up to: 9.0.2
 Requires Plugins: woocommerce
@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WDGK_BUILD', '4.3.8' );
+define( 'WDGK_BUILD', '4.4.0' );
 
 if (!defined('ABSPATH')) exit;
 
@@ -79,6 +79,28 @@ function run_woo_donations() {
 }
 run_woo_donations();
 
+/**
+ * WPML - Change product id on diffrent language page for WPML translation
+ */
+add_filter('filter_woo_donations_settings','wdgk_donation_settings_wpml_support');
+function wdgk_donation_settings_wpml_support( $options ) {
+
+	if(defined('ICL_SITEPRESS_VERSION')) {
+
+		if(isset($options) && !empty($options)) {
+			if(isset($options['Product']) && !empty($options['Product'])) {
+				// Get current language - WPML
+				$current_language= apply_filters( 'wpml_current_language', NULL );
+
+				// Get translation ID - WPML
+				$options['Product'] = apply_filters( 'wpml_object_id', intval( $options['Product'] ), 'product', true, $current_language );
+			}
+		}
+	}
+
+	return $options;
+}
+
 /** Add cron schedule */
 add_filter( 'cron_schedules', function ( $schedules ) {
 	$schedules['wdgk_every_one_minute'] = array(
@@ -110,7 +132,7 @@ function wdgk_do_this_every_five_minute() {
 
 	if(!$wdgk_set_order_flag_status) {
 		global $wpdb;
-		$settings				= get_option('wdgk_donation_settings');
+		$settings				= wdgk_get_wc_donation_setting();
 		$donation_product_id 	= $settings['Product'];
 
 		$wdgk_set_order_flag_process = get_option( 'wdgk_set_order_flag_process' );

@@ -214,9 +214,19 @@ class Woo_Donations_Admin {
         if (isset($options['Product'])) 		        $donation_product   = $options['Product'];
 
         if(isset($post->ID) && $post->ID != $donation_product) {
+            $classes = 'show_if_simple show_if_variable';
+            if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
+                $wpml_current_lang = apply_filters( 'wpml_current_language', null );
+                $default_language = apply_filters( 'wpml_default_language', null );
+
+                if($default_language != $wpml_current_lang) {
+                    $classes .= ' wdgk_disable';
+                }
+            }
+            
             $product_type_options["donatable"] = [
                 "id" => "_donatable",
-                "wrapper_class" => "show_if_simple show_if_variable",
+                "wrapper_class" => $classes,
                 "label" => __('Donation Product', 'woo-donations'),
                 "description" => __('This product will only be used for donations if activated', 'woo-donations'),
                 "default" => "on",

@@ -8,7 +8,8 @@ use Automattic\WooCommerce\Utilities\OrderUtil;
  * Get form setting options
  */
 function wdgk_get_wc_donation_setting(){
-	return get_option('wdgk_donation_settings');
+	$donation_settings = get_option('wdgk_donation_settings');
+	return apply_filters('filter_woo_donations_settings', $donation_settings);
 }
 
 /**
@@ -33,6 +34,13 @@ function wdgk_is_donatable($id) {
 	$options = wdgk_get_wc_donation_setting();
 	if (isset($options['Product'])) {
 		$product = $options['Product'];
+	}
+
+	if(is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
+		// Get the default language
+		$default_language = apply_filters('wpml_default_language', null);
+		// Get the original product ID
+		$id = apply_filters('wpml_object_id', $id, 'product', true, $default_language);
 	}
 
 	return apply_filters('wdgk_is_donatable', get_post_meta($id, '_donatable', true) == 'yes' && $product != $id);

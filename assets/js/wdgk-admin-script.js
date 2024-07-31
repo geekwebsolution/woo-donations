@@ -34,6 +34,12 @@ jQuery(document).ready(function ($) {
         var text = jQuery(this).text();
         wdgkCopyToClipboard(text, true, "Copied");
     });
+
+    /** Disable checkbox for WPML translated products */
+    if(jQuery(".wdgk_disable").length > 0) {
+        jQuery(".wdgk_disable").find("#_donatable").attr("disabled", true);
+    }
+
 });
 
 function wdgkCopyToClipboard(value, showNotification, notificationText) {

@@ -16,6 +16,18 @@ jQuery(document).ready(function ($) {
         }
     });
 
+    /** Prevent redirection on donation form for variable product */
+    jQuery('body').on("keypress", '.wdgk_donation_content input[name="donation-price"]', function (e) {
+        if (e.which === 13) { // 13 is the Enter key
+            jQuery('.wdgk_add_donation').click();
+            return false;
+        }
+    });
+    jQuery('#wdgk_variation_submit').on('submit', function(e){
+        // validation code here
+        e.preventDefault();
+    });
+
     jQuery('body').on("click", ".wdgk_add_donation", function () {
         var note = "";
         var price = "";

@@ -144,9 +144,11 @@ class Woo_Donations {
         
         $this->loader->add_filter( 'woocommerce_cart_item_quantity', $plugin_public, 'wdgk_cart_item_quantity', 10, 3 );
 
-        $this->loader->add_filter( 'woocommerce_loop_add_to_cart_link', $plugin_public, 'wcdp_loop_add_to_cart_link', 10, 3 );
+        $this->loader->add_filter( 'woocommerce_loop_add_to_cart_link', $plugin_public, 'wdgk_loop_add_to_cart_link', 10, 3 );
         $this->loader->add_filter( 'woocommerce_product_add_to_cart_text', $plugin_public, 'product_add_to_cart_text', 10, 2 );
-
+		
+        $this->loader->add_filter( 'woocommerce_is_sold_individually', $plugin_public, 'wdgk_product_sold_individually', 20, 2 );
+		
 	}
 
 	/**

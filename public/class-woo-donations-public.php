@@ -473,7 +473,7 @@ class Woo_Donations_Public
     /**
      * Change "Add to Cart" link
      */
-    public function wcdp_loop_add_to_cart_link($html, $product, $args): string
+    public function wdgk_loop_add_to_cart_link($html, $product, $args): string
     {
         if (wdgk_is_donatable($product->get_id())) {
             return sprintf(
@@ -484,5 +484,20 @@ class Woo_Donations_Public
             );
         }
         return $html;
+    }
+
+    /**
+     * Disable quantity field for donation products
+     */
+    public function wdgk_product_sold_individually($return, $product) {
+        $productId = "";
+        $options = wdgk_get_wc_donation_setting();
+        if (isset($options['Product'])) {
+            $productId = $options['Product'];
+        }
+        if (wdgk_is_donatable($product->get_id()) || $productId == $product->get_id()) {
+            $return = true;
+        }
+        return $return;
     }
 }

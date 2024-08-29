@@ -284,10 +284,13 @@ class Woo_Donations_Public
     /** Ajax response on Add donation click  */
     public function wdgk_donation_ajax_callback()
     {
-        $product_id = sanitize_text_field($_POST['product_id']);
-        $price = sanitize_text_field($_POST['price']);
+        $product_id   = sanitize_text_field($_POST['product_id']);
+        $price        = sanitize_text_field($_POST['price']);
         $redirect_url = sanitize_text_field($_POST['redirect_url']);
-        wdgk_add_donation_product_to_cart($product_id);
+        $variation_id = (isset($_POST['variation_id']) && !empty($_POST['variation_id'])) ? sanitize_text_field($_POST['variation_id']) : '';
+        
+        $quantity = 1;
+        wdgk_add_donation_product_to_cart($product_id, $quantity, $variation_id);
 
         $product = wc_get_product($product_id);
 

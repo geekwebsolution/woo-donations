@@ -13,6 +13,7 @@ $wpml_active 		= false;
 $form_title			= __("Donation","woo-donations");
 $amount_placeholder	= "Ex.100";
 $note_placeholder	= "Note";
+$invalid_donation_message = "";
 
 $options = wdgk_get_wc_donation_setting();
 $attr_product_id = (isset($value['product_id']) && !empty($value['product_id'])) ? $value['product_id'] : "";
@@ -64,6 +65,14 @@ if(empty($product_id)) return;
 
 $product = wc_get_product($product_id);
 
+if (!$product || !is_a($product, 'WC_Product')) {
+    return wdgk_form_invalid_message(__('Invalid project ID: This project is unknown.', 'woo-donations'));
+} else if (!is_a($product, 'WC_Product_Grouped') && !$product->is_purchasable()) {
+    return wdgk_form_invalid_message(__('Currently you can not donate to this project.', 'woo-donations'));
+} else if (!$product->is_in_stock()) {
+    return wdgk_form_invalid_message(__('This project is currently not available.', 'woo-donations'));
+}
+
 $has_child = is_a($product, 'WC_Product_Variable') && $product->has_child();
 //enqueue woocommerce variation js
 if ($has_child) {
@@ -80,33 +89,45 @@ if ($has_child) {
     $get_variations         = count($current_product->get_children()) <= apply_filters('woocommerce_ajax_variation_threshold', 30, $current_product);
 }
 
-if(wc()->cart) {
-    $cart_count = is_object($woocommerce->cart) ? $woocommerce->cart->get_cart_contents_count() : '';
-    if ($cart_count != 0) {
-        $cartitems = $woocommerce->cart->get_cart();
-        if (!empty($cartitems) && isset($cartitems)) {
-            foreach ($cartitems as $item => $values) {                
-                $item_id =  $values['product_id'];
-                if($product_form) {
-                    if($product_id == $item_id) {
-                        $product_display_price_key = sprintf('wdgk_product_display_price:%s',$product_id);
-                        if(array_key_exists($product_display_price_key,$_COOKIE)) {
-                            if(isset($_COOKIE[$product_display_price_key])) {
-                                $donation_price = $_COOKIE[$product_display_price_key];
-                            }else{
-                                if(isset($values['donation_price']))    $donation_price = $values['donation_price'];
+if($product->is_type('simple')) {
+    if(wc()->cart) {
+        $cart_count = is_object($woocommerce->cart) ? $woocommerce->cart->get_cart_contents_count() : '';
+        if ($cart_count != 0) {
+            $cartitems = $woocommerce->cart->get_cart();
+            if (!empty($cartitems) && isset($cartitems)) {
+                foreach ($cartitems as $item => $values) {                
+                    $item_id =  $values['product_id'];
+                    if($product_form) {
+                        if($product_id == $item_id) {
+                            $product_display_price_key = sprintf('wdgk_product_display_price:%s',$product_id);
+                            if(array_key_exists($product_display_price_key,$_COOKIE)) {
+                                if(isset($_COOKIE[$product_display_price_key])) {
+                                    $donation_price = $_COOKIE[$product_display_price_key];
+                                }else{
+                                    if(isset($values['donation_price']))    $donation_price = $values['donation_price'];
+                                }
+                                if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
                             }
+                        }
+                    }else{
+                        if ($item_id == $product_id) {
+                            $donation_price = isset($_COOKIE['wdgk_product_display_price']) ? $_COOKIE['wdgk_product_display_price'] : $values['donation_price'];
                             if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
                         }
-                    }
-                }else{
-                    if ($item_id == $product_id) {
-                        $donation_price = isset($_COOKIE['wdgk_product_display_price']) ? $_COOKIE['wdgk_product_display_price'] : $values['donation_price'];
-                        if(isset($values['donation_note'])) $donation_note = str_replace("<br />","\n",$values['donation_note']);
                     }
                 }
             }
         }
+    }
+
+    if(!empty($donation_price))	{
+        $decimal_separator = wc_get_price_decimal_separator();
+        $thousand_separator = wc_get_price_thousand_separator();
+        $price_decimals = wc_get_price_decimals();
+        if(!is_numeric($donation_price)) {                
+            $donation_price = str_replace( $decimal_separator, '.', $donation_price );
+        }
+        $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
     }
 }
 
@@ -116,19 +137,10 @@ if (!empty($product_id) && $note == 'on') {
 
 $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
 
-$ajax_url= admin_url('admin-ajax.php');
+$ajax_url = admin_url('admin-ajax.php');
 $current_cur = get_woocommerce_currency();
 $cur_syambols = get_woocommerce_currency_symbols();
 
-if(!empty($donation_price))	{
-    $decimal_separator = wc_get_price_decimal_separator();
-    $thousand_separator = wc_get_price_thousand_separator();
-    $price_decimals = wc_get_price_decimals();
-    if(!is_numeric($donation_price)) {                
-        $donation_price = str_replace( $decimal_separator, '.', $donation_price );
-    }
-    $donation_price = number_format($donation_price,$price_decimals,$decimal_separator,$thousand_separator);
-}
 $fn_product_id = ($wpml_active) ? $attr_product_id : $product_id;
 ?>
 <?php if ($has_child): ?>

@@ -116,7 +116,10 @@ jQuery(document).ready(function ($) {
             note: note,
             redirect_url: redirect_url
         }
-        if(variation_id != undefined) { $data.product_type = 'variation'; }
+        if(variation_id != undefined) { 
+            $data.product_type = 'variation';
+            $data.variation_id = variation_id;
+        }
 
         jQuery.ajax({
             url: ajaxurl,

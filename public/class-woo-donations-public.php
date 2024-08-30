@@ -284,10 +284,13 @@ class Woo_Donations_Public
     /** Ajax response on Add donation click  */
     public function wdgk_donation_ajax_callback()
     {
-        $product_id = sanitize_text_field($_POST['product_id']);
-        $price = sanitize_text_field($_POST['price']);
+        $product_id   = sanitize_text_field($_POST['product_id']);
+        $price        = sanitize_text_field($_POST['price']);
         $redirect_url = sanitize_text_field($_POST['redirect_url']);
-        wdgk_add_donation_product_to_cart($product_id);
+        $variation_id = (isset($_POST['variation_id']) && !empty($_POST['variation_id'])) ? sanitize_text_field($_POST['variation_id']) : '';
+        
+        $quantity = 1;
+        wdgk_add_donation_product_to_cart($product_id, $quantity, $variation_id);
 
         $product = wc_get_product($product_id);
 
@@ -470,7 +473,7 @@ class Woo_Donations_Public
     /**
      * Change "Add to Cart" link
      */
-    public function wcdp_loop_add_to_cart_link($html, $product, $args): string
+    public function wdgk_loop_add_to_cart_link($html, $product, $args): string
     {
         if (wdgk_is_donatable($product->get_id())) {
             return sprintf(
@@ -481,5 +484,20 @@ class Woo_Donations_Public
             );
         }
         return $html;
+    }
+
+    /**
+     * Disable quantity field for donation products
+     */
+    public function wdgk_product_sold_individually($return, $product) {
+        $productId = "";
+        $options = wdgk_get_wc_donation_setting();
+        if (isset($options['Product'])) {
+            $productId = $options['Product'];
+        }
+        if (wdgk_is_donatable($product->get_id()) || $productId == $product->get_id()) {
+            $return = true;
+        }
+        return $return;
     }
 }

@@ -49,28 +49,45 @@ function wdgk_is_donatable($id) {
 /**
  * Add donation product to cart
  */
-function wdgk_add_donation_product_to_cart($id) {
+function wdgk_add_donation_product_to_cart($id, $quantity = 1, $variation_id = '') {
 	$found = false;
+	$productObj = wc_get_product($id);
 	//check if product already in cart
 	if ( sizeof( WC()->cart->get_cart() ) > 0 ) {
 		
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
 			$_product = $values['data'];
+
+			if(isset($values['variation_id']) && $values['variation_id'] == $variation_id) {				
+				WC()->cart->remove_cart_item($cart_item_key);
+			}
 			
-			if ( $_product->get_id() == $id ){
+			if ( $_product->get_id() == $id ) {
 				$found = true;
 				WC()->cart->remove_cart_item($cart_item_key);
-				WC()->cart->add_to_cart( $id );
+				if($productObj->is_type('variable')) {
+					WC()->cart->add_to_cart( $id, $quantity, $variation_id );
+				}else{
+					WC()->cart->add_to_cart( $id );
+				}
 			}
 			
 		}
 		// if product not found, add it
 		if ( ! $found )
-			WC()->cart->add_to_cart( $id );
+			if($productObj->is_type('variable')) {
+				WC()->cart->add_to_cart( $id, $quantity, $variation_id );
+			}else{
+				WC()->cart->add_to_cart( $id );
+			}
 	
 	} else {
 		// if no products in cart, add it
-		WC()->cart->add_to_cart( $id );
+		if($productObj->is_type('variable')) {
+			WC()->cart->add_to_cart( $id, $quantity, $variation_id );
+		}else{
+			WC()->cart->add_to_cart( $id );
+		}
 	}
 }
 
@@ -105,4 +122,11 @@ function wdgk_form_internal_style() {
 	}
 
 	return $additional_style;
+}
+
+/**
+ * Invalid Donation Product Message
+ */
+function wdgk_form_invalid_message($message) {
+	return printf('<ul class="woocommerce-error wdgk-invalid-donation-message" id="wdgk-invalid-donation" role="alert"><li>%s</li></ul>', esc_html($message));
 }

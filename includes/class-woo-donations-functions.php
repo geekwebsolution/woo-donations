@@ -123,3 +123,10 @@ function wdgk_form_internal_style() {
 
 	return $additional_style;
 }
+
+/**
+ * Invalid Donation Product Message
+ */
+function wdgk_form_invalid_message($message) {
+	return printf('<ul class="woocommerce-error wdgk-invalid-donation-message" id="wdgk-invalid-donation" role="alert"><li>%s</li></ul>', esc_html($message));
+}

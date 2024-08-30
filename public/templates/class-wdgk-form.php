@@ -13,6 +13,7 @@ $wpml_active 		= false;
 $form_title			= __("Donation","woo-donations");
 $amount_placeholder	= "Ex.100";
 $note_placeholder	= "Note";
+$invalid_donation_message = "";
 
 $options = wdgk_get_wc_donation_setting();
 $attr_product_id = (isset($value['product_id']) && !empty($value['product_id'])) ? $value['product_id'] : "";
@@ -63,6 +64,14 @@ if($product_form) {
 if(empty($product_id)) return;
 
 $product = wc_get_product($product_id);
+
+if (!$product || !is_a($product, 'WC_Product')) {
+    return wdgk_form_invalid_message(__('Invalid project ID: This project is unknown.', 'woo-donations'));
+} else if (!is_a($product, 'WC_Product_Grouped') && !$product->is_purchasable()) {
+    return wdgk_form_invalid_message(__('Currently you can not donate to this project.', 'woo-donations'));
+} else if (!$product->is_in_stock()) {
+    return wdgk_form_invalid_message(__('This project is currently not available.', 'woo-donations'));
+}
 
 $has_child = is_a($product, 'WC_Product_Variable') && $product->has_child();
 //enqueue woocommerce variation js

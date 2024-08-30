@@ -22,13 +22,8 @@ global $product;
 //needed to enable support for PayPal express checkout
 echo '<span class="woocommerce-Price-amount wdgk_pp_amount" style="display:none !important;">1</span>';
 
-if (!$product->is_purchasable() && $product->get_type() != 'grouped') {
-    return;
-}
 
-if ($product->is_in_stock()) {
-    /**
-     * Display Donation Form
-     */
-    echo do_shortcode('[wdgk_donation product_id="' . $post->ID . '" form_title="false"]');
-}
+/**
+ * Display Donation Form
+ */
+echo do_shortcode('[wdgk_donation product_id="' . $post->ID . '" form_title="false"]');

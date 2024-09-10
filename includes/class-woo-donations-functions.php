@@ -58,8 +58,10 @@ function wdgk_add_donation_product_to_cart($id, $quantity = 1, $variation_id = '
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $values ) {
 			$_product = $values['data'];
 
-			if(isset($values['variation_id']) && $values['variation_id'] == $variation_id) {				
-				WC()->cart->remove_cart_item($cart_item_key);
+			if(!empty($$variation_id)){
+				if(isset($values['variation_id']) && $values['variation_id'] == $variation_id) {				
+					WC()->cart->remove_cart_item($cart_item_key);
+				}
 			}
 			
 			if ( $_product->get_id() == $id ) {

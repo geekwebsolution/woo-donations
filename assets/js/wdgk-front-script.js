@@ -76,7 +76,7 @@ jQuery(document).ready(function ($) {
         }
 
         // update function for allow comma in donation price
-        if (isNumber(decimal_price)) {
+        if (wdgk_isNumber(decimal_price)) {
             jQuery(this).closest('.wdgk_donation_content').find(".wdgk_error_front").text("Please enter numeric value!!");
             return false;
         }
@@ -162,7 +162,7 @@ function getCookie(cname) {
     return "";
 }
 // 
-function isNumber(price) {
+function wdgk_isNumber(price) {
     var regex = /^[0-9.,\b]+$/;
     if (!regex.test(price)) return false;
 }

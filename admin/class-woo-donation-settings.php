@@ -144,12 +144,17 @@ if (isset($options['Noteplaceholder'])) {
 							<td>
                                 <div class="wdgk-select-box">
                                 <?php 
-                                $post_7 = get_post( $product );                                                                
+                                $post_status = get_post_status($product);
+								if ($post_status == 'publish') {
+									$post_7 = get_post($product);
+								} else {
+									$post_7 = null;
+								}
                                 ?>
 
                                 <select name="wdgk_product" class="wdgk_select_product">
                                     <?php 
-                                    if(isset($product) && !empty($product)){
+                                    if(isset($product) && !empty($product) && $post_7){
 										$product_title = $post_7->post_title;
                                         ?>
                                         <option selected="selected" value="<?php esc_attr_e($product); ?>"><?php printf( '%1$s ( #%2$s )', esc_html($product_title), esc_attr($product) ); ?></option>

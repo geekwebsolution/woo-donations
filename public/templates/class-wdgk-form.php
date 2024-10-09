@@ -63,6 +63,12 @@ if($product_form) {
 // When product is not selected as donation
 if(empty($product_id)) return;
 
+$post_status = get_post_status($product_id);
+if ($post_status != 'publish'){
+    echo '<div class="wdgk_error_front">Donation product not found!</div>';
+    return;
+}
+
 $product = wc_get_product($product_id);
 
 if (!$product || !is_a($product, 'WC_Product')) {

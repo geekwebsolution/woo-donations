@@ -77,6 +77,12 @@ class Woo_Donations_Public
             $product = $options['Product'];
         }
 
+        $post_status = get_post_status($product);
+        if ($post_status != 'publish'){
+            echo '<div class="wdgk_error_front">Donation product not found!</div>';
+            return;
+        }
+
         if (wc()->cart) {
             $cart_count = is_object($woocommerce->cart) ? $woocommerce->cart->get_cart_contents_count() : '';
             if ($cart_count != 0) {

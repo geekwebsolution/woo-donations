@@ -93,7 +93,7 @@ global $post;
                 wdgk_show_hide_donable_panel();
 
                 if ($('#_regular_price').val() == '') {
-                    $('#_regular_price').val(1);
+                    $('#_regular_price').val(0);
                 }
             });
 

@@ -239,15 +239,71 @@ class Woo_Donations_Admin {
         return $product_type_options;
     }
 
+
+
+
+    /**
+     * Save post product function
+     *
+     * This function is triggered when a product is saved or updated.
+     * It checks if the product is donatable and updates the price of its variations accordingly.
+     *
+     * @param int $post_id The ID of the product being saved
+     * @param object $product The product object being saved
+     * @param bool $update Whether the product is being updated or not
+     */
     public function wdgk_save_post_product($post_id, $product, $update) {
+
+        // Check if the nonce is set to prevent unauthorized requests
         if (!isset($_POST['_wpnonce'])) {
             return;
         }
 
-        update_post_meta(
-            $post_id,
-            "_donatable",
-            isset($_POST["_donatable"]) ? "yes" : "no"
-        );
+        // Update the "_donatable" meta field of the product
+        update_post_meta($post_id, "_donatable", isset($_POST["_donatable"]) ? "yes" : "no");
+
+        // Get the product object
+        $product = wc_get_product($post_id);
+
+        // Get the "_donatable" meta value of the product
+        $_donatable = get_post_meta($post_id, '_donatable', true);
+
+        // Get the donation settings
+        $donation_settings = get_option('wdgk_donation_settings');
+
+        // Check if the product is donatable or if it's set as a donatable product in the settings
+        if ($_donatable == 'yes' || isset($donation_settings['Product']) && intval($donation_settings['Product']) == $post_id) {
+
+            // Check if the product is a variable product
+            if ($product->is_type('variable')) {
+
+                // Get all published variations of the product
+                $args = array(
+                    'post_type' => 'product_variation',
+                    'posts_per_page' => -1,
+                    'post_status' => 'publish',
+                    'post_parent' => $post_id,
+                );
+                $variations = get_posts($args);
+
+                // Loop through each variation
+                foreach ($variations as $variation) {
+                    // Get the variation object
+                    $variation_obj = wc_get_product($variation->ID);
+
+                    // Get the price of the variation
+                    $price = $variation_obj->get_price();
+
+                    // If the price is null or empty
+                    if (is_null($price) || $price == '') {
+
+                        // Set it to 0
+                        $variation_obj->set_regular_price(0);
+                        $variation_obj->set_price(0);
+                        $variation_obj->save(); // Save the changes
+                    }
+                }
+            }
+        }
     }
 }

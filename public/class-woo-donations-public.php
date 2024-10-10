@@ -113,7 +113,7 @@ class Woo_Donations_Public {
         }
 
         if (!empty($product)) {
-
+            $product_id = $product;
             $product = wc_get_product($product);
 
             $has_child = is_a($product, 'WC_Product_Variable') && $product->has_child();
@@ -146,7 +146,7 @@ class Woo_Donations_Public {
                         </div>
                         ' . $note_html . '
                         <a href="javascript:void(0)" class="button wdgk_add_donation" 
-                           data-product-id="' . esc_attr($product) . '" 
+                           data-product-id="' . esc_attr($product_id) . '"
                            data-product-url="' . esc_url($redurl) . '">
                             ' . esc_attr(wp_unslash($text)) . '
                         </a>

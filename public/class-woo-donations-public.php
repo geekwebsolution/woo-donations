@@ -51,16 +51,16 @@ class Woo_Donations_Public
     public function cart_page_donation_form()
     {
         global $woocommerce;
-        $checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : $woocommerce->cart->get_checkout_url();
-        $this->wdgk_donation_form_front_html($checkout_url);
+        $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
+        $this->wdgk_donation_form_front_html($cart_url);
     }
 
     /** Checkout page html */
     public function checkout_page_donation_form($checkout)
     {
         global $woocommerce;
-        $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
-        $this->wdgk_donation_form_front_html($cart_url);
+        $checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : $woocommerce->cart->get_checkout_url();
+        $this->wdgk_donation_form_front_html($checkout_url);
     }
 
     public function wdgk_donation_form_front_html($redurl)

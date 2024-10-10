@@ -143,6 +143,12 @@ if (!empty($product_id) && $note == 'on') {
 
 $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
 
+if( is_checkout() ){
+    $redirect_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : $woocommerce->cart->get_checkout_url();
+}else{
+    $redirect_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : $woocommerce->cart->get_cart_url();
+}
+
 $ajax_url = admin_url('admin-ajax.php');
 $current_cur = get_woocommerce_currency();
 $cur_syambols = get_woocommerce_currency_symbols();
@@ -196,7 +202,7 @@ $fn_product_id = ($wpml_active) ? $attr_product_id : $product_id;
     endif; ?>
 
     <?php _e($note_html); ?>
-    <a href="javascript:void(0)" class="button wdgk_add_donation" data-single-dp="<?php esc_attr_e($product_form == true ? 'true' : 'false') ?>" data-product-id="<?php echo esc_attr($fn_product_id); ?>" data-product-url="<?php echo esc_url($cart_url); ?>">
+    <a href="javascript:void(0)" class="button wdgk_add_donation" data-single-dp="<?php esc_attr_e($product_form == true ? 'true' : 'false') ?>" data-product-id="<?php echo esc_attr($fn_product_id); ?>" data-product-url="<?php echo esc_url($redirect_url); ?>">
         <?php esc_attr_e(wp_unslash($text),'woo-donations'); ?>
     </a>
     <input type="hidden" name="wdgk_product_id" value="" class="wdgk_product_id">

@@ -298,8 +298,8 @@ class Woo_Donations_Admin {
                     if (is_null($price) || $price == '') {
 
                         // Set it to 0
-                        $variation_obj->set_regular_price(0);
-                        $variation_obj->set_price(0);
+                        $variation_obj->set_regular_price(1);
+                        $variation_obj->set_price(1);
                         $variation_obj->save(); // Save the changes
                     }
                 }

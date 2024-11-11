@@ -243,3 +243,25 @@ add_action( 'before_woocommerce_init', function() {
 		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 	}
 } );
+
+
+
+add_action('pre_get_posts', 'exclude_product_from_archive');
+/**
+ * this function is used to hide donation product from product archive page 
+ */
+function exclude_product_from_archive($query) {
+    if (!is_admin() && $query->is_main_query() && (is_shop() || is_product_category() || is_product_tag())) {
+        // Get all products with '_donatable' meta key
+        $donatable_products = get_posts(array(
+            'post_type' => 'product',
+            'meta_key' => '_donatable',
+            'fields' => 'ids', // Retrieve only IDs
+            'posts_per_page' => -1, // Get all matching products
+        ));
+
+        if (!empty($donatable_products)) {
+            $query->set('post__not_in', $donatable_products);
+        }
+    }
+}

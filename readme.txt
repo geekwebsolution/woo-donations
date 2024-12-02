@@ -7,7 +7,7 @@ Requires at least: 6.3
 Tested up to: 6.6
 WC tested up to: 9.2.3
 Requires Plugins: woocommerce
-Stable tag: 4.4.3
+Stable tag: 4.5.0
 
 This plugin lets you accept donations in WooCommerce. Users can specify the amount they want to donate.
 
@@ -125,6 +125,11 @@ After Plugin Active go to WooCommerce-> Donation.
 
 
 == Changelog ==
+
+= 4.5.0 =
+ Fix Bug
+ Added auto updated function
+
 = 4.4.3 =
  bug fixes
 

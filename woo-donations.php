@@ -3,7 +3,7 @@
 Plugin Name: Woo Donations
 Description: Woo Donation is a plugin that is used to collect donations on your websites based on Woocommerce. You can add donation functionality in your site to ask your visitors/users community for financial support for the charity or non-profit programs, products, and organisation.
 Author: Geek Code Lab
-Version: 4.4.3
+Version: 4.5.0
 Author URI: https://geekcodelab.com/
 WC tested up to: 9.2.3
 Requires Plugins: woocommerce
@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'WDGK_BUILD', '4.4.3' );
+define( 'WDGK_BUILD', '4.5.0' );
 
 if (!defined('ABSPATH')) exit;
 
@@ -28,13 +28,19 @@ if(!defined('WDGK_PLUGIN_URL'))
 if(!defined('WDGK_PLUGIN_PATH'))
 	define( 'WDGK_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
+if (!defined("WDGK_PLUGIN_DIR")) define("WDGK_PLUGIN_DIR", plugin_basename(__DIR__));
+if (!defined("WDGK_PLUGIN_BASENAME")) define("WDGK_PLUGIN_BASENAME", plugin_basename(__FILE__));
+
+require(WDGK_PLUGIN_PATH . 'updater/updater.php');
 function activate_woo_donations() {
 	require_once plugin_dir_path( __FILE__ ) . 'includes/class-woo-donations-activator.php';
+	wdgk_updater_activate();
 	Woo_Donations_Activator::activate();
 }
 
 register_activation_hook( __FILE__, 'activate_woo_donations' );
 
+add_action('upgrader_process_complete', 'wdgk_updater_activate'); // remove  transient  on plugin  update
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.

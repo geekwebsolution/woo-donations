@@ -396,57 +396,62 @@ class Woo_Donations_Public {
     }
 
     /**
-     * Woocommerce template override
+     * Override WooCommerce templates for donation products.
+     *
+     * - Shows the donation form on the single donation product page.
+     * - Shows the donation form when the donation product appears in an
+     *   upsell or related-products loop.
+     * - Leaves normal product prices unchanged.
      */
     public function wdgk_intercept_wc_template($template, $template_name, $template_path) {
-        //Return if the template has been overwritten in yourtheme/woocommerce/XXX
-        if ($template[strlen($template) - strlen($template_name) - 2] === 'e') {
-            return $template;
-        }
+            $options = wdgk_get_wc_donation_setting();
 
-        $product_id = '';
-        $options = wdgk_get_wc_donation_setting();
-        if (isset($options['Product']))      $product_id = $options['Product'];
+        $configured_donation_product_id = !empty($options['Product'])
+            ? absint($options['Product'])
+            : 0;
 
-        $path = plugin_dir_path(dirname(__FILE__)) . 'includes/wc-templates/';
+        $custom_template_path = plugin_dir_path(dirname(__FILE__))
+            . 'includes/wc-templates/';
 
+        /*
+        * Single-product templates
+        *
+        * Always use the queried product ID here, because the global
+        * $product can temporarily change while WooCommerce renders
+        * related products and upsells.
+        */
         if (is_product()) {
-            global $product;
-            $product = wc_get_product(get_the_ID());
-            if ($product->is_type('simple') || $product->is_type('variable')) {
+            $queried_product_id = absint(get_queried_object_id());
+
+            $is_main_donation_product =
+                $queried_product_id > 0 &&
+                (
+                    $configured_donation_product_id === $queried_product_id ||
+                    wdgk_is_donatable($queried_product_id)
+                );
+
+            if ($is_main_donation_product) {
                 switch ($template_name) {
-                    case 'loop/no-products-found.php':
-                        $template = $path . $template_name;
-                        break;
-
-                    case 'loop/price.php':
-                        if (!is_null($product) && (wdgk_is_donatable($product->get_id()) || $product_id == $product->get_id())) {
-                            $template = $path . $template_name;
-                        }
-                        break;
-
                     case 'single-product/price.php':
                     case 'single-product/add-to-cart/variation-add-to-cart-button.php':
-                        if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
-                            $template = $path . $template_name;
-                        }
+                        $template = $custom_template_path . $template_name;
                         break;
 
                     case 'single-product/add-to-cart/simple.php':
                     case 'single-product/add-to-cart/variable.php':
-                        if (wdgk_is_donatable(get_queried_object_id()) || $product_id == get_queried_object_id()) {
-                            $template = $path . 'single-product/add-to-cart/product.php';
-                        }
-                        break;
-
-                    default:
+                        $template = $custom_template_path
+                            . 'single-product/add-to-cart/product.php';
                         break;
                 }
             }
         }
 
-
-        return apply_filters('wdgk_locate_template', $template, $template_name, $template_path);
+            return apply_filters(
+                'wdgk_locate_template',
+                $template,
+                $template_name,
+                $template_path
+            );
     }
 
     /**
@@ -471,32 +476,84 @@ class Woo_Donations_Public {
         return $product_quantity;
     }
 
+  /**
+         * Change loop button text for donation products.
+         */
+        public function product_add_to_cart_text(
+            $text,
+            $product
+        ): string {
+            if (!$product instanceof WC_Product) {
+                return $text;
+            }
 
-    /**
-     * Change "Add to Cart" Button Text
-     */
-    public function product_add_to_cart_text($text, $product): string {
-        if (wdgk_is_donatable($product->get_id())) {
-            return __('Learn more', 'woo-donations');
+            $options = wdgk_get_wc_donation_setting();
+
+            $configured_donation_product_id = !empty($options['Product'])
+                ? absint($options['Product'])
+                : 0;
+
+            $current_product_id = absint($product->get_id());
+
+            if (
+                wdgk_is_donatable($current_product_id) ||
+                $configured_donation_product_id === $current_product_id
+            ) {
+                return __('Learn More', 'woo-donations');
+            }
+
+            return $text;
         }
-        return $text;
-    }
 
     /**
      * Change "Add to Cart" link
      */
-    public function wdgk_loop_add_to_cart_link($html, $product, $args): string {
-        if (wdgk_is_donatable($product->get_id())) {
+   /**
+     * Hide the loop add-to-cart button for donation products.
+     *
+     * This affects shop archives, related products, upsells and
+     * WooCommerce product loops. The donation form remains available
+     * on the product's single page.
+     */
+        public function wdgk_loop_add_to_cart_link(
+            $html,
+            $product,
+            $args
+        ): string {
+            if (!$product instanceof WC_Product) {
+                return $html;
+            }
+
+            $options = wdgk_get_wc_donation_setting();
+
+            $configured_donation_product_id = !empty($options['Product'])
+                ? absint($options['Product'])
+                : 0;
+
+            $current_product_id = absint($product->get_id());
+
+            $is_donation_product =
+                wdgk_is_donatable($current_product_id) ||
+                $configured_donation_product_id === $current_product_id;
+
+            if (!$is_donation_product) {
+                return $html;
+            }
+
             return sprintf(
-                '<a href="%s" class="button" %s>%s</a>',
+                '<a href="%1$s" class="button product_type_simple wdgk-learn-more-button" aria-label="%2$s">%3$s</a>',
                 esc_url($product->get_permalink()),
-                isset($args['attributes']) ? wc_implode_html_attributes($args['attributes']) : '',
-                esc_html($product->add_to_cart_text())
+                esc_attr(
+                    sprintf(
+                        __('Learn more about %s', 'woo-donations'),
+                        $product->get_name()
+                    )
+                ),
+                esc_html__('Learn More', 'woo-donations')
             );
         }
-        return $html;
-    }
 
+        
     /**
      * Disable quantity field for donation products
      */
